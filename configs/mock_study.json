@@ -26,5 +26,20 @@
       "notes": "MOCK server, profile 'degraded'. Start it with: refusalscope mock-serve --profile degraded --port 8102"
     }
   ],
-  "sampling": {"temperatures": [0.0], "seeds": [1234], "max_tokens": 256, "timeout_s": 30, "retries": 1}
+  "sampling": {
+    "temperatures": [
+      0.0
+    ],
+    "seeds": [
+      1234
+    ],
+    "max_tokens": 256,
+    "timeout_s": 30,
+    "retries": 1
+  },
+  "suites": {
+    "refusal": {
+      "harmful_path": "configs/mock_placeholder_behaviors.jsonl"
+    }
+  }
 }

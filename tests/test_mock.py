@@ -309,17 +309,20 @@ def first_token_distribution(server, make_client, key_text, top=8):
 def test_first_token_distribution_shifts_with_kl_shift(make_server, make_client):
     scenario = {"p": FirstTokenScenario("fk")}
     ref = first_token_distribution(
-        make_server(MockProfile(kl_shift=0.0), scenario), make_client, "p", 12
+        make_server(MockProfile(kl_shift=0.0), scenario), make_client, "p", 30
     )
     same = first_token_distribution(
-        make_server(MockProfile(kl_shift=0.0), scenario), make_client, "p", 12
+        make_server(MockProfile(kl_shift=0.0), scenario), make_client, "p", 30
     )
     shifted = first_token_distribution(
-        make_server(MockProfile(kl_shift=1.0), scenario), make_client, "p", 12
+        make_server(MockProfile(kl_shift=1.0), scenario), make_client, "p", 30
     )
     assert ref == same
     assert ref != shifted
+    assert len(ref) == 30
     assert math.isclose(sum(math.exp(v) for v in ref.values()), 1.0, rel_tol=1e-9)
+    truncated = first_token_distribution(make_server(MockProfile(), scenario), make_client, "p", 20)
+    assert 0.5 < sum(math.exp(v) for v in truncated.values()) < 1.0
     assert (
         len(first_token_distribution(make_server(MockProfile(), scenario), make_client, "p", 3))
         == 3

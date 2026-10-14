@@ -132,10 +132,33 @@ class StudyConfig:
         data["sampling"]["temperatures"] = list(self.sampling.temperatures)
         data["sampling"]["seeds"] = list(self.sampling.seeds)
         data["models"] = [asdict(m) for m in self.models]
+        data["suites"] = {
+            section: {key: getattr(self.suites, attr) for key, attr in mapping.items()}
+            for section, mapping in _SUITE_SECTION_KEYS.items()
+        }
         return data
 
     def digest(self) -> str:
+        """Hash of the whole configuration (no secrets)."""
         return sha256_text(canonical_json(self.to_dict()))
+
+    def fingerprint(self) -> str:
+        """Hash of only the settings that change results.
+
+        Endpoints, timeouts, retries, worker counts, prices and notes are left out so a study can
+        be resumed after a server moves to another port or machine.
+        """
+        data = self.to_dict()
+        keep = ("name", "model", "role", "pair_id", "params_b", "quant", "extra_body", "mock")
+        sampling = {k: v for k, v in data["sampling"].items() if k not in ("timeout_s", "retries")}
+        suites = json.loads(json.dumps(data["suites"]))
+        suites["refusal"].pop("harmful_path", None)
+        payload = {
+            "models": [{k: m[k] for k in keep} for m in data["models"]],
+            "sampling": sampling,
+            "suites": suites,
+        }
+        return sha256_text(canonical_json(payload))
 
 
 # --------------------------------------------------------------------------- parsing
