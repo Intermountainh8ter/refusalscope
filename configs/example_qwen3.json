@@ -62,7 +62,7 @@
   "suites": {
     "toolcall": {"seed": 1001, "n_per_category": 22},
     "injection": {"seed": 2002, "n_cases": 378, "max_steps": 8},
-    "refusal": {"harmful_path": "data/harmful_behaviors.jsonl", "max_items": 200},
+    "refusal": {"harmful_path": "data/harmful_behaviors.csv", "max_items": 200},
     "kl": {"top_logprobs": 20},
     "capability": {"seed": 3003, "n_items": 100}
   }

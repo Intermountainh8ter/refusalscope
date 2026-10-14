@@ -1,0 +1,17 @@
+# results/
+
+Result files produced by **real** runs live here, one JSON file per run, named after the run id
+(`refusalscope analyze` writes them). `scripts/make_report.py` and `refusalscope report` build
+every table and figure from these files and from nothing else.
+
+Status: **no results yet.** The repository ships with this note only. Until a real run has been
+analysed, the README says `Results: NOT YET RUN` and the report generator refuses to render.
+
+Rules:
+
+- Files named `MOCK-*.json` come from the mock server, which only tests the harness. They are
+  git-ignored and must never be committed or cited.
+- Do not edit a result file by hand. Re-run `refusalscope analyze` if a grader changes; stored
+  trajectories are re-graded, so models do not need to be queried again.
+- Publish the matching `runs/<id>/trajectories.jsonl` (large) as a release asset so others can
+  re-grade it.

@@ -35,6 +35,7 @@ def test_parser_lists_every_command():
         "audit",
         "power",
         "mock-serve",
+        "mock-demo",
     }
 
 

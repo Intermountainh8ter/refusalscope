@@ -1,0 +1,21 @@
+%%{init: {"flowchart": {"htmlLabels": true, "wrappingWidth": 420, "nodeSpacing": 28, "rankSpacing": 38, "curve": "basis"}, "themeVariables": {"fontSize": "15px"}}}%%
+flowchart TD
+    A["1. Install<br/>pip install -e '.[dev]'"] --> B["2. Prove the harness works<br/>refusalscope mock-demo<br/>(MOCK output only)"]
+    B --> C["3. Make the pair from ONE checkpoint<br/>stock + Heretic-ablated<br/>same conversion, same quantisation"]
+    C --> D["4a. Serve stock<br/>llama-server --jinja --ctx-size 8192<br/>--parallel 1 --port 8080"]
+    C --> E["4b. Serve ablated<br/>llama-server --jinja --ctx-size 8192<br/>--parallel 1 --port 8081"]
+    D --> F["5. Write the config<br/>copy configs/example_qwen3.json<br/>set quant, params_b, ports, notes"]
+    E --> F
+    F --> G["6. Download a behaviours file yourself<br/>data/harmful_behaviors.csv<br/>(never committed)"]
+    G --> H{"7. refusalscope doctor<br/>--config my_study.json"}
+    H -->|"FAIL or WARN"| T["Troubleshooting flowchart<br/>docs/diagrams/troubleshooting.svg"]
+    T --> H
+    H -->|"all checks pass"| I["8. refusalscope run --suite all<br/>--run-id ID"]
+    I -->|"crash, Ctrl-C or abort"| R["Run the same command with<br/>the same --run-id: it resumes"]
+    R --> I
+    I -->|"finished"| J["9. refusalscope analyze --run runs/ID<br/>re-grades, paired statistics, Holm"]
+    J --> K{"Ablation check passed?<br/>refusal drop of 30+ points"}
+    K -->|"no: ablation-unverified"| U["Report it as a finding about the<br/>checkpoint; no confirmatory claim"]
+    K -->|"yes"| L["results/ID.json"]
+    L --> M["10. refusalscope report<br/>--update-readme README.md"]
+    M --> N["report/*.md and *.svg<br/>README results table filled"]
