@@ -121,6 +121,18 @@ def test_mock_report_is_stamped_everywhere(tmp_path, mock_doc):
         assert "MOCK" in text.split("</title>")[0] and "NOT EVIDENCE" in text
 
 
+def test_every_mock_heading_and_table_title_says_mock(mock_doc):
+    markdown = render_markdown(mock_doc)
+    headings = [line for line in markdown.splitlines() if line.startswith("##")]
+    bold_titles = [
+        line for line in markdown.splitlines() if line.startswith("**") and line.endswith("**")
+    ]
+    assert len(headings) >= 8 and bold_titles
+    assert all(line.endswith("(MOCK)") for line in headings), headings
+    assert all(line.endswith("(MOCK)**") for line in bold_titles), bold_titles
+    assert "(MOCK)" not in render_markdown(as_real(mock_doc))
+
+
 def test_mock_label_is_added_when_the_results_file_lacks_it(tmp_path, mock_doc):
     doc = copy.deepcopy(mock_doc)
     doc["label"] = "unprefixed"

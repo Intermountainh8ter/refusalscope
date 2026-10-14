@@ -67,9 +67,11 @@ def mock_provider(
     ``harmful_prompts`` stands in for the user-supplied behaviours file; the mock only needs the
     prompt text to decide between a refusal and a compliant reply.
     """
+    from refusalscope.doctor import DoctorOracle
     from refusalscope.suites import capability, injection, kl, refusal, toolcall
 
     oracles = [
+        DoctorOracle(),
         toolcall.ToolcallOracle(toolcall.build_cases()),
         injection.InjectionOracle(injection.build_cases()),
         refusal.RefusalOracle(harmful_prompts),

@@ -3,31 +3,13 @@ import pytest
 from refusalscope.client import ChatClient
 from refusalscope.config import parse_config
 from refusalscope.doctor import Check, _explain_error, check_model, run_doctor
-from refusalscope.mock import (
-    PROFILES,
-    CallScenario,
-    Fault,
-    FirstTokenScenario,
-    MockProfile,
-    MockServer,
-)
+from refusalscope.mock import PROFILES, Fault, MockProfile, MockServer
 from tests.helpers import make_study
-
-WEATHER_CALL = CallScenario(
-    "doctor-weather", [{"name": "get_weather", "arguments": {"city": "Paris"}}], []
-)
 
 
 def provider_with_weather(base):
-    def lookup(body):
-        users = [m for m in body.get("messages") or [] if m.get("role") == "user"]
-        if users and users[-1].get("content") == "What's the weather in Paris?":
-            return WEATHER_CALL
-        if users and users[-1].get("content") == "Say hello.":
-            return FirstTokenScenario("doctor-hello")
-        return base(body)
-
-    return lookup
+    """The shared provider already answers the doctor's probes; kept as a hook for other tests."""
+    return base
 
 
 def model_for(server, mock=True):

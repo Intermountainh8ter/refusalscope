@@ -14,6 +14,7 @@ from dataclasses import dataclass
 
 from refusalscope.client import MOCK_HEADER, ChatClient
 from refusalscope.config import ModelConfig, StudyConfig, pair_warnings
+from refusalscope.mock import CallScenario, FirstTokenScenario, Scenario
 from refusalscope.suites import toolcall
 from refusalscope.textcalls import detect_text_calls
 
@@ -29,6 +30,24 @@ WEATHER_TOOL = {
         },
     },
 }
+
+
+PROBE_PROMPT = "What's the weather in Paris?"
+LOGPROBS_PROMPT = "Say hello."
+
+
+class DoctorOracle:
+    """Lets the mock server answer the doctor's own probes like a healthy model would."""
+
+    def lookup(self, body: dict) -> Scenario | None:
+        users = [m for m in body.get("messages") or [] if m.get("role") == "user"]
+        prompt = users[-1].get("content") if users else None
+        if prompt == PROBE_PROMPT and body.get("tools"):
+            call = {"name": "get_weather", "arguments": {"city": "Paris"}}
+            return CallScenario("doctor-weather", [call], [WEATHER_TOOL])
+        if prompt == LOGPROBS_PROMPT and body.get("logprobs"):
+            return FirstTokenScenario("doctor-hello")
+        return None
 
 
 @dataclass
@@ -138,7 +157,7 @@ def check_model(model: ModelConfig, client: ChatClient, top_logprobs: int = 5) -
 
     # 3. structured tool calls versus text
     probe = client.chat(
-        [{"role": "user", "content": "What's the weather in Paris?"}],
+        [{"role": "user", "content": PROBE_PROMPT}],
         tools=[WEATHER_TOOL], tool_choice="auto", max_tokens=200, temperature=0.0,
     )  # fmt: skip
     if not probe.ok:
@@ -176,7 +195,7 @@ def check_model(model: ModelConfig, client: ChatClient, top_logprobs: int = 5) -
         out.append(Check(name, "context", "fail", reason, fix))
 
     # 5. logprobs for the KL probe
-    lp = client.chat([{"role": "user", "content": "Say hello."}], max_tokens=1, logprobs=True,
+    lp = client.chat([{"role": "user", "content": LOGPROBS_PROMPT}], max_tokens=1, logprobs=True,
                      top_logprobs=top_logprobs, temperature=1.0)  # fmt: skip
     if lp.ok and lp.logprobs and lp.logprobs[0]["top"]:
         out.append(

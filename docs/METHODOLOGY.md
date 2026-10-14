@@ -35,8 +35,9 @@ suite offers tools, a `tools` array of OpenAI function definitions with `tool_ch
 `parallel_tool_calls` is sent as `true` unless the configuration disables it. The client:
 
 - uses only the standard library (`urllib`), with a per-request timeout;
-- retries connection errors, timeouts, HTTP 408, 409, 429 and 5xx with exponential backoff, and
-  does not retry other 4xx responses;
+- retries connection errors, timeouts and HTTP 408, 409, 425, 429, 500, 502, 503 and 504 with
+  exponential backoff (honouring `Retry-After`, capped at 8 seconds), and does not retry other
+  4xx responses;
 - never reads a proxy from the environment for loopback addresses, because a corporate proxy
   would otherwise intercept `localhost` traffic;
 - stores the full request body and the full response body for every call;
@@ -287,6 +288,11 @@ graders (so a grader fix never requires re-running models), aligns arms by case,
 pre-registered tests (`docs/PREREGISTRATION.md` section 9), and writes
 `results/<label>.json`. `refusalscope report` and `scripts/make_report.py` build Markdown tables
 and SVG figures **only** from `results/*.json` and refuse to render when there are none.
+
+The results file also contains: the pre-registered sensitivity analysis S8 (H1 and H2 repeated
+without cases that had request errors), paired per-case request time with a bootstrap interval and
+`d_z`, the temperature 0.7 replication of H1 and H2 when configured, the Holm-adjusted p-value
+H1b would have if it joined the family, and flags (`serving-problem`, `grader-check-failed`).
 
 ## 8. MOCK labelling
 
