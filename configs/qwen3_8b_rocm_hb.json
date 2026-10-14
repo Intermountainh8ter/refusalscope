@@ -1,0 +1,74 @@
+{
+  "study": "qwen3-8b-heretic-rocm-hb",
+  "output_dir": "runs",
+  "workers": 1,
+  "models": [
+    {
+      "name": "qwen3-8b-stock",
+      "model": "qwen3-8b-stock",
+      "base_url": "http://127.0.0.1:8080/v1",
+      "api_key_env": "",
+      "role": "stock",
+      "pair_id": "qwen3-8b",
+      "params_b": 8.0,
+      "quant": "Q8_0",
+      "extra_body": {
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "notes": "Qwen/Qwen3-8B. bf16 safetensors -> convert_hf_to_gguf.py --outtype bf16 -> llama-quantize Q8_0. Served llama-server (llama.cpp 091b6a7fc5, HIP gfx906) on ROCm0, --chat-template-file gguf/qwen3-chat-template.jinja sha256 a55ee1b1660128b7."
+    },
+    {
+      "name": "qwen3-8b-ablated",
+      "model": "qwen3-8b-ablated",
+      "base_url": "http://127.0.0.1:8081/v1",
+      "api_key_env": "",
+      "role": "ablated",
+      "pair_id": "qwen3-8b",
+      "params_b": 8.0,
+      "quant": "Q8_0",
+      "extra_body": {
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "notes": "DreamFast/qwen3-8b-heretic, declared base Qwen/Qwen3-8B (structured base_model + card). Heretic version NOT stated by uploader. Identical conversion+quantisation pipeline and identical chat template file as stock. Its own prebuilt GGUFs deliberately unused. Upload shipped no chat_template and a malformed extra_special_tokens list; see results/_env/conversion.md."
+    }
+  ],
+  "sampling": {
+    "temperatures": [
+      0.0
+    ],
+    "seeds": [
+      1234
+    ],
+    "max_tokens": 1024,
+    "top_p": 1.0,
+    "timeout_s": 300,
+    "retries": 3,
+    "parallel_tool_calls": true
+  },
+  "suites": {
+    "toolcall": {
+      "seed": 1001,
+      "n_per_category": 22
+    },
+    "injection": {
+      "seed": 2002,
+      "n_cases": 378,
+      "max_steps": 8
+    },
+    "refusal": {
+      "harmful_path": "/home/ammo/bench/behaviours/harmbench.jsonl",
+      "max_items": 200
+    },
+    "kl": {
+      "top_logprobs": 20
+    },
+    "capability": {
+      "seed": 3003,
+      "n_items": 100
+    }
+  }
+}

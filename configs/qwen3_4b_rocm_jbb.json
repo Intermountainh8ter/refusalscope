@@ -1,0 +1,74 @@
+{
+  "study": "qwen3-4b-heretic-rocm-jbb",
+  "output_dir": "runs",
+  "workers": 1,
+  "models": [
+    {
+      "name": "qwen3-4b-stock",
+      "model": "qwen3-4b-stock",
+      "base_url": "http://127.0.0.1:8082/v1",
+      "api_key_env": "",
+      "role": "stock",
+      "pair_id": "qwen3-4b",
+      "params_b": 4.0,
+      "quant": "Q8_0",
+      "extra_body": {
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "notes": "Qwen/Qwen3-4B-Instruct-2507. bf16 safetensors -> convert_hf_to_gguf.py --outtype bf16 -> llama-quantize Q8_0, same pipeline as the 8B pair. llama.cpp 091b6a7fc5 HIP gfx906, ROCm0."
+    },
+    {
+      "name": "qwen3-4b-ablated",
+      "model": "qwen3-4b-ablated",
+      "base_url": "http://127.0.0.1:8083/v1",
+      "api_key_env": "",
+      "role": "ablated",
+      "pair_id": "qwen3-4b",
+      "params_b": 4.0,
+      "quant": "Q8_0",
+      "extra_body": {
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "notes": "heretic-org/Qwen3-4B-Instruct-2507-heretic (the Heretic project's OWN org). Structured base_model = Qwen/Qwen3-4B-Instruct-2507, exactly the stock arm. Replaces 0xA50C1A1/Qwen3-4B-Instruct-2507-Heretic from the study plan, which returns 404. Chat template byte-identical to stock (sha 64f85b19), vocab/merges identical, 6/6 encoding probes identical, Q8_0 sizes 384 bytes apart."
+    }
+  ],
+  "sampling": {
+    "temperatures": [
+      0.0
+    ],
+    "seeds": [
+      1234
+    ],
+    "max_tokens": 1024,
+    "top_p": 1.0,
+    "timeout_s": 300,
+    "retries": 3,
+    "parallel_tool_calls": true
+  },
+  "suites": {
+    "toolcall": {
+      "seed": 1001,
+      "n_per_category": 22
+    },
+    "injection": {
+      "seed": 2002,
+      "n_cases": 378,
+      "max_steps": 8
+    },
+    "refusal": {
+      "harmful_path": "/home/ammo/bench/behaviours/jailbreakbench.jsonl",
+      "max_items": 200
+    },
+    "kl": {
+      "top_logprobs": 20
+    },
+    "capability": {
+      "seed": 3003,
+      "n_items": 100
+    }
+  }
+}

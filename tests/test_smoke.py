@@ -38,8 +38,12 @@ def test_gitignore_protects_user_data_and_mock_output():
     assert "runs/" in lines
 
 
-def test_readme_states_results_not_run():
-    assert "Results: NOT YET RUN" in (ROOT / "README.md").read_text(encoding="utf-8")
+def test_readme_states_results_have_been_run():
+    # Two real pairs have landed under results-20261014; the status banner must
+    # name them rather than claiming the suite has never run.
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert "Results: RUN" in readme
+    assert "qwen3-4b-rocm-1.json" in readme and "qwen3-8b-rocm-1.json" in readme
 
 
 def test_example_configs_validate(capsys):

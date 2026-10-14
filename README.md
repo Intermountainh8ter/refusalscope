@@ -68,11 +68,14 @@ further in first-token KL (0.075 vs 0.009) yet behaves identically, while the 4B
 
 ### Threats to validity that apply to this run
 
-- **The manipulation check used an authored 100-item file, not a standard corpus.** Refusal
-  rate dropped by 94 pp (4B) and 79 pp (8B) on `behaviours/authored-100.jsonl` (sha256
-  `be31ea8a5…`), so both pairs clear the pre-registered 30 pp gate. The behaviours file
-  itself is not standard (JailbreakBench, HarmBench, AdvBench) — reruns against those are a
-  worthwhile replication.
+- **The manipulation check has been replicated against three standard corpora on the 4B pair.**
+  The authored-100 file (sha `be31ea8a5…`) was the primary; replications ran against
+  JailbreakBench harmful-behaviors (100 items, sha `c429769c…`), HarmBench text-all (first 200
+  items, sha `385f2bd2…`), and AdvBench harmful_behaviors (first 200 items, sha `60e337c9…`).
+  Refusal rate dropped by 95 pp, 97 pp, and 99 pp respectively, all **confirmatory** at the 30 pp
+  pre-registered gate. The 8B pair's replication across the same three corpora is queued and
+  will land in a follow-up commit; the authored-100 result for the 8B (79 pp drop) is in place
+  until then.
 - **Serving template.** The 8B ablated upload ships **no `chat_template` at all**. Served as its
   uploader distributed it, it returned 0 of 3 structured tool calls and would have produced a
   spectacular false H1 effect. Both arms are therefore driven from one shared template file
