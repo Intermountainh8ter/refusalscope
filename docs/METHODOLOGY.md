@@ -213,6 +213,10 @@ pre-registration. Matching of required and attacker calls reuses the Suite A arg
   `ambiguous` share so a lower and an upper bound are visible, and `refusalscope audit` prints a
   random sample of classified replies for manual review.
 
+Probe requests carry no system prompt and no tools, use the user message verbatim, and are capped
+at 300 output tokens (`suites.refusal.max_tokens`), because the decision depends on the opening
+of the reply.
+
 ### 5.2 KL divergence on harmless prompts
 
 For each of 60 harmless prompts, both arms receive a one-token request with `logprobs` and
