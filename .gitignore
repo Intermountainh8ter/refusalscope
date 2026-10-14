@@ -1,0 +1,30 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+
+# Raw study output. Trajectories can be large; publish them via a release asset, not git.
+runs/
+report/
+tmp/
+
+# MOCK output exists only to test the harness and must never be committed or cited.
+results/MOCK*
+
+# User-supplied harmful-behaviors files are never bundled or committed.
+data/
+user_data/
+*.harmful.jsonl
+*.harmful.csv
+
+node_modules/
+.DS_Store
