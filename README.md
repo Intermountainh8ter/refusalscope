@@ -2,6 +2,16 @@
 
 A research harness for one question:
 
+
+## For the lay reader
+
+- [docs/diagrams/explainer.svg](docs/diagrams/explainer.svg) &mdash; a one-page
+  summary in ordinary words: the question, one chart, the finding, and why it
+  matters. No background assumed.
+- [GLOSSARY.md](GLOSSARY.md) &mdash; every abbreviation this repo uses, defined.
+- [What does all this mean?](https://claude.ai/artifact/Mctu5EP8YgfjGx6fcCHDgs)
+  &mdash; the across-the-whole-project explainer, with all six repos on one page.
+
 > **Does removing the refusal direction from an LLM (abliteration, for example with the
 > open-source Heretic tool) damage structured tool calling, and does it make the model more
 > likely to follow instructions injected into tool results?**
