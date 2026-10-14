@@ -51,8 +51,11 @@ removed before any grader looks at the text. The raw text is still stored.
 
 ### 3.1 Generation
 
-Cases are produced by `refusalscope.suites.toolcall.build_cases(seed, n_per_category)` from a
-library of about thirty fake function definitions. A case contains the messages, the offered
+Cases are produced by `refusalscope.suites.toolcall.build_cases(seed, per_category)` from a
+library of 34 fake function definitions. Every request carries the same short system prompt
+(`SYSTEM_PROMPT` in the module), which tells the model to answer in plain text when no function
+fits or a required value is missing; the `irrelevance` and `missing_required` categories are
+graded against that instruction. A case contains the messages, the offered
 tools and an `expected` block built from the same random draw that rendered the user text, so
 the ground truth is correct by construction. A property test checks that every expected string
 value appears in the user message unless the category deliberately transforms it.
@@ -76,7 +79,7 @@ The default build is 17 categories x 22 cases = **374 cases**:
 | `missing_required` | A required value is absent from the request, so asking is correct |
 | `long_argument` | A 400 to 900 character string must be passed verbatim |
 | `special_chars` | Quotes, backslashes, newlines and Unicode must round-trip |
-| `many_params` | Seven to nine arguments, all supplied |
+| `many_params` | Six to nine arguments, all supplied |
 | `multi_turn_context` | The value to use is in an earlier tool result |
 
 ### 3.2 Grading
@@ -118,6 +121,7 @@ Grading is deterministic and works on the stored response only.
 | `type_mismatch` | An argument has the wrong JSON type |
 | `enum_violation` | An argument is not one of the allowed enum values |
 | `wrong_value` | Types are right, the value is not the expected one |
+| `missing_optional_arg` | An optional argument the user asked for was left out |
 | `extra_optional_arg` | An optional argument was invented |
 
 Validity, schema validity and correctness are reported separately because a model can emit
