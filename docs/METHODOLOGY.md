@@ -288,6 +288,11 @@ pre-registered tests (`docs/PREREGISTRATION.md` section 9), and writes
 `results/<label>.json`. `refusalscope report` and `scripts/make_report.py` build Markdown tables
 and SVG figures **only** from `results/*.json` and refuse to render when there are none.
 
+The results file also contains: the pre-registered sensitivity analysis S8 (H1 and H2 repeated
+without cases that had request errors), paired per-case request time with a bootstrap interval and
+`d_z`, the temperature 0.7 replication of H1 and H2 when configured, the Holm-adjusted p-value
+H1b would have if it joined the family, and flags (`serving-problem`, `grader-check-failed`).
+
 ## 8. MOCK labelling
 
 The bundled mock server exists only to test the harness. It returns the correct answer, or a

@@ -110,7 +110,11 @@ def regrade(record: dict[str, Any], data: SuiteData) -> dict[str, Any]:
     """Recompute the metrics of one stored trajectory with the current graders."""
     suite, case_id = record["suite"], record["case_id"]
     turns = [Turn.from_record(t) for t in record["turns"]]
-    base = {"error": any(not t.ok for t in turns), "category": record.get("category")}
+    base = {
+        "error": any(not t.ok for t in turns),
+        "category": record.get("category"),
+        "latency_s": record.get("latency_s"),
+    }
     if suite == "toolcall":
         case = data.toolcall[case_id]
         strict = toolcall.grade_toolcall(case, turns[0], STRICT)
@@ -492,6 +496,70 @@ def _pair_tests(
     return tests
 
 
+def _error_free_ids(arms: list[dict[str, list[dict]]]) -> set[str]:
+    """Cases present in both arms where no sample of either arm had a request error."""
+    bad = {cid for arm in arms for cid, rows in arm.items() if any(r["error"] for r in rows)}
+    return (set(arms[0]) & set(arms[1])) - bad
+
+
+def sensitivity_no_errors(tables, stock: str, ablated: str, temperature: float, n_boot: int):
+    """Pre-registered sensitivity analysis S8: repeat H1 and H2 without cases that had request errors."""
+    out: dict[str, Any] = {}
+    for test_id, suite, condition, metric in (
+        ("S8_H1_no_errors", "toolcall", "default", "correct"),
+        ("S8_H2_no_errors", "injection", "attack", "asr"),
+    ):
+        arms = [tables.get((m, suite, condition, temperature), {}) for m in (stock, ablated)]
+        if not arms[0] or not arms[1]:
+            continue
+        keep = _error_free_ids(arms)
+        values = [
+            {cid: v for cid, v in case_values(arm, metric).items() if cid in keep} for arm in arms
+        ]
+        paired = paired_binary(values[0], values[1], n_boot)
+        if paired.get("status") == "ok":
+            out[test_id] = {**paired, "n_dropped": len(set(arms[0]) | set(arms[1])) - len(keep)}
+    return out
+
+
+def paired_continuous(
+    stock: dict[str, float], ablated: dict[str, float], n_boot: int = DEFAULT_BOOTSTRAP
+) -> dict[str, Any]:
+    """Paired mean difference with a bootstrap interval and Cohen's d_z for a continuous outcome."""
+    ids = sorted(set(stock) & set(ablated))
+    if not ids:
+        return {"n": 0, "status": "no_overlap"}
+    x = [stock[i] for i in ids]
+    y = [ablated[i] for i in ids]
+    boot = bootstrap_paired_diff(x, y, n_boot=n_boot)
+    return {
+        "status": "ok",
+        "n": len(ids),
+        "stock_mean": float(np.mean(x)),
+        "ablated_mean": float(np.mean(y)),
+        "mean_diff": boot["mean_diff"],
+        "ci": [boot["lo"], boot["hi"]],
+        "cohens_dz": cohens_dz([b - a for a, b in zip(x, y)]),
+    }
+
+
+def latency_comparison(tables, stock: str, ablated: str, temperature: float, n_boot: int):
+    """Paired per-case request time (seconds) for the two multi-case suites."""
+    out: dict[str, Any] = {}
+    for name, suite, condition in (
+        ("toolcall", "toolcall", "default"),
+        ("injection_attack", "injection", "attack"),
+    ):
+        arms = [tables.get((m, suite, condition, temperature), {}) for m in (stock, ablated)]
+        if arms[0] and arms[1]:
+            result = paired_continuous(
+                case_values(arms[0], "latency_s"), case_values(arms[1], "latency_s"), n_boot
+            )
+            if result.get("status") == "ok":
+                out[name] = result
+    return out
+
+
 def _decide_family(pairs: dict[str, Any]) -> dict[str, Any]:
     """Holm correction over the confirmatory family and the pre-registered decision labels."""
     entries: list[dict[str, Any]] = []
@@ -641,6 +709,10 @@ def analyze_records(
             "flags": flags,
             "tests": tests,
             "secondary_temperatures": extra_temps,
+            "sensitivity": sensitivity_no_errors(
+                tables, stock.name, ablated.name, temperature, n_boot
+            ),
+            "latency": latency_comparison(tables, stock.name, ablated.name, temperature, n_boot),
             "kl": _kl_summary(
                 tables, stock.name, ablated.name, n_boot, config.suites.kl_top_logprobs
             ),
@@ -678,6 +750,12 @@ def analyze_records(
             },
         }
     hypotheses = _decide_family(pairs)
+    family_p = [entry["p_raw"] for entry in hypotheses["family"]]
+    for pair in pairs.values():
+        h1b = pair["tests"].get("H1b")
+        if h1b and pair["in_family"]:
+            # H1b is secondary: show what its Holm p-value would be if it joined the family
+            h1b["p_holm_if_added"] = holm_bonferroni([*family_p, h1b["p_mcnemar"]])["adjusted"][-1]
     if any(not p["in_family"] for p in pairs.values()):
         notes.append(
             "pairs that failed the manipulation check or have a serving problem are excluded from the "

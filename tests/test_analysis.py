@@ -473,3 +473,64 @@ def test_audit_samples_show_prompts_calls_and_grades(run_study):
     assert audit_samples(study["run_dir"], "injection", n=3) == []
     inj = run_study(limit=6, suites="injection")
     assert "task:" in audit_samples(inj["run_dir"], "injection", n=1)[0]
+
+
+# ------------------------------------------------------------------ S8 sensitivity, latency, H1b adjustment
+
+
+def row(correct, error=False, latency=1.0):
+    return [{"correct": correct, "asr": correct, "error": error, "latency_s": latency}]
+
+
+def test_error_free_ids_drop_cases_with_errors_in_either_arm():
+    from refusalscope.analysis import _error_free_ids
+
+    stock = {"a": row(True), "b": row(True, error=True), "c": row(False), "d": row(True)}
+    ablated = {"a": row(True), "b": row(True), "c": row(False, error=True), "e": row(True)}
+    assert _error_free_ids([stock, ablated]) == {"a"}
+
+
+def test_sensitivity_removes_errored_cases_and_reports_how_many():
+    from refusalscope.analysis import sensitivity_no_errors
+
+    stock = {f"c{i}": row(True) for i in range(10)}
+    ablated = {
+        f"c{i}": row(i >= 4, error=(i == 9)) for i in range(10)
+    }  # 4 stock-only wins, 1 errored
+    tables = {("s", "toolcall", "default", 0.0): stock, ("a", "toolcall", "default", 0.0): ablated}
+    result = sensitivity_no_errors(tables, "s", "a", 0.0, 100)
+    s8 = result["S8_H1_no_errors"]
+    assert s8["n"] == 9 and s8["n_dropped"] == 1 and s8["counts"]["b"] == 4
+    assert "S8_H2_no_errors" not in result  # no injection data
+
+
+def test_paired_continuous_matches_hand_values():
+    from refusalscope.analysis import paired_continuous
+
+    stock = {"a": 1.0, "b": 2.0, "c": 3.0, "d": 4.0}
+    ablated = {"a": 2.0, "b": 2.5, "c": 3.0, "d": 5.5}
+    result = paired_continuous(stock, ablated, n_boot=200)
+    assert (
+        result["n"] == 4
+        and result["stock_mean"] == 2.5
+        and result["ablated_mean"] == pytest.approx(3.25)
+    )
+    assert result["mean_diff"] == pytest.approx(0.75)
+    diffs = np.array([1.0, 0.5, 0.0, 1.5])
+    assert result["cohens_dz"] == pytest.approx(diffs.mean() / diffs.std(ddof=1))
+    assert result["ci"][0] <= 0.75 <= result["ci"][1]
+    assert paired_continuous({"a": 1.0}, {"b": 1.0}) == {"n": 0, "status": "no_overlap"}
+
+
+def test_run_results_include_sensitivity_latency_and_h1b_adjustment(run_study):
+    results = run_study(STRONG_STOCK, WEAK_ABLATED, limit=60)["results"]
+    pair = results["pairs"]["p"]
+    assert {"S8_H1_no_errors", "S8_H2_no_errors"} <= set(pair["sensitivity"])
+    assert pair["sensitivity"]["S8_H1_no_errors"]["n_dropped"] == 0
+    assert (
+        pair["sensitivity"]["S8_H1_no_errors"]["rd"] == pair["tests"]["H1"]["rd"]
+    )  # no errors: identical
+    assert set(pair["latency"]) == {"toolcall", "injection_attack"}
+    assert pair["latency"]["toolcall"]["n"] == pair["tests"]["H1"]["n"]
+    h1b = pair["tests"]["H1b"]
+    assert h1b["p_holm_if_added"] >= h1b["p_mcnemar"]

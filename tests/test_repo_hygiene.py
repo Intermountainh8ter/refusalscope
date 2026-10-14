@@ -7,7 +7,6 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 import pytest
-import tomllib
 
 import refusalscope
 from refusalscope.cli import build_parser
@@ -162,15 +161,13 @@ def test_snapshots_contain_no_model_identifiers():
 
 
 def test_version_is_consistent():
-    pyproject = tomllib.loads(read("pyproject.toml"))
-    assert pyproject["project"]["version"] == refusalscope.__version__
+    pyproject = read("pyproject.toml")  # parsed with regexes so the test also runs on Python 3.10
+    version = re.search(r'^version = "([^"]+)"', pyproject, flags=re.MULTILINE).group(1)
+    assert version == refusalscope.__version__
     assert f"## {refusalscope.__version__} - " in read("CHANGELOG.md")
-    assert pyproject["project"]["scripts"]["refusalscope"] == "refusalscope.cli:main"
-    assert pyproject["project"]["dependencies"] == ["numpy>=1.24"]
-    assert (
-        pyproject["project"]["name"] == "refusalscope"
-        and pyproject["project"]["requires-python"] == ">=3.10"
-    )
+    assert 'refusalscope = "refusalscope.cli:main"' in pyproject
+    assert 'dependencies = ["numpy>=1.24"]' in pyproject
+    assert 'name = "refusalscope"' in pyproject and 'requires-python = ">=3.10"' in pyproject
 
 
 def test_ci_matrix_and_commands():

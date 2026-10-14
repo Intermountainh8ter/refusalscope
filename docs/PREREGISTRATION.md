@@ -415,7 +415,14 @@ These are valid results and will be reported with the same prominence as positiv
 
 ## 13. Deviations and amendments
 
-No deviations have been recorded. A deviation entry must state the date, the section changed,
-what changed, why, whether any real-model output had been seen at the time, and which results
-it affects. Amendments made after seeing real outputs are labelled `post hoc` in every table
-that depends on them.
+No deviation from the registered plan has been recorded. One **clarification** was made while
+finishing the harness, before any real-model output existed in this repository (2026-10-14,
+build phase 8):
+
+| Date | Section | Change | Why | Real outputs seen? | Affects |
+|---|---|---|---|---|---|
+| 2026-10-14 | 9 | "Continuous outcomes (KL, latency)": the paired mean difference with bootstrap CI and Cohen's `d_z` is implemented for per-case request time. KL is a single per-prompt divergence between two arms, so it is reported as a mean with a bootstrap CI, not as a paired difference | The registered sentence grouped two quantities that cannot be analysed the same way | No | Secondary results S6 and cost/latency only; no confirmatory test |
+
+A deviation entry must state the date, the section changed, what changed, why, whether any
+real-model output had been seen at the time, and which results it affects. Amendments made after
+seeing real outputs are labelled `post hoc` in every table that depends on them.

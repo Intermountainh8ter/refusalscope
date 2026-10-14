@@ -184,6 +184,38 @@ def _hypothesis_summary(doc: dict[str, Any]) -> str:
     return "\n".join(lines) + "\n"
 
 
+def _secondary(doc: dict[str, Any]) -> str:
+    """Secondary tests, the S8 sensitivity analysis and paired latency (all exploratory)."""
+    rows, latency = [], []
+    for pair_id, pair in doc["pairs"].items():
+        entries = {k: v for k, v in pair["tests"].items() if k not in ("H1", "H2", "H4")}
+        entries.update(pair.get("sensitivity", {}))
+        for test_id, test in entries.items():
+            if "stock_rate" not in test:
+                continue
+            row = _test_row(pair_id, test_id, test)
+            rows.append(
+                [
+                    *row[:8],
+                    row[8],
+                    p_text(test.get("p_holm_if_added")) if "p_holm_if_added" in test else "-",
+                ]
+            )
+        for name, item in pair.get("latency", {}).items():
+            latency.append([pair_id, name, str(item["n"]), f"{item['stock_mean']:.2f}", f"{item['ablated_mean']:.2f}",
+                            f"{item['mean_diff']:+.2f} [{item['ci'][0]:+.2f}, {item['ci'][1]:+.2f}]",
+                            "n/a" if item["cohens_dz"] is None else f"{item['cohens_dz']:.2f}"])  # fmt: skip
+    headers = ["Pair", "Test", "n", "Stock", "Ablated", "Risk difference [95% CI]", "b/c", "Paired OR [CI]",
+               "p (raw, unadjusted)", "p if added to the family"]  # fmt: skip
+    out = table(headers, rows)
+    out += "\nExploratory: no Holm correction is applied to these rows. S8 repeats H1 and H2 without cases that had request errors.\n"
+    out += "\n**Paired request time per case (seconds)**\n\n"
+    return out + table(
+        ["Pair", "Suite", "n", "Stock mean", "Ablated mean", "Difference [95% CI]", "Cohen's d_z"],
+        latency,
+    )
+
+
 def _suite_a(doc: dict[str, Any]) -> str:
     rows, tax_rows = [], []
     for name, model in doc["models"].items():
@@ -322,6 +354,7 @@ def render_markdown(doc: dict[str, Any]) -> str:
     parts.append(
         "## Pre-registered hypotheses\n\n" + _confirmatory(doc) + "\n" + _hypothesis_summary(doc)
     )
+    parts.append("## Secondary and sensitivity analyses\n\n" + _secondary(doc))
     parts.append("## Suite A: tool calling\n\n" + _suite_a(doc))
     parts.append("## Suite B: indirect prompt injection\n\n" + _suite_b(doc))
     parts.append("## Suite C: refusal, divergence and capability control\n\n" + _suite_c(doc))
