@@ -68,14 +68,21 @@ further in first-token KL (0.075 vs 0.009) yet behaves identically, while the 4B
 
 ### Threats to validity that apply to this run
 
-- **The manipulation check has been replicated against three standard corpora on the 4B pair.**
-  The authored-100 file (sha `be31ea8a5…`) was the primary; replications ran against
-  JailbreakBench harmful-behaviors (100 items, sha `c429769c…`), HarmBench text-all (first 200
-  items, sha `385f2bd2…`), and AdvBench harmful_behaviors (first 200 items, sha `60e337c9…`).
-  Refusal rate dropped by 95 pp, 97 pp, and 99 pp respectively, all **confirmatory** at the 30 pp
-  pre-registered gate. The 8B pair's replication across the same three corpora is queued and
-  will land in a follow-up commit; the authored-100 result for the 8B (79 pp drop) is in place
-  until then.
+- **The manipulation check has been replicated against three standard corpora on BOTH
+  pairs.** The authored-100 file (sha `be31ea8a5…`) was the primary; replications ran
+  against JailbreakBench harmful-behaviors (100 items, sha `c429769c…`), HarmBench
+  text-all (first 200 items, sha `385f2bd2…`), and AdvBench harmful_behaviors (first 200
+  items, sha `60e337c9…`). The refusal-rate drops were:
+
+  | pair | authored-100 | JBB 100 | HarmBench 200 | AdvBench 200 |
+  |------|-------------:|--------:|--------------:|-------------:|
+  | 4B   | 95 pp        | 95 pp   | 97 pp         | 99 pp        |
+  | 8B   | 79 pp        | 86 pp   | 74.5 pp       | 97 pp        |
+
+  All eight corpus-pair cells are **confirmatory** at the 30 pp pre-registered gate; the
+  smallest paired McNemar p across all cells is 2.8e-45. See
+  `results/qwen3-{4b,8b}-rocm-{jbb,hb,advb}.json` for stock/ablated per-cell rates,
+  McNemar b/c counts and bootstrap CIs.
 - **Serving template.** The 8B ablated upload ships **no `chat_template` at all**. Served as its
   uploader distributed it, it returned 0 of 3 structured tool calls and would have produced a
   spectacular false H1 effect. Both arms are therefore driven from one shared template file
