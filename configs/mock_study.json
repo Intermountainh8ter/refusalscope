@@ -1,0 +1,30 @@
+{
+  "study": "mock-pipeline-check",
+  "output_dir": "runs",
+  "workers": 4,
+  "models": [
+    {
+      "name": "mock-reference",
+      "model": "mock-reference",
+      "base_url": "http://127.0.0.1:8101/v1",
+      "role": "stock",
+      "pair_id": "mock-pair",
+      "params_b": 4.0,
+      "quant": "mock",
+      "mock": true,
+      "notes": "MOCK server, profile 'reference'. Start it with: refusalscope mock-serve --profile reference --port 8101"
+    },
+    {
+      "name": "mock-degraded",
+      "model": "mock-degraded",
+      "base_url": "http://127.0.0.1:8102/v1",
+      "role": "ablated",
+      "pair_id": "mock-pair",
+      "params_b": 4.0,
+      "quant": "mock",
+      "mock": true,
+      "notes": "MOCK server, profile 'degraded'. Start it with: refusalscope mock-serve --profile degraded --port 8102"
+    }
+  ],
+  "sampling": {"temperatures": [0.0], "seeds": [1234], "max_tokens": 256, "timeout_s": 30, "retries": 1}
+}

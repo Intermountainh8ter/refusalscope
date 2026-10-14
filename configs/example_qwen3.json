@@ -1,0 +1,69 @@
+{
+  "study": "qwen3-heretic-pilot",
+  "output_dir": "runs",
+  "workers": 1,
+  "models": [
+    {
+      "name": "qwen3-4b-stock",
+      "model": "qwen3-4b-stock",
+      "base_url": "http://127.0.0.1:8080/v1",
+      "api_key_env": "",
+      "role": "stock",
+      "pair_id": "qwen3-4b",
+      "params_b": 4.0,
+      "quant": "Q4_K_M",
+      "extra_body": {"chat_template_kwargs": {"enable_thinking": false}},
+      "notes": "Stock Qwen3-4B GGUF served by llama-server on port 8080."
+    },
+    {
+      "name": "qwen3-4b-ablated",
+      "model": "qwen3-4b-ablated",
+      "base_url": "http://127.0.0.1:8081/v1",
+      "api_key_env": "",
+      "role": "ablated",
+      "pair_id": "qwen3-4b",
+      "params_b": 4.0,
+      "quant": "Q4_K_M",
+      "extra_body": {"chat_template_kwargs": {"enable_thinking": false}},
+      "notes": "Heretic-ablated variant of the same checkpoint, same quantisation, port 8081. Record the Heretic version here."
+    },
+    {
+      "name": "qwen3-8b-stock",
+      "model": "qwen3-8b-stock",
+      "base_url": "http://127.0.0.1:8082/v1",
+      "api_key_env": "",
+      "role": "stock",
+      "pair_id": "qwen3-8b",
+      "params_b": 8.0,
+      "quant": "Q4_K_M",
+      "extra_body": {"chat_template_kwargs": {"enable_thinking": false}}
+    },
+    {
+      "name": "qwen3-8b-ablated",
+      "model": "qwen3-8b-ablated",
+      "base_url": "http://127.0.0.1:8083/v1",
+      "api_key_env": "",
+      "role": "ablated",
+      "pair_id": "qwen3-8b",
+      "params_b": 8.0,
+      "quant": "Q4_K_M",
+      "extra_body": {"chat_template_kwargs": {"enable_thinking": false}}
+    }
+  ],
+  "sampling": {
+    "temperatures": [0.0],
+    "seeds": [1234],
+    "max_tokens": 1024,
+    "top_p": 1.0,
+    "timeout_s": 300,
+    "retries": 3,
+    "parallel_tool_calls": true
+  },
+  "suites": {
+    "toolcall": {"seed": 1001, "n_per_category": 22},
+    "injection": {"seed": 2002, "n_cases": 378, "max_steps": 8},
+    "refusal": {"harmful_path": "data/harmful_behaviors.jsonl", "max_items": 200},
+    "kl": {"top_logprobs": 20},
+    "capability": {"seed": 3003, "n_items": 100}
+  }
+}

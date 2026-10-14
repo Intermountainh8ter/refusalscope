@@ -40,3 +40,28 @@ def test_gitignore_protects_user_data_and_mock_output():
 
 def test_readme_states_results_not_run():
     assert "Results: NOT YET RUN" in (ROOT / "README.md").read_text(encoding="utf-8")
+
+
+def test_example_configs_validate(capsys):
+    from refusalscope.config import load_config
+
+    example = load_config(ROOT / "configs" / "example_qwen3.json")
+    assert example.pair_ids() == ["qwen3-4b", "qwen3-8b"]
+    assert not example.is_mock
+    mock = load_config(ROOT / "configs" / "mock_study.json")
+    assert mock.is_mock
+
+
+def test_check_config_command(capsys):
+    assert main(["check-config", "--config", str(ROOT / "configs" / "example_qwen3.json")]) == 0
+    out = capsys.readouterr().out
+    assert "pair qwen3-4b" in out and "pair qwen3-8b" in out
+    assert main(["check-config", "--config", str(ROOT / "configs" / "mock_study.json")]) == 0
+    assert "MOCK configuration" in capsys.readouterr().out
+
+
+def test_check_config_reports_errors(tmp_path, capsys):
+    bad = tmp_path / "bad.json"
+    bad.write_text("{}", encoding="utf-8")
+    assert main(["check-config", "--config", str(bad)]) == 2
+    assert "error:" in capsys.readouterr().err
