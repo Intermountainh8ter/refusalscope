@@ -250,17 +250,35 @@ control fall by similar amounts, the damage is general rather than specific to t
 
 ## 6. Runner
 
-`refusalscope run --config X --suite all --out runs/` builds the list of jobs
+`refusalscope run --config X --suite all --run-id ID` builds the list of jobs
 (model x suite x case x temperature x seed x condition), assigns each a stable `job_id` (a hash of
-those fields and the suite version), and appends one JSON line per finished job to
-`runs/<run_id>/trajectories.jsonl` with `fsync`. The line contains every request body, every
-response body, latencies, token usage and the grade computed at run time. On restart with the
-same configuration the runner reads the file, discards a truncated final line, skips completed
-`job_id`s and continues. A configuration hash mismatch is refused unless `--force` is given.
+those fields) and appends one JSON line per finished job to `runs/<ID>/trajectories.jsonl` with
+`fsync`. The line contains every request body, every response body, latencies, token usage and the
+grade computed at run time.
 
-Before the first request the runner calls the preflight checks of `refusalscope doctor`: the
-`/models` endpoint, a trivial chat completion, a tool-call probe (structured call versus text
-call), a logprobs probe, mock detection, and pair-consistency warnings.
+- **Resume.** Run the same command again with the same `--run-id`. The runner drops a truncated
+  final line, skips jobs that finished cleanly and **retries jobs whose requests failed**; the
+  latest line for a `job_id` wins. A corrupt line in the middle of the file is an error, not
+  silently skipped.
+- **What may change on resume.** Endpoints, timeouts, retries, worker counts, prices and notes
+  may change (a server can move to another port). Anything that affects results (models,
+  quantisation labels, `extra_body`, sampling, suite settings, the behaviours file's SHA-256)
+  is part of a fingerprint stored in `run.json`; a mismatch is refused unless `--force` is given.
+- **Circuit breaker.** After 10 consecutive fully failed jobs on one model the run stops with a
+  message to fix the server and resume, instead of logging thousands of errors.
+- **Subsets.** `--limit N` draws a deterministic sample of N cases per suite, dealt out evenly
+  across categories (Suite A), injection vectors (Suite B) or check types, so a smoke run still
+  touches everything. The full study is run without `--limit`.
+- **Mock safety.** Before the first request the runner asks each endpoint's `/models` route for
+  the mock marker and refuses to run if the configuration's `mock` flag disagrees with it.
+- **Sampling.** Suites A and B run at every configured temperature and seed (greedy decoding gets
+  one sample). Suite C runs at the primary temperature with the first seed; the KL probe uses
+  temperature 1 and one token.
+
+`refusalscope doctor` runs the endpoint checks (`/models`, a trivial chat completion, a tool-call
+probe distinguishing structured calls from text calls, the largest Suite A request for context
+size, a logprobs probe, mock detection and pair-consistency warnings) and prints a concrete fix
+for each failure.
 
 ## 7. Analysis and reporting
 

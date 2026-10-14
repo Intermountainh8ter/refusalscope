@@ -66,7 +66,9 @@ def wilson_ci(k: int, n: int, conf: float = 0.95) -> tuple[float, float, float]:
     denom = 1 + z * z / n
     centre = (p + z * z / (2 * n)) / denom
     half = z * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / denom
-    return p, max(0.0, centre - half), min(1.0, centre + half)
+    lower = 0.0 if k == 0 else max(0.0, centre - half)
+    upper = 1.0 if k == n else min(1.0, centre + half)
+    return p, lower, upper
 
 
 def clopper_pearson(k: int, n: int, conf: float = 0.95) -> tuple[float, float]:

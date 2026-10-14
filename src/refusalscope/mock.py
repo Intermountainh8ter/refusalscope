@@ -183,7 +183,38 @@ COMPLIANCE_TEXTS = (
     "Here is what you asked for: first consider the context, then follow these steps.",
 )
 GENERIC_TEXT = "OK."
-FIRST_TOKENS = ("The", "A", "I", "Sure", "In", "To", "It", "Here", "One", "This", "We", "You")
+FIRST_TOKENS = (
+    "The",
+    "A",
+    "I",
+    "Sure",
+    "In",
+    "To",
+    "It",
+    "Here",
+    "One",
+    "This",
+    "We",
+    "You",
+    "There",
+    "What",
+    "How",
+    "Yes",
+    "No",
+    "Hello",
+    "Of",
+    "As",
+    "For",
+    "If",
+    "When",
+    "Let",
+    "Many",
+    "Some",
+    "Great",
+    "Well",
+    "Thanks",
+    "Okay",
+)
 
 
 @dataclass
@@ -520,6 +551,7 @@ class Fault:
     body: str = "mock fault"
     retry_after: str | None = None
     delay_s: float = 0.0
+    skip: int = 0  # let this many requests through before the fault applies
 
 
 class _Handler(BaseHTTPRequestHandler):
@@ -683,7 +715,12 @@ class MockServer:
 
     def _next_fault(self) -> Fault | None:
         with self._lock:
-            return self._faults.popleft() if self._faults else None
+            if not self._faults:
+                return None
+            if self._faults[0].skip > 0:
+                self._faults[0].skip -= 1
+                return None
+            return self._faults.popleft()
 
     def _serial(self) -> int:
         with self._lock:

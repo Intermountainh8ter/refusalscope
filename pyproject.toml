@@ -40,6 +40,7 @@ addopts = "-p no:cacheprovider"
 [tool.coverage.run]
 source = ["refusalscope"]
 branch = true
+omit = ["*/__main__.py"]
 
 [tool.coverage.report]
 show_missing = false
