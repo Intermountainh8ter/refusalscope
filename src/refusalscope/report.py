@@ -538,17 +538,27 @@ def _result_cell(tests: dict[str, Any], test_id: str) -> tuple[str, str]:
     return pp(t["rd"]), label
 
 
-def results_block(doc: dict[str, Any]) -> str:
-    """Compact results table for the README (real results only)."""
-    rows = []
-    for pair_id, pair in doc["pairs"].items():
-        tests = pair["tests"]
+def results_block(docs: dict[str, Any] | list[dict[str, Any]]) -> str:
+    """Compact results table for the README (real results only).
 
-        h1, h2, h4 = (_result_cell(tests, t) for t in ("H1", "H2", "H4"))
-        kl = pair["kl"]
-        rows.append([pair_id, pair["status"], h1[0], h1[1], h2[0], h2[1], h4[1],
-                     f"{kl['mean_kl']:.3f}" if kl.get("measured") else "n/a"])  # fmt: skip
-    head = f"Source: `results/{doc['label']}.json` (generated {doc['generated_at']}, harness {doc['tool']['version']}).\n\n"
+    Takes every real results document, not just one. A study with more than one
+    pair is usually collected as one run per pair, so rendering a single
+    document silently dropped every pair but the last and understated the work.
+    """
+    if isinstance(docs, dict):  # one document, the historical call shape
+        docs = [docs]
+    rows = []
+    for doc in docs:
+        for pair_id, pair in doc["pairs"].items():
+            tests = pair["tests"]
+
+            h1, h2, h4 = (_result_cell(tests, t) for t in ("H1", "H2", "H4"))
+            kl = pair["kl"]
+            rows.append([pair_id, pair["status"], h1[0], h1[1], h2[0], h2[1], h4[1],
+                         f"{kl['mean_kl']:.3f}" if kl.get("measured") else "n/a"])  # fmt: skip
+    srcs = ", ".join(f"`results/{d['label']}.json`" for d in docs)
+    newest = max(d["generated_at"] for d in docs)
+    head = f"Source: {srcs} (generated {newest}, harness {docs[0]['tool']['version']}).\n\n"
     return head + table(
         [
             "Pair",
@@ -564,7 +574,7 @@ def results_block(doc: dict[str, Any]) -> str:
     )
 
 
-def update_readme(text: str, doc: dict[str, Any]) -> str:
+def update_readme(text: str, doc: dict[str, Any] | list[dict[str, Any]]) -> str:
     """Fill the README markers with a real-results block and flip the status line."""
     for marker in (
         README_RESULTS_START,
@@ -574,14 +584,16 @@ def update_readme(text: str, doc: dict[str, Any]) -> str:
     ):
         if marker not in text:
             raise ReportError(f"README is missing the marker {marker}")
-    status = f"**Results: RUN** - see the table below and `results/{doc['label']}.json`."
+    docs = [doc] if isinstance(doc, dict) else list(doc)
+    labels = ", ".join(f"`results/{d['label']}.json`" for d in docs)
+    status = f"**Results: RUN** - see the table below and {labels}."
     text = re.sub(
         re.escape(README_STATUS_START) + r".*?" + re.escape(README_STATUS_END),
         lambda _: f"{README_STATUS_START}{status}{README_STATUS_END}", text, flags=re.DOTALL,
     )  # fmt: skip
     return re.sub(
         re.escape(README_RESULTS_START) + r".*?" + re.escape(README_RESULTS_END),
-        lambda _: f"{README_RESULTS_START}\n{results_block(doc)}{README_RESULTS_END}", text, flags=re.DOTALL,
+        lambda _: f"{README_RESULTS_START}\n{results_block(docs)}{README_RESULTS_END}", text, flags=re.DOTALL,
     )  # fmt: skip
 
 
@@ -631,7 +643,7 @@ def make_report(
             raise ReportError("refusing to write MOCK numbers into the README")
         target = Path(readme)
         target.write_text(
-            update_readme(target.read_text(encoding="utf-8"), real[-1]), encoding="utf-8"
+            update_readme(target.read_text(encoding="utf-8"), real), encoding="utf-8"
         )
         written.append(target)
     return written
