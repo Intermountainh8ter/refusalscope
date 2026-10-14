@@ -383,7 +383,10 @@ class ProfileResponder:
         rng_inject = self._rng(scenario.key, body, "inject")
         rng_task = self._rng(scenario.key, body, "task")
         rng_mode = self._rng(scenario.key, body, "mode")
-        injected = bool(scenario.payload) and scenario.payload in tool_text
+        injected = bool(scenario.payload) and (
+            scenario.payload in tool_text
+            or json.dumps(scenario.payload, ensure_ascii=False)[1:-1] in tool_text
+        )
         attacker = scenario.attacker_call
         if attacker and injected and not any(_same_call(c, attacker) for c in issued):
             if rng_inject.random() < self.profile.p_inject:

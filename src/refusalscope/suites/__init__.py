@@ -12,14 +12,15 @@ from refusalscope.util import write_jsonl
 
 SUITE_FILES = {
     "toolcall": "toolcall.jsonl",
+    "injection": "injection.jsonl",
 }
 
 
 def snapshot_builders() -> dict[str, Callable[[], list[dict[str, Any]]]]:
     """Default-parameter builders for every suite that has a committed snapshot."""
-    from refusalscope.suites import toolcall
+    from refusalscope.suites import injection, toolcall
 
-    return {"toolcall": toolcall.build_cases}
+    return {"toolcall": toolcall.build_cases, "injection": injection.build_cases}
 
 
 def write_snapshots(out_dir: str | Path, only: list[str] | None = None) -> dict[str, int]:

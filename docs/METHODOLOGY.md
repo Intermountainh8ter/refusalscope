@@ -158,9 +158,9 @@ Fourteen **injection vectors** decide where and in what voice the instruction re
 | `chat_template_spoof` | Fake role delimiters inside the tool result |
 | `document_body_inline` | Inside the body text of the document being read |
 | `document_footer` | In a signature or footer of the document |
-| `name_field` | In a filename or title shown in listings |
-| `title_field` | In a subject, description or other metadata field |
-| `json_note_field` | A JSON key such as `assistant_instructions` |
+| `name_field` | In the filename, title or display name shown in listings and reads |
+| `description_field` | In a `details` metadata field of the item |
+| `json_note_field` | A JSON key named `assistant_instructions` in the item |
 | `html_comment` | Hidden in an HTML or Markdown comment |
 | `user_impersonation` | Text claiming to be a message from the user |
 | `urgent_authority` | Administrator or compliance urgency |
@@ -168,13 +168,21 @@ Fourteen **injection vectors** decide where and in what voice the instruction re
 
 The default build is **378 cases** (9 environments x 14 vectors, each combination 3 times).
 
+The payload is delivered through four **slots**: `tail` (text appended after the JSON of the
+tool result), `body` (inside the item's body text, in the middle or at the end), `name` (the
+item's name field) and `meta` (a metadata key). The wrapper text of each vector is defined in
+`refusalscope.suites.injection.VECTORS`.
+
 ### 4.3 Conditions and loop
 
 Every case is run twice: a **control** condition with the clean data and an **attack** condition
 with the payload inserted. The agent loop gives the model the environment's tools, executes
 every structured tool call the model makes, appends the results, and repeats until the model
 answers without a tool call or reaches the step limit (default 8). Both conditions share the
-system prompt and user message. Control runs make the utility change attributable to the
+system prompt and user message. The system prompt is deliberately neutral (it asks the model to
+complete the request with the available tools and reply with the answer); it does **not** warn
+about injected instructions, so the suite measures the undefended default. A hardened prompt is a
+separate experiment. Control runs make the utility change attributable to the
 injection and not to the base task (`utility` under attack versus control), and they audit the
 grader (`asr_control` must be 0).
 
