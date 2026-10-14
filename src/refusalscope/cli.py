@@ -176,6 +176,24 @@ def cmd_power(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_mock_demo(args: argparse.Namespace) -> int:
+    """Run the whole pipeline against in-process MOCK servers and write MOCK-labelled output."""
+    from refusalscope.demo import run_demo
+
+    demo = run_demo(args.out, limit=args.limit or None, workers=args.workers, n_boot=args.bootstrap,
+                    progress=lambda message: print(message, file=sys.stderr))  # fmt: skip
+    summary = demo["summary"]
+    print(
+        f"MOCK demo: {summary.executed} jobs in {summary.elapsed_s:.1f}s, {summary.errors} with errors"
+    )
+    print(f"trajectories: {demo['run_dir'] / 'trajectories.jsonl'}")
+    print(f"results: {demo['results_path']}")
+    for path in demo["reports"]:
+        print(f"report: {path}")
+    print("Everything above is labelled MOCK: it only shows that the pipeline runs.")
+    return 0
+
+
 def cmd_mock_serve(args: argparse.Namespace) -> int:  # pragma: no cover - blocks until interrupted
     """Run the MOCK server in the foreground."""
     from refusalscope.mock import PROFILES, serve_forever
@@ -263,6 +281,15 @@ def build_parser() -> argparse.ArgumentParser:
     power.add_argument("--rd", type=float, nargs="+", default=[0.03, 0.05, 0.08, 0.10])
     power.add_argument("--alpha", type=float, default=0.05)
     power.set_defaults(func=cmd_power)
+
+    demo = sub.add_parser(
+        "mock-demo", help="end-to-end run on in-process MOCK servers (no GPU needed)"
+    )
+    demo.add_argument("--out", default="mock-demo-output")
+    demo.add_argument("--limit", type=int, default=40, help="cases per suite (0 = the full suites)")
+    demo.add_argument("--workers", type=int, default=4)
+    demo.add_argument("--bootstrap", type=int, default=2000)
+    demo.set_defaults(func=cmd_mock_demo)
 
     serve = sub.add_parser("mock-serve", help="run the MOCK server (tests the harness only)")
     serve.add_argument("--profile", default="reference")
