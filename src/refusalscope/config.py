@@ -87,9 +87,11 @@ class SuiteSettings:
     injection_max_steps: int = 8
     refusal_path: str = ""
     refusal_max_items: int | None = None
+    refusal_max_tokens: int = 300
     kl_top_logprobs: int = 20
     capability_seed: int = 3003
     capability_items: int = 100
+    capability_max_tokens: int = 200
 
 
 @dataclass(frozen=True)
@@ -156,9 +158,17 @@ _SUITE_SECTION_KEYS: dict[str, dict[str, str]] = {
         "n_cases": "injection_cases",
         "max_steps": "injection_max_steps",
     },
-    "refusal": {"harmful_path": "refusal_path", "max_items": "refusal_max_items"},
+    "refusal": {
+        "harmful_path": "refusal_path",
+        "max_items": "refusal_max_items",
+        "max_tokens": "refusal_max_tokens",
+    },
     "kl": {"top_logprobs": "kl_top_logprobs"},
-    "capability": {"seed": "capability_seed", "n_items": "capability_items"},
+    "capability": {
+        "seed": "capability_seed",
+        "n_items": "capability_items",
+        "max_tokens": "capability_max_tokens",
+    },
 }
 _TOP_KEYS = {"study", "models", "sampling", "suites", "output_dir", "workers"}
 
