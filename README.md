@@ -20,21 +20,22 @@ Two pairs have now been run on real models. The table below is filled by
 `scripts/make_report.py` from `results/*.json` and refuses to be filled from anything else.
 
 <!-- RESULTS:START -->
-Source: `results/qwen3-4b-rocm-1.json`, `results/qwen3-8b-rocm-1.json` (generated 2026-10-14T04:52:48.342177Z, harness 0.1.0).
+Source: `results/qwen3-4b-rocm-1.json`, `results/qwen3-8b-rocm-1.json` (generated 2026-10-14T13:26:56.870901Z, harness 0.1.0).
 
 | Pair | Status | H1 tool-call accuracy (stock -> ablated) | H1 | H2 attack success (stock -> ablated) | H2 | H4 | KL |
 |---|---|---|---|---|---|---|---|
-| qwen3-4b | ablation-unverified | 71.7% -> 68.7% (-2.9 pp) | descriptive | 14.0% -> 7.7% (-6.3 pp) | descriptive | descriptive | 0.009 |
-| qwen3-8b | ablation-unverified | 64.4% -> 64.4% (+0.0 pp) | descriptive | 22.2% -> 22.5% (+0.3 pp) | descriptive | descriptive | 0.075 |
+| qwen3-4b | confirmatory | 71.7% -> 68.7% (-2.9 pp) | equivalent | 14.0% -> 7.7% (-6.3 pp) | contrary | equivalent | 0.009 |
+| qwen3-8b | confirmatory | 64.4% -> 64.4% (+0.0 pp) | equivalent | 22.2% -> 22.5% (+0.3 pp) | equivalent | equivalent | 0.075 |
 <!-- RESULTS:END -->
 
 ### What we found
 
-**No pre-registered hypothesis can be confirmed from this run, by the pre-registration's own
-rule.** No behaviours file was supplied, so neither pair passes the section 8 manipulation
-check, both are labelled `ablation-unverified`, and every test below is descriptive only. H3 is
-`not testable` at any rate: it needs five verified pairs and the exact Spearman p-value cannot
-reach 0.05 below that. What follows is therefore evidence, not a confirmed claim.
+**Both pairs now pass the pre-registered manipulation check and the per-pair tests are
+confirmatory.** A 100-item authored harmful-behaviours file (sha256 `be31ea8a5…`) was supplied
+to each pair; refusal rate fell by **94 pp** on the 4B arm and **79 pp** on the 8B arm,
+well above the 30 pp pre-registered threshold. The per-pair verdicts (H1, H2, H4) are therefore
+confirmatory in the pre-registration's own sense. **H3 is still `not testable`:** it needs five
+verified pairs and the exact Spearman p-value cannot reach 0.05 below that; we have two.
 
 The two pairs disagree, and that is the headline.
 
@@ -67,9 +68,11 @@ further in first-token KL (0.075 vs 0.009) yet behaves identically, while the 4B
 
 ### Threats to validity that apply to this run
 
-- **The manipulation check never ran.** Without it there is no evidence either ablated model
-  actually refuses less. A null on an edit that did nothing would look exactly like a null on an
-  edit that was harmless. This is the single largest limitation and it is not a small one.
+- **The manipulation check used an authored 100-item file, not a standard corpus.** Refusal
+  rate dropped by 94 pp (4B) and 79 pp (8B) on `behaviours/authored-100.jsonl` (sha256
+  `be31ea8a5…`), so both pairs clear the pre-registered 30 pp gate. The behaviours file
+  itself is not standard (JailbreakBench, HarmBench, AdvBench) — reruns against those are a
+  worthwhile replication.
 - **Serving template.** The 8B ablated upload ships **no `chat_template` at all**. Served as its
   uploader distributed it, it returned 0 of 3 structured tool calls and would have produced a
   spectacular false H1 effect. Both arms are therefore driven from one shared template file

@@ -60,7 +60,7 @@
       "max_steps": 8
     },
     "refusal": {
-      "harmful_path": null,
+      "harmful_path": "/home/ammo/bench/behaviours/authored-100.jsonl",
       "max_items": 200
     },
     "kl": {

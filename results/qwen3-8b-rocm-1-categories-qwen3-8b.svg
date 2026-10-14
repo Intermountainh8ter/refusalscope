@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="664" viewBox="0 0 720 664" role="img" aria-label="Tool-call accuracy by category - qwen3-8b" font-family="Helvetica, Arial, sans-serif" font-size="12">
+<title>Tool-call accuracy by category - qwen3-8b</title>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="360.0" y="24.0" text-anchor="middle" font-size="14" fill="#222" font-weight="bold">Tool-call accuracy by category - qwen3-8b</text>
+<text x="180.0" y="85.0" text-anchor="end" font-size="11" fill="#222" font-weight="normal">simple_string</text>
+<rect x="190" y="70" width="320.5" height="10" fill="#3b6ea5"/>
+<text x="514.5" y="79.0" text-anchor="start" font-size="10" fill="#222" font-weight="normal">68%</text>
+<rect x="190" y="81" width="299.1" height="10" fill="#d1603d"/>
+<text x="493.1" y="90.0" text-anchor="start" font-size="10" fill="#222" font-weight="normal">64%</text>
+<text x="180.0" y="117.0" text-anchor="end" font-size="11" fill="#222" font-weight="normal">simple_numeric</text>
+<rect x="190" y="102" width="320.5" height="10" fill="#3b6ea5"/>
+<text x="514.5" y="111.0" text-anchor="start" font-size="10" fill="#222" font-weight="normal">68%</text>
+<rect x="190" y="113" width="320.5" height="10" fill="#d1603d"/>
+<text x="514.5" y="122.0" text-anchor="start" font-size="10" fill="#222" font-weight="normal">68%</text>
+<text x="180.0" y="149.0" text-anchor="end" font-size="11" fill="#222" font-weight="normal">multiple_choice</text>
+<rect x="190" y="134" width="192.3" height="10" fill="#3b6ea5"/>
+<text x="386.3" y="143.0" text-anchor="start" font-size="10" fill="#222" font-weight="normal">41%</text>
+<rect x="190" y="145" width="213.6" height="10" fill="#d1603d"/>
+<text x="407.6" y="154.0" text-anchor="start" font-size="10" fill="#222" font-weight="normal">45%</text>
+<text x="180.0" y="181.0" text-anchor="end" font-size="11" fill="#222" font-weight="normal">large_toolset</text>
+<rect x="190" y="166" width="320.5" height="10" fill="#3b6ea5"/>
+<text x="514.5" y="175.0" text-anchor="start" font-size="10" fill="#222" font-weight="normal">68%</text>
+<rect x="190" y="177" width="320.5" height="10" fill="#d1603d"/>
+<text x="514.5" y="186.0" text-anchor="start" font-size="10" fill="#222" font-weight="normal">68%</text>
+<text x="180.0" y="213.0" text-anchor="end" font-size="11" fill="#222" font-weight="normal">parallel_same</text>
+<rect x="190" y="198" width="299.1" height="10" fill="#3b6ea5"/>
+<text x="493.1" y="207.0" text-anchor="start" font-size="10" fill="#222" font-weight="normal">64%</text>
+<rect x="190" y="209" width="299.1" height="10" fill="#d1603d"/>
+<text x="493.1" y="218.0" text-anchor="start" font-size="10" fill="#222" font-weight="normal">64%</text>
+<text x="180.0" y="245.0" text-anchor="end" font-size="11" fill="#222" font-weight="normal">parallel_multiple</text>
+<rect x="190" y="230" width="64.1" height="10" fill="#3b6ea5"/>
+<text x="258.1" y="239.0" text-anchor="start" font-size="10" fill="#222" font-weight="normal">14%</text>
+<rect x="190" y="241" width="64.1" height="10" fill="#d1603d"/>
+<text x="258.1" y="250.0" text-anchor="start" font-size="10" fill="#222" font-weight="normal">14%</text>
+<text x="180.0" y="277.0" text-anchor="end" font-size="11" fill="#222" font-weight="normal">nested_object</text>
+<rect x="190" y="262" width="384.5" height="10" fill="#3b6ea5"/>
+<text x="578.5" y="271.0" text-anchor="start" font-size="10" fill="#222" font-weight="normal">82%</text>
+<rect x="190" y="273" width="384.5" height="10" fill="#d1603d"/>
+<text x="578.5" y="282.0" text-anchor="start" font-size="10" fill="#222" font-weight="normal">82%</text>
+<text x="180.0" y="309.0" text-anchor="end" font-size="11" fill="#222" font-weight="normal">array_args</text>
+<rect x="190" y="294" width="363.2" height="10" fill="#3b6ea5"/>
+<text x="557.2" y="303.0" text-anchor="start" font-size="10" fill="#222" font-weight="normal">77%</text>
+<rect x="190" y="305" width="363.2" height="10" fill="#d1603d"/>
+<text x="557.2" y="314.0" text-anchor="start" font-size="10" fill="#222" font-weight="normal">77%</text>
+<text x="180.0" y="341.0" text-anchor="end" font-size="11" fill="#222" font-weight="normal">optional_args</text>
+<rect x="190" y="326" width="427.3" height="10" fill="#3b6ea5"/>
+<text x="621.3" y="335.0" text-anchor="start" font-size="10" fill="#222" font-weight="normal">91%</text>
+<rect x="190" y="337" width="427.3" height="10" fill="#d1603d"/>
+<text x="621.3" y="346.0" text-anchor="start" font-size="10" fill="#222" font-weight="normal">91%</text>
+<text x="180.0" y="373.0" text-anchor="end" font-size="11" fill="#222" font-weight="normal">enum_synonym</text>
+<rect x="190" y="358" width="405.9" height="10" fill="#3b6ea5"/>
+<text x="599.9" y="367.0" text-anchor="start" font-size="10" fill="#222" font-weight="normal">86%</text>
+<rect x="190" y="369" width="384.5" height="10" fill="#d1603d"/>
+<text x="578.5" y="378.0" text-anchor="start" font-size="10" fill="#222" font-weight="normal">82%</text>
+<text x="180.0" y="405.0" text-anchor="end" font-size="11" fill="#222" font-weight="normal">type_coercion</text>
+<rect x="190" y="390" width="363.2" height="10" fill="#3b6ea5"/>
+<text x="557.2" y="399.0" text-anchor="start" font-size="10" fill="#222" font-weight="normal">77%</text>
+<rect x="190" y="401" width="384.5" height="10" fill="#d1603d"/>
+<text x="578.5" y="410.0" text-anchor="start" font-size="10" fill="#222" font-weight="normal">82%</text>
+<text x="180.0" y="437.0" text-anchor="end" font-size="11" fill="#222" font-weight="normal">irrelevance</text>
+<rect x="190" y="422" width="470.0" height="10" fill="#3b6ea5"/>
+<text x="664.0" y="431.0" text-anchor="start" font-size="10" fill="#222" font-weight="normal">100%</text>
+<rect x="190" y="433" width="470.0" height="10" fill="#d1603d"/>
+<text x="664.0" y="442.0" text-anchor="start" font-size="10" fill="#222" font-weight="normal">100%</text>
+<text x="180.0" y="469.0" text-anchor="end" font-size="11" fill="#222" font-weight="normal">missing_required</text>
+<rect x="190" y="454" width="299.1" height="10" fill="#3b6ea5"/>
+<text x="493.1" y="463.0" text-anchor="start" font-size="10" fill="#222" font-weight="normal">64%</text>
+<rect x="190" y="465" width="277.7" height="10" fill="#d1603d"/>
+<text x="471.7" y="474.0" text-anchor="start" font-size="10" fill="#222" font-weight="normal">59%</text>
+<text x="180.0" y="501.0" text-anchor="end" font-size="11" fill="#222" font-weight="normal">long_argument</text>
+<rect x="190" y="486" width="21.4" height="10" fill="#3b6ea5"/>
+<text x="215.4" y="495.0" text-anchor="start" font-size="10" fill="#222" font-weight="normal">5%</text>
+<rect x="190" y="497" width="21.4" height="10" fill="#d1603d"/>
+<text x="215.4" y="506.0" text-anchor="start" font-size="10" fill="#222" font-weight="normal">5%</text>
+<text x="180.0" y="533.0" text-anchor="end" font-size="11" fill="#222" font-weight="normal">special_chars</text>
+<rect x="190" y="518" width="128.2" height="10" fill="#3b6ea5"/>
+<text x="322.2" y="527.0" text-anchor="start" font-size="10" fill="#222" font-weight="normal">27%</text>
+<rect x="190" y="529" width="128.2" height="10" fill="#d1603d"/>
+<text x="322.2" y="538.0" text-anchor="start" font-size="10" fill="#222" font-weight="normal">27%</text>
+<text x="180.0" y="565.0" text-anchor="end" font-size="11" fill="#222" font-weight="normal">many_params</text>
+<rect x="190" y="550" width="405.9" height="10" fill="#3b6ea5"/>
+<text x="599.9" y="559.0" text-anchor="start" font-size="10" fill="#222" font-weight="normal">86%</text>
+<rect x="190" y="561" width="427.3" height="10" fill="#d1603d"/>
+<text x="621.3" y="570.0" text-anchor="start" font-size="10" fill="#222" font-weight="normal">91%</text>
+<text x="180.0" y="597.0" text-anchor="end" font-size="11" fill="#222" font-weight="normal">multi_turn_context</text>
+<rect x="190" y="582" width="363.2" height="10" fill="#3b6ea5"/>
+<text x="557.2" y="591.0" text-anchor="start" font-size="10" fill="#222" font-weight="normal">77%</text>
+<rect x="190" y="593" width="363.2" height="10" fill="#d1603d"/>
+<text x="557.2" y="602.0" text-anchor="start" font-size="10" fill="#222" font-weight="normal">77%</text>
+<rect x="190" y="619" width="10" height="10" fill="#3b6ea5"/><text x="206.0" y="628.0" text-anchor="start" font-size="11" fill="#222" font-weight="normal">stock</text>
+<rect x="270" y="619" width="10" height="10" fill="#d1603d"/><text x="286.0" y="628.0" text-anchor="start" font-size="11" fill="#222" font-weight="normal">ablated</text>
+</svg>
