@@ -544,13 +544,23 @@ def results_block(docs: dict[str, Any] | list[dict[str, Any]]) -> str:
     Takes every real results document, not just one. A study with more than one
     pair is usually collected as one run per pair, so rendering a single
     document silently dropped every pair but the last and understated the work.
+
+    Corpus-only manip-check replications (files whose `pairs[*].tests` carry no
+    H1/H2/H4 entry) are skipped: they contribute to the ablation-check evidence
+    but are not standalone pair runs, so they do not get their own table row.
     """
     if isinstance(docs, dict):  # one document, the historical call shape
         docs = [docs]
+    docs = [d for d in docs if any(
+        any(h in pair.get("tests", {}) for h in ("H1", "H2", "H4"))
+        for pair in d["pairs"].values()
+    )]
     rows = []
     for doc in docs:
         for pair_id, pair in doc["pairs"].items():
             tests = pair["tests"]
+            if not any(h in tests for h in ("H1", "H2", "H4")):
+                continue
 
             h1, h2, h4 = (_result_cell(tests, t) for t in ("H1", "H2", "H4"))
             kl = pair["kl"]
@@ -585,7 +595,11 @@ def update_readme(text: str, doc: dict[str, Any] | list[dict[str, Any]]) -> str:
         if marker not in text:
             raise ReportError(f"README is missing the marker {marker}")
     docs = [doc] if isinstance(doc, dict) else list(doc)
-    labels = ", ".join(f"`results/{d['label']}.json`" for d in docs)
+    full_suite = [d for d in docs if any(
+        any(h in pair.get("tests", {}) for h in ("H1", "H2", "H4"))
+        for pair in d["pairs"].values()
+    )]
+    labels = ", ".join(f"`results/{d['label']}.json`" for d in full_suite)
     status = f"**Results: RUN** - see the table below and {labels}."
     text = re.sub(
         re.escape(README_STATUS_START) + r".*?" + re.escape(README_STATUS_END),
