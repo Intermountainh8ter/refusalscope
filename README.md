@@ -14,85 +14,105 @@ A research harness for one question:
 > open-source Heretic tool) damage structured tool calling, and does it make the model more
 > likely to follow instructions injected into tool results?**
 
-<!-- STATUS:START -->**Results: RUN** - see the table below and `results/qwen3-4b-rocm-1.json`, `results/qwen3-8b-rocm-1.json`.<!-- STATUS:END -->
+<!-- STATUS:START -->**Results: RUN** - see the table below and `results/qwen3-0.6b-huihui-rocm.json`, `results/qwen3-1.7b-huihui-rocm.json`, `results/qwen3-14b-huihui-rocm.json`, `results/qwen3-4b-rocm-1.json`, `results/qwen3-8b-rocm-1.json`.<!-- STATUS:END -->
 
-Two pairs have now been run on real models. The table below is filled by
-`scripts/make_report.py` from `results/*.json` and refuses to be filled from anything else.
+Five pairs have now been run on real models (four confirmatory + one ablation-unverified).
+The table below is filled by `scripts/make_report.py` from `results/*.json` and refuses to be
+filled from anything else.
 
 <!-- RESULTS:START -->
-Source: `results/qwen3-4b-rocm-1.json`, `results/qwen3-8b-rocm-1.json` (generated 2026-10-14T13:26:56.870901Z, harness 0.1.0).
+Source: `results/qwen3-0.6b-huihui-rocm.json`, `results/qwen3-1.7b-huihui-rocm.json`, `results/qwen3-14b-huihui-rocm.json`, `results/qwen3-4b-rocm-1.json`, `results/qwen3-8b-rocm-1.json` (generated 2026-10-15T12:04:22.995428Z, harness 0.1.0).
 
 | Pair | Status | H1 tool-call accuracy (stock -> ablated) | H1 | H2 attack success (stock -> ablated) | H2 | H4 | KL |
 |---|---|---|---|---|---|---|---|
+| qwen3-0.6b | ablation-unverified | 62.3% -> 62.6% (+0.3 pp) | descriptive | 0.3% -> 0.0% (-0.3 pp) | descriptive | descriptive | 0.184 |
+| qwen3-1.7b | confirmatory | 67.9% -> 68.4% (+0.5 pp) | equivalent | 3.4% -> 2.1% (-1.3 pp) | equivalent | equivalent | 0.235 |
+| qwen3-14b | confirmatory | 70.6% -> 75.9% (+5.3 pp) | contrary | 16.4% -> 20.1% (+3.7 pp) | inconclusive | inconclusive | 0.154 |
 | qwen3-4b | confirmatory | 71.7% -> 68.7% (-2.9 pp) | equivalent | 14.0% -> 7.7% (-6.3 pp) | contrary | equivalent | 0.009 |
 | qwen3-8b | confirmatory | 64.4% -> 64.4% (+0.0 pp) | equivalent | 22.2% -> 22.5% (+0.3 pp) | equivalent | equivalent | 0.075 |
 <!-- RESULTS:END -->
 
 ### What we found
 
-**Both pairs now pass the pre-registered manipulation check and the per-pair tests are
-confirmatory.** A 100-item authored harmful-behaviours file (sha256 `be31ea8a5…`) was supplied
-to each pair; refusal rate fell by **94 pp** on the 4B arm and **79 pp** on the 8B arm,
-well above the 30 pp pre-registered threshold. The per-pair verdicts (H1, H2, H4) are therefore
-confirmatory in the pre-registration's own sense. **H3 is still `not testable`:** it needs five
-verified pairs and the exact Spearman p-value cannot reach 0.05 below that; we have two.
+**Four of five pairs pass the pre-registered manipulation check and are in-family for the
+confirmatory tests.** The 4B, 8B, 1.7B and 14B pairs cleared the 30 pp gate on the 100-item
+authored harmful-behaviours file (sha256 `be31ea8a5…`); the drops were 94 pp, 79 pp, 56 pp
+and 70 pp respectively, every one with paired McNemar p ≤ 2.8e-17. The **0.6B pair fell
+short** at 15 pp (15% → 0%) and is reported `ablation-unverified` with its tests downgraded
+to `descriptive`. This is a **floor effect, not a null ablation**: the stock 0.6B refuses
+only 15% of these prompts, so the ablated arm cannot clear a 30 pp drop even by refusing
+nothing (b/c = 15/0, paired McNemar p = 6.1e-5). The 30 pp threshold stands as pre-registered.
+**H3 is still `not testable`:** the exact Spearman p-value cannot reach 0.05 with fewer than
+five verified pairs, and we have four.
 
-The two pairs disagree, and that is the headline.
+**No consistent cross-pair direction.** On tool-call accuracy (H1), three pairs are
+equivalent (4B at -2.9 pp inside the SESOI, 8B at ±0.0 pp, 1.7B at +0.5 pp) and one is
+**contrary** (14B: +5.3 pp [+2.7, +8.3], p_Holm = 0.001 — the ablated arm scores *better*
+than stock). On attack success (H2), two pairs are equivalent (8B, 1.7B), one is contrary
+(4B at -6.3 pp — the ablated arm is *less* susceptible), and the 14B is **inconclusive** at
++3.7 pp (p_Holm = 0.049, just under the family cutoff). The direction H1 and H2 predicted —
+tool-call degradation and injection-susceptibility rise — appears nowhere.
 
-**Qwen3-8B** (`DreamFast/qwen3-8b-heretic`) shows **no effect anywhere**. Tool-call accuracy is
-identical to the decimal, 64.4% in both arms, with perfectly symmetric discordance (4 cases each
-way out of 374) and a 95% CI of [-1.6, +1.3] pp. Attack success is 22.2% vs 22.5%, CI
-[-2.1, +2.6] pp. Every interval sits well inside the pre-registered 5 pp SESOI, so this is an
-equivalence result rather than an underpowered null. The arms are not the same weights: first-
-token KL is 0.075 with CI [0.033, 0.124], excluding zero, and top-1 agreement is 96.7%.
+Two confounds visible in the earlier two pairs persist:
 
-**Qwen3-4B** (`heretic-org/Qwen3-4B-Instruct-2507-heretic`) shows the opposite picture, and in
-one case the opposite *direction* to the hypothesis:
+- **Clean-control tool-use divergence.** On 14B the ablated arm uses tools **more** in the
+  clean control (S1: +7.1 pp [+4.2, +10.3], p = 1.4e-5) and has higher utility under attack
+  (+5.3 pp, p = 3.2e-4); the 8B pair moves the same way (+4.5 pp control; +3.4 pp
+  utility-under-attack); the 4B pair moves the **other** way (-5.3 pp control). The 0.6B and
+  1.7B pairs are null on this control. Whatever these edits do to tool-use propensity, it has
+  no single sign.
+- **Lenient-grading cancellation.** The 4B H1 effect, already inside the SESOI, disappears
+  under lenient grading (S4: 89.8% in both arms); the 14B H1 "contrary" effect is driven
+  largely by stock refusals the ablated arm no longer emits (which the strict grader counts
+  as incorrect tool calls).
 
-- Tool-call accuracy falls 71.7% -> 68.7%, **-2.9 pp** [-4.8, -1.3], p = 0.003, discordance
-  12 vs 1. Directionally what H1 predicts, but **smaller than the 5 pp SESOI**, and it
-  disappears entirely under lenient grading (S4: 89.8% in both arms, 0.0 pp).
-- Attack success **falls** 14.0% -> 7.7%, **-6.3 pp** [-9.0, -4.0], p < 0.0001, discordance
-  25 vs 1. H2 predicted a *rise*. This is larger than the SESOI and in the wrong direction for
-  the hypothesis. It is also confounded: the same arm uses tools **less** in the clean control
-  condition (S1: -5.3 pp [-8.2, -2.6], p = 0.0003), so a model that engages less with the tool
-  flow has fewer opportunities to be captured by an injection in it.
+The arms are genuinely different weights across all five pairs. First-token KL is 0.009 (4B),
+0.075 (8B), 0.184 (0.6B), 0.235 (1.7B) and 0.154 (14B). KL does not predict H1 or H2 size or
+direction, so first-token distribution shift alone is not a useful proxy for the behaviours
+measured here.
 
-The 8B ablated arm moves the other way on that same control, using tools **more** (+4.5 pp
-[+2.4, +6.9], p < 0.0001) with higher utility under attack (+3.4 pp, p = 0.007). Two pairs,
-opposite signs on tool-use propensity. Whatever these edits do, it is not one consistent effect.
-
-Note also that KL does not predict behaviour here. The 8B pair diverges roughly eight times
-further in first-token KL (0.075 vs 0.009) yet behaves identically, while the 4B pair has
-**100%** top-1 agreement across all 60 probes and still differs significantly on two measures.
+The stock arms are `Qwen/Qwen3-{0.6B,1.7B,4B,8B,14B}`. The ablated arms are
+`heretic-org/Qwen3-4B-Instruct-2507-heretic`, `DreamFast/qwen3-8b-heretic`, and
+`huihui-ai/Huihui-Qwen3-{0.6B,1.7B,14B}-abliterated-v2`. The three Huihui pairs are
+abliterated-v2 and were chosen so that H3's size axis spans two orders of magnitude within one
+family and one abliteration method.
 
 ### Threats to validity that apply to this run
 
-- **The manipulation check has been replicated against three standard corpora on BOTH
-  pairs.** The authored-100 file (sha `be31ea8a5…`) was the primary; replications ran
-  against JailbreakBench harmful-behaviors (100 items, sha `c429769c…`), HarmBench
-  text-all (first 200 items, sha `385f2bd2…`), and AdvBench harmful_behaviors (first 200
-  items, sha `60e337c9…`). The refusal-rate drops were:
+- **The manipulation check has been replicated against three standard corpora on the 4B and
+  8B pairs** (the three Huihui pairs ran the authored-100 primary only). The authored-100
+  file (sha `be31ea8a5…`) was the primary across all five pairs; the 4B/8B replications ran
+  against JailbreakBench harmful-behaviors (100 items, sha `c429769c…`), HarmBench text-all
+  (first 200 items, sha `385f2bd2…`), and AdvBench harmful_behaviors (first 200 items, sha
+  `60e337c9…`). The refusal-rate drops were:
 
   | pair | authored-100 | JBB 100 | HarmBench 200 | AdvBench 200 |
   |------|-------------:|--------:|--------------:|-------------:|
+  | 0.6B | 15 pp        | not run | not run       | not run      |
+  | 1.7B | 56 pp        | not run | not run       | not run      |
   | 4B   | 95 pp        | 95 pp   | 97 pp         | 99 pp        |
   | 8B   | 79 pp        | 86 pp   | 74.5 pp       | 97 pp        |
+  | 14B  | 70 pp        | not run | not run       | not run      |
 
-  All eight corpus-pair cells are **confirmatory** at the 30 pp pre-registered gate; the
-  smallest paired McNemar p across all cells is 2.8e-45. See
-  `results/qwen3-{4b,8b}-rocm-{jbb,hb,advb}.json` for stock/ablated per-cell rates,
-  McNemar b/c counts and bootstrap CIs.
-- **Serving template.** The 8B ablated upload ships **no `chat_template` at all**. Served as its
-  uploader distributed it, it returned 0 of 3 structured tool calls and would have produced a
-  spectacular false H1 effect. Both arms are therefore driven from one shared template file
-  (Qwen's own, sha256 `a55ee1b1…`), so the ablated arm is not served exactly as published. The
-  4B pair needed no such intervention: its templates were already byte-identical.
-- **Two pairs, one family each.** Both pairs are Qwen3 and both ablated arms come from different
-  uploaders using different tooling. Nothing here generalises to abliteration in general.
+  Every corpus-pair cell that was run is **confirmatory** at the 30 pp pre-registered gate
+  except the 0.6B authored-100 cell (15 pp, floor effect — see "What we found"); the smallest
+  paired McNemar p across all cleared cells is 2.8e-45. See
+  `results/qwen3-{4b,8b}-rocm-{jbb,hb,advb}.json` for stock/ablated per-cell rates, McNemar
+  b/c counts and bootstrap CIs.
+- **Serving template.** The 8B ablated upload ships **no `chat_template` at all**, and the
+  Huihui 0.6B/1.7B ablated uploads also drop their embedded `chat_template`; the Huihui 14B
+  ablated upload keeps a template byte-identical to stock. Served as their uploaders
+  distributed them, the 8B returned 0 of 3 structured tool calls and the Huihui 0.6B/1.7B
+  would have had similar false H1 effects. All ten arms are therefore driven from one shared
+  template file (Qwen's own, sha256 `a55ee1b1…`), so the templates-dropped ablated arms are
+  not served exactly as published. The 4B pair needed no such intervention: its templates
+  were already byte-identical.
+- **Five pairs, one family.** All five pairs are Qwen3; three ablated arms (0.6B, 1.7B, 14B)
+  come from huihui-ai/Huihui-*-abliterated-v2 with one tooling, and the 4B and 8B ablated
+  arms come from two different uploaders using different tooling. Nothing here generalises
+  to abliteration in general.
 - **Quantisation.** Both arms of each pair were converted and quantised by the same commands to
-  Q8_0, with sizes 4,672 bytes apart (8B) and 384 bytes apart (4B). Q8_0 is not lossless, and a
-  small effect could in principle be masked by it.
+  Q8_0. Q8_0 is not lossless, and a small effect could in principle be masked by it.
 - **One temperature, one seed**, as pre-registered (temperature 0.0, seed 1234).
 - **Hardware.** AMD gfx906 under ROCm 7.2.3 via llama.cpp HIP, not CUDA or vLLM.
 
