@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<svg xmlns='http://www.w3.org/2000/svg' width='1000' height='920' viewBox='0 0 1000 920' font-family='Inter, Helvetica Neue, Arial, sans-serif'>
+<rect width='100%' height='100%' fill='#ffffff'/>
+<rect x='0' y='0' width='1000' height='7' fill='#1d4ed8'/>
+<text x='44.0' y='64.0' font-size='34' font-weight='700' fill='#13161a' text-anchor='start'>refusalscope</text>
+<text x='44.0' y='90.0' font-size='16' font-weight='400' fill='#5b6472' text-anchor='start'>Does stripping an AI's safety training break the rest of it?</text>
+<line x1='44.0' y1='106.0' x2='956.0' y2='106.0' stroke='#e3e7ec' stroke-width='1.5'/>
+<text x='44.0' y='140.0' font-size='13' font-weight='700' fill='#1d4ed8' letter-spacing='1.6'>THE QUESTION</text>
+<text x='44.0' y='180.4' font-size='21' font-weight='600' fill='#13161a' text-anchor='start'>People publish "uncensored" copies of AI models with the</text>
+<text x='44.0' y='210.9' font-size='21' font-weight='600' fill='#13161a' text-anchor='start'>safety training removed. Does that surgery damage anything</text>
+<text x='44.0' y='241.3' font-size='21' font-weight='600' fill='#13161a' text-anchor='start'>else?</text>
+<text x='44.0' y='275.3' font-size='13' font-weight='700' fill='#1d4ed8' letter-spacing='1.6'>WHAT WE DID</text>
+<text x='44.0' y='308.5' font-size='16' font-weight='400' fill='#5b6472' text-anchor='start'>We took two AI models and their uncensored copies, ran all four through 5,320</text>
+<text x='44.0' y='331.7' font-size='16' font-weight='400' fill='#5b6472' text-anchor='start'>identical tasks on the same two graphics cards, and compared each model only against</text>
+<text x='44.0' y='354.9' font-size='16' font-weight='400' fill='#5b6472' text-anchor='start'>its own twin. Same prompts, same settings, same day.</text>
+<text x='44.0' y='384.9' font-size='15' font-weight='700' fill='#13161a' text-anchor='start'>How much each uncensored copy changed, versus its original</text>
+<text x='266.0' y='437.9' font-size='14' font-weight='400' fill='#13161a' text-anchor='end'>Big model — doing its job</text>
+<rect x='280.0' y='421.9' width='526.0' height='22.0' rx='4' fill='#f1f4f8'/>
+<rect x='280.0' y='421.9' width='2.0' height='22.0' rx='4' fill='#94a3b8'/>
+<text x='820.0' y='437.9' font-size='14' font-weight='700' fill='#13161a' text-anchor='start'>no change</text>
+<text x='266.0' y='471.9' font-size='14' font-weight='400' fill='#13161a' text-anchor='end'>Big model — resisting attack</text>
+<rect x='280.0' y='455.9' width='526.0' height='22.0' rx='4' fill='#f1f4f8'/>
+<rect x='280.0' y='455.9' width='10.5' height='22.0' rx='4' fill='#94a3b8'/>
+<text x='820.0' y='471.9' font-size='14' font-weight='700' fill='#13161a' text-anchor='start'>no change</text>
+<text x='266.0' y='505.9' font-size='14' font-weight='400' fill='#13161a' text-anchor='end'>Small model — doing its job</text>
+<rect x='280.0' y='489.9' width='526.0' height='22.0' rx='4' fill='#f1f4f8'/>
+<rect x='280.0' y='489.9' width='152.5' height='22.0' rx='4' fill='#b45309'/>
+<text x='820.0' y='505.9' font-size='14' font-weight='700' fill='#13161a' text-anchor='start'>3% worse</text>
+<text x='266.0' y='539.9' font-size='14' font-weight='400' fill='#13161a' text-anchor='end'>Small model — resisting attack</text>
+<rect x='280.0' y='523.9' width='526.0' height='22.0' rx='4' fill='#f1f4f8'/>
+<rect x='280.0' y='523.9' width='331.4' height='22.0' rx='4' fill='#1d4ed8'/>
+<text x='820.0' y='539.9' font-size='14' font-weight='700' fill='#13161a' text-anchor='start'>6% different</text>
+<text x='44.0' y='560.9' font-size='12.5' font-weight='400' fill='#5b6472' text-anchor='start'>Bars show how far each measurement moved. Grey means the change was too small to tell apart from random noise.</text>
+<text x='44.0' y='594.9' font-size='13' font-weight='700' fill='#1d4ed8' letter-spacing='1.6'>WHAT WE FOUND</text>
+<text x='44.0' y='632.9' font-size='30' font-weight='700' fill='#1d4ed8' text-anchor='start'>The two models disagreed.</text>
+<text x='44.0' y='662.9' font-size='16.5' font-weight='400' fill='#13161a' text-anchor='start'>The bigger model showed no change at all. The smaller one changed on both measures —</text>
+<text x='44.0' y='686.8' font-size='16.5' font-weight='400' fill='#13161a' text-anchor='start'>and on the attack test it moved in the opposite direction from what we predicted</text>
+<text x='44.0' y='710.7' font-size='16.5' font-weight='400' fill='#13161a' text-anchor='start'>before running anything. Looking closer, the smaller uncensored copy simply did less</text>
+<text x='44.0' y='734.6' font-size='16.5' font-weight='400' fill='#13161a' text-anchor='start'>work: it reached for its tools 5% less often, and a model that does less has less to</text>
+<text x='44.0' y='758.6' font-size='16.5' font-weight='400' fill='#13161a' text-anchor='start'>go wrong.</text>
+<text x='44.0' y='792.6' font-size='13' font-weight='700' fill='#1d4ed8' letter-spacing='1.6'>WHY IT MATTERS</text>
+<text x='44.0' y='826.5' font-size='16.5' font-weight='400' fill='#13161a' text-anchor='start'>If we had tested only one model, we would have published a confident answer. Testing</text>
+<text x='44.0' y='850.4' font-size='16.5' font-weight='400' fill='#13161a' text-anchor='start'>two showed the answer depends on which model you pick. That is the difference</text>
+<text x='44.0' y='874.3' font-size='16.5' font-weight='400' fill='#13161a' text-anchor='start'>between a result and a coincidence.</text>
+</svg>

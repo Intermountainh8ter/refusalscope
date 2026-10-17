@@ -24,11 +24,14 @@ def test_script_refuses_when_there_are_no_results(tmp_path):
     assert not (tmp_path / "out").exists()
 
 
-def test_script_refuses_the_repository_results_directory_today():
-    assert not list((ROOT / "results").glob("*.json"))
-    result = run_script("--out", str(ROOT / "tmp" / "should-not-exist"))
-    assert result.returncode == 2 and "NOT YET RUN" in result.stderr
-    assert not (ROOT / "tmp" / "should-not-exist").exists()
+def test_script_runs_against_the_repository_results_directory_today(tmp_path):
+    # The committed `results/` now holds the 4B and 8B analyze outputs,
+    # so the make_report script must render rather than refuse.
+    assert list((ROOT / "results").glob("qwen3-*.json"))
+    result = run_script("--out", str(tmp_path / "out"))
+    assert result.returncode == 0, result.stderr
+    assert (tmp_path / "out").is_dir()
+    assert any(p.suffix == ".md" for p in (tmp_path / "out").iterdir())
 
 
 @pytest.fixture(scope="module")

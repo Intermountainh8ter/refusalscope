@@ -62,17 +62,28 @@ def read(path):
 # ------------------------------------------------------------------ honesty rules
 
 
-def test_readme_says_results_not_yet_run_and_has_fillable_markers():
+def test_readme_results_block_matches_results_dir_state():
+    """Flip in both directions. Before any real run lands, the README must
+    say NOT YET RUN and must not display percentages. After results land, the
+    README must stop saying NOT YET RUN and must show percentages."""
     text = read("README.md")
-    assert "<!-- STATUS:START -->**Results: NOT YET RUN.**<!-- STATUS:END -->" in text
-    assert "<!-- RESULTS:START -->" in text and "<!-- RESULTS:END -->" in text
-    block = text.split("<!-- RESULTS:START -->")[1].split("<!-- RESULTS:END -->")[0]
-    assert block.count("not run") >= 4 and not re.search(r"\d+\.\d+%", block)
+    results_dir = ROOT / "results"
+    real = [p for p in results_dir.iterdir() if p.suffix == ".json" and not p.name.startswith("MOCK")]
+    pct_in_readme = bool(re.search(r"\d+\.\d+%", text))
+    assert "<!-- RESULTS:START -->" in text and "<!-- RESULTS:END -->" in text, "block markers must stay"
+    if real:
+        assert "**Results: NOT YET RUN.**" not in text, (
+            "results/ has real files; README must stop saying NOT YET RUN")
+        assert pct_in_readme, "results/ has real files; README should show percentages"
+    else:
+        assert "<!-- STATUS:START -->**Results: NOT YET RUN.**<!-- STATUS:END -->" in text
+        block = text.split("<!-- RESULTS:START -->")[1].split("<!-- RESULTS:END -->")[0]
+        assert block.count("not run") >= 4 and not pct_in_readme
 
 
-def test_no_real_results_are_committed():
-    results = [p for p in (ROOT / "results").iterdir() if p.suffix == ".json"]
-    assert results == [], "real result files may only be added after a real run"
+def test_no_mock_results_are_committed():
+    """MOCK output is for plumbing tests only and must never land in git. Real
+    result files (non-MOCK) are allowed once a real run has produced them."""
     assert not list((ROOT / "results").glob("MOCK*"))
 
 
