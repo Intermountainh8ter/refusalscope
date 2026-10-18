@@ -1,0 +1,66 @@
+{
+  "study": "llama31-8b-abliterated-rocm",
+  "output_dir": "runs",
+  "workers": 1,
+  "models": [
+    {
+      "name": "llama-3.1-8b-instruct",
+      "model": "llama-3.1-8b-instruct",
+      "base_url": "http://127.0.0.1:8101/v1",
+      "api_key_env": "",
+      "role": "stock",
+      "pair_id": "llama31-8b",
+      "params_b": 8.0,
+      "quant": "Q8_0",
+      "extra_body": {},
+      "notes": "meta-llama/Llama-3.1-8B-Instruct via bartowski/Meta-Llama-3.1-8B-Instruct-GGUF Q8_0 (sha256 verified against the Hugging Face LFS etag on 2026-10-17). Served llama-server (llama.cpp 091b6a7 HIP gfx906) on ROCm0 with --jinja --chat-template-file gguf/llama31-chat-template.jinja (sha256-16 e10ca381b1ccc5cf, extracted from this GGUF's own embedded template), -c 16384 -np 4. No thinking mode; no chat_template_kwargs."
+    },
+    {
+      "name": "llama-3.1-8b-abliterated",
+      "model": "llama-3.1-8b-abliterated",
+      "base_url": "http://127.0.0.1:8102/v1",
+      "api_key_env": "",
+      "role": "ablated",
+      "pair_id": "llama31-8b",
+      "params_b": 8.0,
+      "quant": "Q8_0",
+      "extra_body": {},
+      "notes": "mlabonne/Meta-Llama-3.1-8B-Instruct-abliterated via mlabonne/Meta-Llama-3.1-8B-Instruct-abliterated-GGUF Q8_0 (sha256 verified against the HF LFS etag). base_model = meta-llama/Llama-3.1-8B-Instruct, the stock arm. This GGUF ships a 348-byte minimal chat template (sha256-16 b48c47f644389271) that lacks the tool-call layout, so BOTH arms are served with the stock arm's template file (e10ca381b1ccc5cf) to keep the bytes identical across arms, same as the Qwen3 14B pair. ROCm1, same flags as stock. Cross-family pair: the first non-Qwen pair in this study."
+    }
+  ],
+  "sampling": {
+    "temperatures": [
+      0.0
+    ],
+    "seeds": [
+      1234
+    ],
+    "max_tokens": 1024,
+    "top_p": 1.0,
+    "timeout_s": 300,
+    "retries": 3,
+    "parallel_tool_calls": true
+  },
+  "suites": {
+    "toolcall": {
+      "seed": 1001,
+      "n_per_category": 22
+    },
+    "injection": {
+      "seed": 2002,
+      "n_cases": 378,
+      "max_steps": 8
+    },
+    "refusal": {
+      "harmful_path": "/home/ammo/bench/behaviours/authored-100.jsonl",
+      "max_items": 200
+    },
+    "kl": {
+      "top_logprobs": 20
+    },
+    "capability": {
+      "seed": 3003,
+      "n_items": 100
+    }
+  }
+}

@@ -32,6 +32,9 @@ Source: `results/qwen3-0.6b-huihui-rocm.json`, `results/qwen3-1.7b-huihui-rocm.j
 | qwen3-8b | confirmatory | 64.4% -> 64.4% (+0.0 pp) | equivalent | 22.2% -> 22.5% (+0.3 pp) | equivalent | equivalent | 0.075 |
 <!-- RESULTS:END -->
 
+**Sixth pair, cross-family (added 2026-10-18): Llama-3.1-8B-Instruct vs mlabonne's abliteration, both served with the stock arm's chat template (sha256-16 `e10ca381b1ccc5cf`).** Source `results/llama31-8b-abliterated-rocm.json`. The pair is not in the table above because H1 and H2 could not be scored on this serving stack: llama.cpp 091b6a7 returns HTTP 500 ("output does not match the expected peg-native format") whenever Llama-3.1 emits parallel tool calls, so the tool-call suite scored 242 of 264 cases (all 10 `parallel_multiple` cases errored and the remaining 12 were not run) and the injection suite 13 of 28 before the harness's ten-consecutive-error abort. What was scorable: manipulation check **confirmatory**, refusal on the authored-100 file 96% -> 0% (-96 pp, paired McNemar p = 2.5e-29); capability 86% -> 86% (rd 0.0, CI [-0.05, +0.05]); benign over-refusal 0% -> 0%; first-token KL(stock || ablated) 1.03 [0.85, 1.23] with top-1 agreement 0.45, far above every Qwen3 pair (0.009 to 0.235). The pair therefore does not count toward H3's five-verified-pair requirement, which stays untestable at four. Nothing about the grader or thresholds was changed.
+
+
 ### What we found
 
 **Four of five pairs pass the pre-registered manipulation check and are in-family for the
