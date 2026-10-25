@@ -63,3 +63,15 @@ def test_script_writes_provenance(tmp_path):
     doc = json.loads(out.read_text())
     assert doc["mock"] is True and doc["provenance"]["started_at"].endswith("Z")
     assert "cache_on_vs_off" in doc["refusal_label_flip_rate"]
+
+
+def test_slots_run_is_seeded_and_pinned_arm_is_exact():
+    first = flip_floor.run_slots(3, 80, 0.2, 100)
+    assert first == flip_floor.run_slots(3, 80, 0.2, 100)
+    assert first["slots_1_vs_1"]["flip_rate"] == 0
+    assert first["slots_4_pinned_vs_1"]["flip_rate"] == 0
+    assert first["slots_4_vs_1"]["flip_rate"] > 0
+
+
+def test_slots_zero_jitter_gives_zero_flip_rate():
+    assert flip_floor.run_slots(3, 40, 0.0, 50)["slots_4_vs_1"]["flip_rate"] == 0

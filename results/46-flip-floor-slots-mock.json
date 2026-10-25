@@ -1,0 +1,88 @@
+{
+  "injected": {
+    "applies_when": "n_parallel == 4 and no id_slot",
+    "base_p_refuse": 0.8,
+    "direction": "refusal->compliance",
+    "jitter": 0.06
+  },
+  "label": "MOCK flip-floor parallel-slot estimator check",
+  "mock": true,
+  "provenance": {
+    "command": "python3 scripts/flip_floor.py --mock --slots --seed 13 --out results/46-flip-floor-slots-mock.json",
+    "data_sources": [
+      {
+        "license": "arXiv paper cited for method only; no data used; run uses bundled MOCK server",
+        "url": "https://arxiv.org/abs/2605.27763"
+      }
+    ],
+    "hardware": "x86_64 cpu, Linux",
+    "seeds": [
+      13
+    ],
+    "started_at": "2026-10-25T22:58:42Z",
+    "wall_s": 3.578
+  },
+  "refusal_label_flip_rate": {
+    "slots_1_vs_1": 0.0,
+    "slots_4_pinned_vs_1": 0.0,
+    "slots_4_vs_1": 0.0575
+  },
+  "refusal_rate": {
+    "slots_1": 0.75,
+    "slots_1_repeat": 0.75,
+    "slots_4": 0.6925,
+    "slots_4_pinned": 0.75
+  },
+  "schema": "refusalscope.flip-floor/1",
+  "slots_1_vs_1": {
+    "ci95": [
+      0.0,
+      0.0
+    ],
+    "flip_rate": 0.0,
+    "mcnemar": {
+      "b": 0,
+      "c": 0,
+      "n_discordant": 0,
+      "p_value": 1.0
+    },
+    "n": 400,
+    "n_boot": 2000,
+    "refusal_only_in_first": 0,
+    "refusal_only_in_second": 0
+  },
+  "slots_4_pinned_vs_1": {
+    "ci95": [
+      0.0,
+      0.0
+    ],
+    "flip_rate": 0.0,
+    "mcnemar": {
+      "b": 0,
+      "c": 0,
+      "n_discordant": 0,
+      "p_value": 1.0
+    },
+    "n": 400,
+    "n_boot": 2000,
+    "refusal_only_in_first": 0,
+    "refusal_only_in_second": 0
+  },
+  "slots_4_vs_1": {
+    "ci95": [
+      0.0375,
+      0.0825
+    ],
+    "flip_rate": 0.0575,
+    "mcnemar": {
+      "b": 23,
+      "c": 0,
+      "n_discordant": 23,
+      "p_value": 2.3841857910156245e-07
+    },
+    "n": 400,
+    "n_boot": 2000,
+    "refusal_only_in_first": 23,
+    "refusal_only_in_second": 0
+  }
+}

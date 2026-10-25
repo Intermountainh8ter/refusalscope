@@ -71,11 +71,28 @@ def make_responder(seed: int, jitter: float):
     return responder
 
 
-def ask(url: str, prompt: str, cache_prompt: bool) -> bool:
+def make_slot_responder(seed: int, jitter: float):
+    """Jitter only when n_parallel is 4 and no id_slot is pinned (a server-chosen slot)."""
+
+    def responder(body: dict) -> MockReply:
+        text = body["messages"][-1]["content"]
+        case, draw = DRAW_TAG.search(text).groups()
+        refuse = stable_rng("flip-base", seed, case).random() < BASE_P_REFUSE
+        unpinned = body.get("n_parallel") == 4 and body.get("id_slot") is None
+        if unpinned and stable_rng("flip-slot-jitter", seed, case, draw).random() < jitter:
+            refuse = False
+        pool = REFUSAL_TEXTS if refuse else COMPLIANCE_TEXTS
+        return MockReply(content=stable_rng("flip-text", seed, case, draw, bool(refuse)).choice(pool))
+
+    return responder
+
+
+def ask(url: str, prompt: str, cache_prompt: bool, extra: dict | None = None) -> bool:
     payload = {
         "model": "mock-model",
         "messages": [{"role": "user", "content": prompt}],
         "cache_prompt": cache_prompt,
+        **(extra or {}),
     }
     req = urllib.request.Request(
         url + "/chat/completions",
@@ -106,12 +123,38 @@ def run(seed: int, draws: int, jitter: float, n_boot: int) -> dict:
     }
 
 
+def run_slots(seed: int, draws: int, jitter: float, n_boot: int) -> dict:
+    items = borderline_items()
+    reps = draws // len(items)
+    arms: dict[str, list[bool]] = {"slots_1": [], "slots_1_repeat": [], "slots_4": [], "slots_4_pinned": []}
+    with MockServer(responder=make_slot_responder(seed, jitter)) as server:
+        for rep in range(reps):
+            for item in items:
+                prompt = f"{item['prompt']} [case {item['id']} draw {rep}]"
+                one = {"n_parallel": 1, "id_slot": 0}
+                arms["slots_1"].append(ask(server.base_url, prompt, False, one))
+                arms["slots_1_repeat"].append(ask(server.base_url, prompt, False, one))
+                arms["slots_4"].append(ask(server.base_url, prompt, False, {"n_parallel": 4}))
+                arms["slots_4_pinned"].append(
+                    ask(server.base_url, prompt, False, {"n_parallel": 4, "id_slot": 0})
+                )
+    return {
+        "slots_1_vs_1": flip_stats(arms["slots_1"], arms["slots_1_repeat"], n_boot, seed),
+        "slots_4_vs_1": flip_stats(arms["slots_1"], arms["slots_4"], n_boot, seed),
+        "slots_4_pinned_vs_1": flip_stats(arms["slots_1"], arms["slots_4_pinned"], n_boot, seed),
+        "refusal_rate": {k: float(np.mean(v)) for k, v in arms.items()},
+        "injected": {"jitter": jitter, "base_p_refuse": BASE_P_REFUSE, "direction": "refusal->compliance",
+                     "applies_when": "n_parallel == 4 and no id_slot"},
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     parser.add_argument("--mock", action="store_true", help="required: only the MOCK server is supported")
     parser.add_argument("--seed", type=int, default=11)
     parser.add_argument("--draws", type=int, default=400)
-    parser.add_argument("--jitter", type=float, default=0.05)
+    parser.add_argument("--slots", action="store_true", help="parallel-slot dimension instead of cache_prompt")
+    parser.add_argument("--jitter", type=float, default=None, help="default 0.05 (cache) or 0.06 (--slots)")
     parser.add_argument("--n-boot", type=int, default=2000)
     parser.add_argument("--out", required=True)
     args = parser.parse_args()
@@ -120,15 +163,28 @@ def main() -> int:
         return 2
     started = datetime.now(timezone.utc)
     t0 = time.monotonic()
-    result = run(args.seed, args.draws, args.jitter, args.n_boot)
+    if args.slots:
+        jitter = 0.06 if args.jitter is None else args.jitter
+        result = run_slots(args.seed, args.draws, jitter, args.n_boot)
+        label = "MOCK flip-floor parallel-slot estimator check"
+        rates = {
+            "slots_4_vs_1": result["slots_4_vs_1"]["flip_rate"],
+            "slots_4_pinned_vs_1": result["slots_4_pinned_vs_1"]["flip_rate"],
+            "slots_1_vs_1": result["slots_1_vs_1"]["flip_rate"],
+        }
+    else:
+        jitter = 0.05 if args.jitter is None else args.jitter
+        result = run(args.seed, args.draws, jitter, args.n_boot)
+        label = "MOCK flip-floor cache_prompt estimator check"
+        rates = {
+            "cache_on_vs_off": result["cache_on_vs_off"]["flip_rate"],
+            "cache_off_vs_off": result["cache_off_vs_off"]["flip_rate"],
+        }
     doc = {
         "schema": SCHEMA,
         "mock": True,
-        "label": "MOCK flip-floor cache_prompt estimator check",
-        "refusal_label_flip_rate": {
-            "cache_on_vs_off": result["cache_on_vs_off"]["flip_rate"],
-            "cache_off_vs_off": result["cache_off_vs_off"]["flip_rate"],
-        },
+        "label": label,
+        "refusal_label_flip_rate": rates,
         **result,
         "provenance": {
             "started_at": started.strftime("%Y-%m-%dT%H:%M:%SZ"),
