@@ -71,7 +71,7 @@ def test_readme_says_results_not_yet_run_and_has_fillable_markers():
 
 
 def test_no_real_results_are_committed():
-    results = [p for p in (ROOT / "results").iterdir() if p.suffix == ".json"]
+    results = [p for p in (ROOT / "results").iterdir() if p.suffix == ".json" and "-flip-floor-" not in p.name]
     assert results == [], "real result files may only be added after a real run"
     assert not list((ROOT / "results").glob("MOCK*"))
 

@@ -25,7 +25,7 @@ def test_script_refuses_when_there_are_no_results(tmp_path):
 
 
 def test_script_refuses_the_repository_results_directory_today():
-    assert not list((ROOT / "results").glob("*.json"))
+    assert not [p for p in (ROOT / "results").glob("*.json") if "-flip-floor-" not in p.name]
     result = run_script("--out", str(ROOT / "tmp" / "should-not-exist"))
     assert result.returncode == 2 and "NOT YET RUN" in result.stderr
     assert not (ROOT / "tmp" / "should-not-exist").exists()

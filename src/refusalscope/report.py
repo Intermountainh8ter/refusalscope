@@ -595,7 +595,7 @@ def make_report(
     readme: str | Path | None = None,
 ) -> list[Path]:
     """Render every results document found in ``results_dir``. Returns the files written."""
-    files = sorted(Path(results_dir).glob("*.json"))
+    files = [p for p in sorted(Path(results_dir).glob("*.json")) if "-flip-floor-" not in p.name]
     if not files:
         raise ReportError(
             f"no result files found in {results_dir}/*.json. Results: NOT YET RUN. Produce them with "
