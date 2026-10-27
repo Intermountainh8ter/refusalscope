@@ -34,9 +34,12 @@ jobs:
       - run: python -m pip install -e .
       - name: End-to-end MOCK run
         run: refusalscope mock-demo --out "$RUNNER_TEMP/mock-demo" --limit 20
-      - name: Report generator must refuse without real results
+      - name: Report generator must refuse an empty results directory
         run: |
-          if python scripts/make_report.py --results results --out "$RUNNER_TEMP/report"; then
-            echo "make_report.py rendered without real results" >&2
+          mkdir -p "$RUNNER_TEMP/empty-results"
+          if python scripts/make_report.py --results "$RUNNER_TEMP/empty-results" --out "$RUNNER_TEMP/report-empty"; then
+            echo "make_report.py rendered with no results at all" >&2
             exit 1
           fi
+      - name: Report generator renders the committed real results
+        run: python scripts/make_report.py --results results --out "$RUNNER_TEMP/report"
