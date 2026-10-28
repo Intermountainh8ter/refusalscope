@@ -93,7 +93,7 @@ family and one abliteration method.
   |------|-------------:|--------:|--------------:|-------------:|
   | 0.6B | 15 pp        | not run | not run       | not run      |
   | 1.7B | 56 pp        | not run | not run       | not run      |
-  | 4B   | 95 pp        | 95 pp   | 97 pp         | 99 pp        |
+  | 4B   | 94 pp        | 95 pp   | 97 pp         | 99 pp        |
   | 8B   | 79 pp        | 86 pp   | 74.5 pp       | 97 pp        |
   | 14B  | 70 pp        | not run | not run       | not run      |
 
@@ -320,7 +320,7 @@ configs/               example and mock configurations
 docs/                  pre-registration, methodology, threats to validity, runbook, flowcharts, launch copy
 scripts/               make_report.py, render_diagrams.sh
 tests/                 pytest suite (mock server only; no network, no GPU)
-results/               real result files only (empty until a real run is analysed)
+results/               real result files only (MOCK output is never committed)
 ```
 
 ## Development

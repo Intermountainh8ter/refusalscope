@@ -34,6 +34,20 @@ def test_script_runs_against_the_repository_results_directory_today(tmp_path):
     assert any(p.suffix == ".md" for p in (tmp_path / "out").iterdir())
 
 
+def test_committed_readme_results_block_is_what_the_script_generates(tmp_path):
+    """The table and status line in the README are generated, never hand-edited: regenerating
+    them from the committed results/ must leave the README byte-identical."""
+    readme = tmp_path / "README.md"
+    original = (ROOT / "README.md").read_text(encoding="utf-8")
+    readme.write_text(original, encoding="utf-8")
+    result = run_script("--out", str(tmp_path / "out"), "--update-readme", str(readme))
+    assert result.returncode == 0, result.stderr
+    assert readme.read_text(encoding="utf-8") == original, (
+        "README results block drifted from results/*.json; run "
+        "`python scripts/make_report.py --update-readme README.md`"
+    )
+
+
 @pytest.fixture(scope="module")
 def demo_results(tmp_path_factory):
     out = tmp_path_factory.mktemp("demo")
