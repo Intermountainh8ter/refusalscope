@@ -1,5 +1,6 @@
 """Repository-level promises: honesty rules, docs that match the code, no leftovers."""
 
+import json
 import re
 import shlex
 import subprocess
@@ -100,23 +101,203 @@ def test_no_harmful_dataset_is_bundled():
     assert not (ROOT / "data").exists()
 
 
-def test_launch_copy_claims_no_result():
+LAUNCH_FILES = ("LINKEDIN.md", "X_THREAD.md", "DISCORD_SHORT.md", "FAQ.md")
+REPO_URL = "https://github.com/Intermountainh8ter/refusalscope"
+
+
+def launch_text(name):
+    return (ROOT / "docs" / "launch" / name).read_text(encoding="utf-8")
+
+
+def flat(text):
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def real_result_docs():
+    """Parsed ``results/*.json`` files, MOCK output excluded (it is never committed)."""
+    paths = sorted(p for p in (ROOT / "results").glob("*.json") if not p.name.startswith("MOCK"))
+    return [json.loads(p.read_text(encoding="utf-8")) for p in paths]
+
+
+def derivable_figures():
+    """Everything a launch file may quote, recomputed from ``results/*.json``.
+
+    Differences are recomputed from the stored stock and ablated rates rather than read from the
+    stored ``rd`` so a hand-edited or stale field cannot make a wrong figure pass. Only the
+    figures the launch copy is allowed to cite are collected: the manipulation-check drop of every
+    result file, the H1 and H2 deltas, the pre-registered margin and gate, and first-token KL.
+    """
+    signed, rates, kl = set(), set(), set()
+
+    def add_delta(stock, ablated):
+        delta = round((ablated - stock) * 100, 1)
+        signed.add(delta)
+
+    docs = real_result_docs()
+    assert docs, "results/ holds no real result files"
+    for doc in docs:
+        signed.add(round(doc["hypotheses"]["sesoi"] * 100, 1))
+        for pair in doc["pairs"].values():
+            check = pair["manipulation_check"]
+            signed.add(round(check["threshold"] * 100, 1))
+            add_delta(check["stock"]["rate"], check["ablated"]["rate"])
+            rates.update(round(check[arm]["rate"] * 100, 1) for arm in ("stock", "ablated"))
+            for name in ("H1", "H2"):
+                test = pair.get("tests", {}).get(name)
+                if test and "stock_rate" in test:
+                    add_delta(test["stock_rate"], test["ablated_rate"])
+                    rates.update(round(test[f"{arm}_rate"] * 100, 1) for arm in ("stock", "ablated"))
+        for pair in doc["pairs"].values():
+            probe = pair.get("kl") or {}
+            if probe.get("measured"):
+                kl.update({round(probe["mean_kl"], 3), round(probe["mean_kl"], 2)})
+    return {"signed": signed, "absolute": {abs(v) for v in signed}, "rates": rates, "kl": kl}
+
+
+PP_CHAIN = re.compile(
+    r"(?<![\w.])([+\-]?\d+(?:\.\d+)?(?:\s*(?:,|to|and|or|-)\s*[+\-]?\d+(?:\.\d+)?)*)"
+    r"\s*(?:pp\b|percentage[ -]points?\b)"
+)
+NUMBER = re.compile(r"([+\-]?)(\d+(?:\.\d+)?)")
+
+
+def quoted_pp_figures(text):
+    """Every number written as 'NN pp' or 'NN.N percentage points', including chains such as
+    '94, 79 and 70 pp' or '56 to 94 pp'. Returns (sign, magnitude) pairs."""
+    out = []
+    for chain in PP_CHAIN.findall(flat(text)):
+        for sign, magnitude in NUMBER.findall(chain):
+            out.append((sign, float(magnitude)))
+    return out
+
+
+def test_quoted_pp_figures_parser_reads_lists_ranges_and_signs():
+    assert quoted_pp_figures("fell 94 pp (4B), 79 pp (8B)") == [("", 94.0), ("", 79.0)]
+    assert quoted_pp_figures("between -2.9 pp and +5.3 pp") == [("-", 2.9), ("+", 5.3)]
+    assert quoted_pp_figures("down 56 to 94 pp") == [("", 56.0), ("", 94.0)]
+    assert quoted_pp_figures("94, 79 and 70 pp") == [("", 94.0), ("", 79.0), ("", 70.0)]
+    assert quoted_pp_figures("a 5 percentage-point margin") == [("", 5.0)]
+    assert quoted_pp_figures("Q8_0 on 14B, 374 cases, no figure here") == []
+
+
+def test_derivable_figures_recomputes_the_known_deltas():
+    """Guards the helper itself: the README's published deltas must come out of it."""
+    figures = derivable_figures()
+    for expected in (-2.9, 0.0, 0.5, 5.3, -6.3, 0.3, -1.3, 3.7, -94.0, -79.0, -56.0, -70.0, -15.0):
+        assert expected in figures["signed"], expected
+    assert 5.0 in figures["absolute"] and 30.0 in figures["absolute"]
+    assert 0.009 in figures["kl"] and 0.235 in figures["kl"] and 1.03 in figures["kl"]
+    assert -99.0 in figures["signed"] and 74.5 in figures["absolute"]  # corpus replications
+    assert 77.0 not in figures["absolute"] and 95.5 not in figures["signed"]  # nothing invented
+
+
+def test_launch_copy_reports_the_real_run_honestly():
     files = sorted((ROOT / "docs" / "launch").glob("*.md"))
-    assert {f.name for f in files} == {"LINKEDIN.md", "X_THREAD.md", "DISCORD_SHORT.md", "FAQ.md"}
-    claims = re.compile(
-        r"\b(we|i) (found|measured|showed|observed|discovered)\b|\bresults? (show|reveal|indicate)|"
-        r"\bour results\b|\bsignificantly (lower|higher|worse|better)\b|\boutperform",
+    assert {f.name for f in files} == set(LAUNCH_FILES)
+    stale = re.compile(
+        r"NOT YET RUN|no results? yet|there are no results|no real model|has not been run|"
+        r"nothing has been run|harness and pre-registration only",
         re.IGNORECASE,
     )
-    for file in files:
-        text = file.read_text(encoding="utf-8")
-        assert "%" not in text, (
-            f"{file.name}: numbers with percent signs are not allowed before results exist"
+    overclaims = re.compile(
+        r"outperform|state[- ]of[- ]the[- ]art|\bprov(?:es|en)\b|safe to use|no effect on|"
+        r"significantly (?:lower|higher|worse|better)|breakthrough|game[- ]chang",
+        re.IGNORECASE,
+    )
+    h3_not_testable = re.compile(
+        r"\bH3\b[^.]{0,160}\bnot testable\b|\bnot testable\b[^.]{0,160}\bH3\b", re.IGNORECASE
+    )
+    not_safe = re.compile(r"\bnot\b[^.]{0,80}\bsafe\b", re.IGNORECASE)
+    for name in LAUNCH_FILES:
+        text = flat(launch_text(name))
+        assert not stale.search(text), f"{name}: still describes the pre-results world"
+        assert not overclaims.search(text), f"{name}: overclaims"
+        assert "synthetic" in text.lower(), f"{name}: must say the suites are synthetic"
+        assert h3_not_testable.search(text), f"{name}: must say H3 was not testable"
+        assert not_safe.search(text), f"{name}: must say the result does not show ablation is safe"
+        assert re.search(r"\b(?:5 pp|5 percentage[- ]points?)\b", text), (
+            f"{name}: must state the 5 pp resolution limit"
         )
-        assert not claims.search(text), f"{file.name}: reads like a result claim"
-        assert re.search(r"NOT YET RUN|no results? yet|No result", text), (
-            f"{file.name}: must state the status"
+        assert re.search(r"opposite|contrary|went up", text, re.IGNORECASE), (
+            f"{name}: must mention that some results went against the prediction"
         )
+
+
+def test_launch_posts_carry_the_exact_repository_url():
+    for name in ("LINKEDIN.md", "X_THREAD.md", "DISCORD_SHORT.md"):
+        assert REPO_URL in launch_text(name), name
+    assert "first comment" not in launch_text("LINKEDIN.md").lower()
+    linkedin = launch_text("LINKEDIN.md")
+    assert linkedin.index(REPO_URL) > linkedin.index("What this does not show")
+
+
+def x_posts():
+    body = launch_text("X_THREAD.md")
+    parts = re.split(r"(?m)^(?=\d+/ )", body)
+    return [flat(part) for part in parts if re.match(r"\d+/ ", part)]
+
+
+def test_x_thread_posts_are_numbered_and_fit_280_characters():
+    posts = x_posts()
+    assert len(posts) >= 8
+    for expected, post in enumerate(posts, start=1):
+        assert post.startswith(f"{expected}/ "), f"post {expected} is out of order"
+        assert len(post) <= 280, f"post {expected} is {len(post)} characters"
+    assert REPO_URL in posts[-1], "the repository link belongs in the last post"
+    assert sum(REPO_URL in post for post in posts) == 1
+
+
+def test_launch_figures_are_derivable_from_the_result_files():
+    """Every 'NN pp', rate and KL figure in the launch copy must be recomputable from results/."""
+    figures = derivable_figures()
+    for name in LAUNCH_FILES:
+        text = flat(launch_text(name))
+        pp = quoted_pp_figures(text)
+        assert pp, f"{name}: quotes no pp figure at all"
+        for sign, magnitude in pp:
+            if sign in ("+", "-"):
+                value = -magnitude if sign == "-" else magnitude
+                assert value in figures["signed"], f"{name}: {sign}{magnitude} pp is not in results/"
+            else:
+                assert magnitude in figures["absolute"], f"{name}: {magnitude} pp is not in results/"
+        for percent in re.findall(r"(\d+(?:\.\d+)?)\s?%", text):
+            assert float(percent) in figures["rates"], f"{name}: {percent}% is not in results/"
+        for sentence in re.split(r"(?<=[.!?])\s+(?=[A-Z])", text):
+            if re.search(r"\bKL\b", sentence):
+                for number in re.findall(r"\b\d\.\d{2,3}\b", sentence):
+                    assert float(number) in figures["kl"], f"{name}: KL {number} is not in results/"
+
+
+def test_launch_case_counts_match_the_result_files():
+    counts = {"tool-calling": set(), "injection": set()}
+    for doc in real_result_docs():
+        for pair in doc["pairs"].values():
+            tests = pair.get("tests", {})
+            if "stock_rate" in tests.get("H1", {}):
+                counts["tool-calling"].add(tests["H1"]["n"])
+            if "stock_rate" in tests.get("H2", {}):
+                counts["injection"].add(tests["H2"]["n"])
+    assert counts["tool-calling"] == {374} and counts["injection"] == {378}
+    for name in LAUNCH_FILES:
+        for number, kind in re.findall(
+            r"\b(\d{3})\s+(?:synthetic\s+)?(tool-calling|injection)\b", flat(launch_text(name))
+        ):
+            assert {int(number)} == counts[kind], f"{name}: {number} {kind} cases"
+
+
+def test_faq_ends_with_the_ai_disclosure_verbatim():
+    entry = (
+        "**Was AI used to build this?** Yes. An AI coding assistant wrote most of the code, tests "
+        "and prose in this repository (the commits are co-authored in the git history). I directed "
+        "the work and ran the real-model benchmarks on my own hardware. The README results table is "
+        "generated by a script from committed result files and a test fails if it drifts; the "
+        "figures quoted in the findings prose and the launch posts are recomputed by tests, but "
+        "the interpretation is hand-written. Read the code and the pre-registration before "
+        "trusting any conclusion."
+    )
+    text = flat(launch_text("FAQ.md"))
+    assert text.endswith(entry), "the AI-use entry must be the last FAQ entry, verbatim"
+    assert "**Is there a result?** Yes" in text
 
 
 # ------------------------------------------------------------------ pre-registration order

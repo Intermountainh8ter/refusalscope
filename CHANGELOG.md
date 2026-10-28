@@ -4,7 +4,8 @@ All notable changes are listed here. Results from different suite versions must 
 
 ## 0.1.0 - 2026-10-14
 
-First release of the harness. **No real model has been evaluated; there are no results.**
+First release of the harness. The first real-model runs made with it (five Qwen3 pairs and one
+Llama-3.1-8B pair) are committed in `results/` and summarised in the README.
 
 ### Added
 

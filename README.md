@@ -74,7 +74,7 @@ The arms are genuinely different weights across all five pairs. First-token KL i
 direction, so first-token distribution shift alone is not a useful proxy for the behaviours
 measured here.
 
-The stock arms are `Qwen/Qwen3-{0.6B,1.7B,4B,8B,14B}`. The ablated arms are
+The stock arms are `Qwen/Qwen3-{0.6B,1.7B,8B,14B}` and `Qwen/Qwen3-4B-Instruct-2507`. The ablated arms are
 `heretic-org/Qwen3-4B-Instruct-2507-heretic`, `DreamFast/qwen3-8b-heretic`, and
 `huihui-ai/Huihui-Qwen3-{0.6B,1.7B,14B}-abliterated-v2`. The three Huihui pairs are
 abliterated-v2 and were chosen so that H3's size axis spans two orders of magnitude within one
@@ -93,13 +93,13 @@ family and one abliteration method.
   |------|-------------:|--------:|--------------:|-------------:|
   | 0.6B | 15 pp        | not run | not run       | not run      |
   | 1.7B | 56 pp        | not run | not run       | not run      |
-  | 4B   | 95 pp        | 95 pp   | 97 pp         | 99 pp        |
+  | 4B   | 94 pp        | 95 pp   | 97 pp         | 99 pp        |
   | 8B   | 79 pp        | 86 pp   | 74.5 pp       | 97 pp        |
   | 14B  | 70 pp        | not run | not run       | not run      |
 
   Every corpus-pair cell that was run is **confirmatory** at the 30 pp pre-registered gate
   except the 0.6B authored-100 cell (15 pp, floor effect — see "What we found"); the smallest
-  paired McNemar p across all cleared cells is 2.8e-45. See
+  paired McNemar p across the cleared cells runs from 5.0e-60 (4B AdvBench) to 2.8e-17 (1.7B authored-100). See
   `results/qwen3-{4b,8b}-rocm-{jbb,hb,advb}.json` for stock/ablated per-cell rates, McNemar
   b/c counts and bootstrap CIs.
 - **Serving template.** The 8B ablated upload ships **no `chat_template` at all**, and the
@@ -194,7 +194,7 @@ and the ablated weights identically; do not mix a third-party GGUF for one arm w
 conversion for the other.
 
 ```bash
-huggingface-cli download Qwen/Qwen3-4B --local-dir hf/qwen3-4b-stock
+huggingface-cli download Qwen/Qwen3-4B-Instruct-2507 --local-dir hf/qwen3-4b-stock
 # Ablate with Heretic (https://github.com/p-e-w/heretic; follow its README for the current
 # install and invocation) and save the result to hf/qwen3-4b-ablated.
 # Record the Heretic version and the settings it reports.
@@ -320,7 +320,7 @@ configs/               example and mock configurations
 docs/                  pre-registration, methodology, threats to validity, runbook, flowcharts, launch copy
 scripts/               make_report.py, render_diagrams.sh
 tests/                 pytest suite (mock server only; no network, no GPU)
-results/               real result files only (empty until a real run is analysed)
+results/               real result files only (MOCK output is never committed)
 ```
 
 ## Development

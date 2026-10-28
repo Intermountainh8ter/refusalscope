@@ -38,7 +38,7 @@ Use the same pipeline for both arms. Quantisation differences between arms confo
 
 ```powershell
 pip install huggingface_hub
-huggingface-cli download Qwen/Qwen3-4B --local-dir C:\models\hf\qwen3-4b-stock
+huggingface-cli download Qwen/Qwen3-4B-Instruct-2507 --local-dir C:\models\hf\qwen3-4b-stock
 # Run Heretic on the stock checkpoint (follow https://github.com/p-e-w/heretic for the current
 # install and command) and save the ablated weights to C:\models\hf\qwen3-4b-ablated.
 # Write down the Heretic version and the parameters it reports; put them in the config notes.

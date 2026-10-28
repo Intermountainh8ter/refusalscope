@@ -4,8 +4,11 @@ Result files produced by **real** runs live here, one JSON file per run, named a
 (`refusalscope analyze` writes them). `scripts/make_report.py` and `refusalscope report` build
 every table and figure from these files and from nothing else.
 
-Status: **no results yet.** The repository ships with this note only. Until a real run has been
-analysed, the README says `Results: NOT YET RUN` and the report generator refuses to render.
+Status: **real results are committed here**: one file per analysed run, covering five Qwen3 pairs
+(0.6B, 1.7B, 4B, 8B, 14B), the 4B and 8B ablation-check replications on three public corpora
+(`*-jbb.json`, `*-hb.json`, `*-advb.json`) and a Llama-3.1-8B pair (`llama31-8b-abliterated-rocm.json`).
+The README table is generated from these files. With no real result file in this directory, the
+report generator refuses to render (`Results: NOT YET RUN`), by design.
 
 Rules:
 
