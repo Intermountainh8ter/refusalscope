@@ -87,6 +87,21 @@ def make_slot_responder(seed: int, jitter: float):
     return responder
 
 
+def make_template_responder(seed: int, jitter: float):
+    """Jitter only when the chat-template variant is B."""
+
+    def responder(body: dict) -> MockReply:
+        text = body["messages"][-1]["content"]
+        case, draw = DRAW_TAG.search(text).groups()
+        refuse = stable_rng("flip-base", seed, case).random() < BASE_P_REFUSE
+        if body.get("template") == "B" and stable_rng("flip-template-jitter", seed, case, draw).random() < jitter:
+            refuse = False
+        pool = REFUSAL_TEXTS if refuse else COMPLIANCE_TEXTS
+        return MockReply(content=stable_rng("flip-text", seed, case, draw, bool(refuse)).choice(pool))
+
+    return responder
+
+
 def ask(url: str, prompt: str, cache_prompt: bool, extra: dict | None = None) -> bool:
     payload = {
         "model": "mock-model",
@@ -148,12 +163,34 @@ def run_slots(seed: int, draws: int, jitter: float, n_boot: int) -> dict:
     }
 
 
+def run_template(seed: int, draws: int, jitter: float, n_boot: int) -> dict:
+    items = borderline_items()
+    reps = draws // len(items)
+    arms: dict[str, list[bool]] = {"template_a": [], "template_a_repeat": [], "template_b": []}
+    with MockServer(responder=make_template_responder(seed, jitter)) as server:
+        for rep in range(reps):
+            for item in items:
+                prompt = f"{item['prompt']} [case {item['id']} draw {rep}]"
+                a = {"template": "A"}
+                arms["template_a"].append(ask(server.base_url, prompt, False, a))
+                arms["template_a_repeat"].append(ask(server.base_url, prompt, False, a))
+                arms["template_b"].append(ask(server.base_url, prompt, False, {"template": "B"}))
+    return {
+        "template_a_vs_a": flip_stats(arms["template_a"], arms["template_a_repeat"], n_boot, seed),
+        "template_b_vs_a": flip_stats(arms["template_a"], arms["template_b"], n_boot, seed),
+        "refusal_rate": {k: float(np.mean(v)) for k, v in arms.items()},
+        "injected": {"jitter": jitter, "base_p_refuse": BASE_P_REFUSE, "direction": "refusal->compliance",
+                     "applies_when": "template == B"},
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     parser.add_argument("--mock", action="store_true", help="required: only the MOCK server is supported")
     parser.add_argument("--seed", type=int, default=11)
     parser.add_argument("--draws", type=int, default=400)
     parser.add_argument("--slots", action="store_true", help="parallel-slot dimension instead of cache_prompt")
+    parser.add_argument("--template", action="store_true", help="chat-template-variant dimension")
     parser.add_argument("--jitter", type=float, default=None, help="default 0.05 (cache) or 0.06 (--slots)")
     parser.add_argument("--n-boot", type=int, default=2000)
     parser.add_argument("--out", required=True)
@@ -163,7 +200,15 @@ def main() -> int:
         return 2
     started = datetime.now(timezone.utc)
     t0 = time.monotonic()
-    if args.slots:
+    if args.template:
+        jitter = 0.07 if args.jitter is None else args.jitter
+        result = run_template(args.seed, args.draws, jitter, args.n_boot)
+        label = "MOCK flip-floor chat-template variant estimator check"
+        rates = {
+            "template_b_vs_a": result["template_b_vs_a"]["flip_rate"],
+            "template_a_vs_a": result["template_a_vs_a"]["flip_rate"],
+        }
+    elif args.slots:
         jitter = 0.06 if args.jitter is None else args.jitter
         result = run_slots(args.seed, args.draws, jitter, args.n_boot)
         label = "MOCK flip-floor parallel-slot estimator check"

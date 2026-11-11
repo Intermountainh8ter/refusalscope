@@ -15,3 +15,11 @@ Hypothesis: on the MOCK server with a seeded 6% per-draw label jitter applied on
 Metric: /refusal_label_flip_rate/slots_4_vs_1 (expected between 0.02 and 0.10; pinned-slot arm flip rate equals 0).
 
 Falsifier: slots_4_vs_1 outside 0.02 to 0.10, or the pinned-slot arm flip rate nonzero, or McNemar p-value 0.05 or higher.
+
+## 2026-11-11T10:53:53Z flip-floor-template-mock proposal:c50315a44fff5a1ee845ffaf3748b4ec85fa0ec39e6bfc256a80e32dd6a7a90d
+
+Hypothesis: on the MOCK server with a seeded 7% per-draw label jitter applied only when the template variant is B and not A, the paired refusal-label flip rate between template A and template B over the 40-case borderline set repeated to 400 draws lies in 0.03 to 0.11, the A-versus-A repeat flip rate is exactly 0, and the exact McNemar p-value for the A-vs-B pair is below 0.05.
+
+Metric: /refusal_label_flip_rate/template_b_vs_a (expected between 0.03 and 0.11; template_a_vs_a equals 0).
+
+Falsifier: template_b_vs_a outside 0.03 to 0.11, or template_a_vs_a nonzero, or McNemar p-value 0.05 or higher.

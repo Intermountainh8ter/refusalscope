@@ -75,3 +75,14 @@ def test_slots_run_is_seeded_and_pinned_arm_is_exact():
 
 def test_slots_zero_jitter_gives_zero_flip_rate():
     assert flip_floor.run_slots(3, 40, 0.0, 50)["slots_4_vs_1"]["flip_rate"] == 0
+
+
+def test_template_run_is_seeded_and_a_repeat_is_exact():
+    first = flip_floor.run_template(3, 80, 0.3, 100)
+    assert first == flip_floor.run_template(3, 80, 0.3, 100)
+    assert first["template_a_vs_a"]["flip_rate"] == 0
+    assert first["template_b_vs_a"]["flip_rate"] > 0
+
+
+def test_template_zero_jitter_gives_zero_flip_rate():
+    assert flip_floor.run_template(3, 40, 0.0, 50)["template_b_vs_a"]["flip_rate"] == 0
