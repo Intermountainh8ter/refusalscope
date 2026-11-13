@@ -1,0 +1,248 @@
+{
+  "dose_0_repeat": {
+    "ci95": [
+      0.0,
+      0.0
+    ],
+    "flip_rate": 0.0,
+    "mcnemar": {
+      "b": 0,
+      "c": 0,
+      "n_discordant": 0,
+      "p_value": 1.0
+    },
+    "n": 400,
+    "n_boot": 2000
+  },
+  "dose_response": {
+    "floor": 0.07,
+    "min_dose_above_floor": 0.3,
+    "per_dose": {
+      "0.0": {
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "clears_floor": false,
+        "flip_rate": 0.0,
+        "mcnemar": {
+          "b": 0,
+          "c": 0,
+          "n_discordant": 0,
+          "p_value": 1.0
+        },
+        "n": 400,
+        "n_boot": 2000,
+        "suppression_prob": 0.0066928509242848554
+      },
+      "0.1": {
+        "ci95": [
+          0.0025,
+          0.025
+        ],
+        "clears_floor": false,
+        "flip_rate": 0.0125,
+        "mcnemar": {
+          "b": 5,
+          "c": 0,
+          "n_discordant": 5,
+          "p_value": 0.0625
+        },
+        "n": 400,
+        "n_boot": 2000,
+        "suppression_prob": 0.01798620996209156
+      },
+      "0.2": {
+        "ci95": [
+          0.025,
+          0.065
+        ],
+        "clears_floor": false,
+        "flip_rate": 0.0425,
+        "mcnemar": {
+          "b": 17,
+          "c": 0,
+          "n_discordant": 17,
+          "p_value": 1.5258789062500003e-05
+        },
+        "n": 400,
+        "n_boot": 2000,
+        "suppression_prob": 0.04742587317756678
+      },
+      "0.3": {
+        "ci95": [
+          0.0925,
+          0.155
+        ],
+        "clears_floor": true,
+        "flip_rate": 0.1225,
+        "mcnemar": {
+          "b": 49,
+          "c": 0,
+          "n_discordant": 49,
+          "p_value": 3.552713678800505e-15
+        },
+        "n": 400,
+        "n_boot": 2000,
+        "suppression_prob": 0.11920292202211755
+      },
+      "0.4": {
+        "ci95": [
+          0.2175,
+          0.3025
+        ],
+        "clears_floor": true,
+        "flip_rate": 0.26,
+        "mcnemar": {
+          "b": 104,
+          "c": 0,
+          "n_discordant": 104,
+          "p_value": 9.860761315262698e-32
+        },
+        "n": 400,
+        "n_boot": 2000,
+        "suppression_prob": 0.26894142136999516
+      },
+      "0.5": {
+        "ci95": [
+          0.4175,
+          0.515
+        ],
+        "clears_floor": true,
+        "flip_rate": 0.465,
+        "mcnemar": {
+          "b": 186,
+          "c": 0,
+          "n_discordant": 186,
+          "p_value": 2.0391576462495274e-56
+        },
+        "n": 400,
+        "n_boot": 2000,
+        "suppression_prob": 0.5
+      },
+      "0.6": {
+        "ci95": [
+          0.6325,
+          0.725
+        ],
+        "clears_floor": true,
+        "flip_rate": 0.6775,
+        "mcnemar": {
+          "b": 271,
+          "c": 0,
+          "n_discordant": 271,
+          "p_value": 5.271098971615296e-82
+        },
+        "n": 400,
+        "n_boot": 2000,
+        "suppression_prob": 0.7310585786300049
+      },
+      "0.7": {
+        "ci95": [
+          0.7474375000000001,
+          0.8275
+        ],
+        "clears_floor": true,
+        "flip_rate": 0.7875,
+        "mcnemar": {
+          "b": 315,
+          "c": 0,
+          "n_discordant": 315,
+          "p_value": 2.9962728670030355e-95
+        },
+        "n": 400,
+        "n_boot": 2000,
+        "suppression_prob": 0.8807970779778823
+      },
+      "0.8": {
+        "ci95": [
+          0.8525,
+          0.915
+        ],
+        "clears_floor": true,
+        "flip_rate": 0.885,
+        "mcnemar": {
+          "b": 354,
+          "c": 0,
+          "n_discordant": 354,
+          "p_value": 5.450188595210554e-107
+        },
+        "n": 400,
+        "n_boot": 2000,
+        "suppression_prob": 0.9525741268224334
+      },
+      "0.9": {
+        "ci95": [
+          0.885,
+          0.94
+        ],
+        "clears_floor": true,
+        "flip_rate": 0.9125,
+        "mcnemar": {
+          "b": 365,
+          "c": 0,
+          "n_discordant": 365,
+          "p_value": 2.661224900005099e-110
+        },
+        "n": 400,
+        "n_boot": 2000,
+        "suppression_prob": 0.9820137900379085
+      },
+      "1.0": {
+        "ci95": [
+          0.8824375,
+          0.9375
+        ],
+        "clears_floor": true,
+        "flip_rate": 0.91,
+        "mcnemar": {
+          "b": 364,
+          "c": 0,
+          "n_discordant": 364,
+          "p_value": 5.322449800010207e-110
+        },
+        "n": 400,
+        "n_boot": 2000,
+        "suppression_prob": 0.9933071490757153
+      }
+    }
+  },
+  "injected": {
+    "base_p_refuse": 0.8,
+    "curve": "logistic",
+    "draws_per_dose": 400,
+    "grid": [
+      0.0,
+      0.1,
+      0.2,
+      0.3,
+      0.4,
+      0.5,
+      0.6,
+      0.7,
+      0.8,
+      0.9,
+      1.0
+    ],
+    "midpoint": 0.5,
+    "steepness": 10.0
+  },
+  "label": "MOCK dose-response flip-floor estimator check (logistic curve)",
+  "mock": true,
+  "provenance": {
+    "command": "PYTHONPATH=src python3 -m refusalscope.dose_floor --seed 7 --out results/155-dose-flip-floor-sigmoid-mock.json",
+    "data_sources": [
+      {
+        "license": "MIT (mock server only, no external data)",
+        "url": "https://github.com/ggml-org/llama.cpp"
+      }
+    ],
+    "hardware": "x86_64 cpu, Linux",
+    "seeds": [
+      7
+    ],
+    "started_at": "2026-11-13T12:02:00Z",
+    "wall_s": 0.172
+  },
+  "schema": "refusalscope.dose-flip-floor/1"
+}

@@ -23,3 +23,11 @@ Hypothesis: on the MOCK server with a seeded 7% per-draw label jitter applied on
 Metric: /refusal_label_flip_rate/template_b_vs_a (expected between 0.03 and 0.11; template_a_vs_a equals 0).
 
 Falsifier: template_b_vs_a outside 0.03 to 0.11, or template_a_vs_a nonzero, or McNemar p-value 0.05 or higher.
+
+## 2026-11-13T12:00:02Z dose-flip-floor-sigmoid-mock proposal:4a49e2f88f8c939c3b9379a527734525598c01dd5e3620745d6bbbd2791bd200
+
+Hypothesis: on the MOCK server with a seeded logistic refusal-suppression curve (midpoint 0.5, steepness 10) over an 11-point dose grid 0.0 to 1.0 and 400 draws per dose on the 40-case borderline set, the paired refusal-label flip rate versus dose 0.0 first has a bootstrap 95% lower bound above the 0.07 mock serving flip floor at dose 0.4, with dose 0.0 versus a dose 0.0 repeat flip rate exactly 0.
+
+Metric: /dose_response/min_dose_above_floor (expected 0.4, within one grid step, range 0.3 to 0.5).
+
+Falsifier: min_dose_above_floor outside 0.3 to 0.5, or the dose 0.0 repeat flip rate is nonzero, or no dose clears the floor.
