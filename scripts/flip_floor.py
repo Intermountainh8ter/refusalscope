@@ -102,6 +102,22 @@ def make_template_responder(seed: int, jitter: float):
     return responder
 
 
+def make_batch_responder(seed: int, jitter: float):
+    """Jitter only when batch size is 8 and batch-invariant kernels are off."""
+
+    def responder(body: dict) -> MockReply:
+        text = body["messages"][-1]["content"]
+        case, draw = DRAW_TAG.search(text).groups()
+        refuse = stable_rng("flip-base", seed, case).random() < BASE_P_REFUSE
+        varies = body.get("batch_size") == 8 and not body.get("batch_invariant")
+        if varies and stable_rng("flip-batch-jitter", seed, case, draw).random() < jitter:
+            refuse = False
+        pool = REFUSAL_TEXTS if refuse else COMPLIANCE_TEXTS
+        return MockReply(content=stable_rng("flip-text", seed, case, draw, bool(refuse)).choice(pool))
+
+    return responder
+
+
 def ask(url: str, prompt: str, cache_prompt: bool, extra: dict | None = None) -> bool:
     payload = {
         "model": "mock-model",
@@ -184,6 +200,41 @@ def run_template(seed: int, draws: int, jitter: float, n_boot: int) -> dict:
     }
 
 
+def run_batch(seed: int, draws: int, jitter: float, n_boot: int) -> dict:
+    items = borderline_items()
+    reps = draws // len(items)
+    names = ("batch_1", "batch_1_repeat", "batch_8", "batch_8_invariant")
+    arms: dict[str, list[bool]] = {k: [] for k in names}
+    with MockServer(responder=make_batch_responder(seed, jitter)) as server:
+        for rep in range(reps):
+            for item in items:
+                prompt = f"{item['prompt']} [case {item['id']} draw {rep}]"
+                one = {"batch_size": 1}
+                arms["batch_1"].append(ask(server.base_url, prompt, False, one))
+                arms["batch_1_repeat"].append(ask(server.base_url, prompt, False, one))
+                arms["batch_8"].append(ask(server.base_url, prompt, False, {"batch_size": 8}))
+                arms["batch_8_invariant"].append(
+                    ask(server.base_url, prompt, False, {"batch_size": 8, "batch_invariant": True})
+                )
+    floor = flip_stats(arms["batch_1"], arms["batch_1_repeat"], n_boot, seed)
+    paired = flip_stats(arms["batch_1"], arms["batch_8"], n_boot, seed)
+    invariant = flip_stats(arms["batch_1"], arms["batch_8_invariant"], n_boot, seed)
+    return {
+        "batch": {
+            "repeat_floor": floor["flip_rate"],
+            "paired_flip": paired["flip_rate"],
+            "paired_flip_over_floor": paired["flip_rate"] - floor["flip_rate"],
+            "invariant_flip": invariant["flip_rate"],
+        },
+        "batch_1_vs_1": floor,
+        "batch_8_vs_1": paired,
+        "batch_8_invariant_vs_1": invariant,
+        "refusal_rate": {k: float(np.mean(v)) for k, v in arms.items()},
+        "injected": {"jitter": jitter, "base_p_refuse": BASE_P_REFUSE, "direction": "refusal->compliance",
+                     "applies_when": "batch_size == 8 and batch_invariant is off"},
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     parser.add_argument("--mock", action="store_true", help="required: only the MOCK server is supported")
@@ -191,6 +242,7 @@ def main() -> int:
     parser.add_argument("--draws", type=int, default=400)
     parser.add_argument("--slots", action="store_true", help="parallel-slot dimension instead of cache_prompt")
     parser.add_argument("--template", action="store_true", help="chat-template-variant dimension")
+    parser.add_argument("--batch", action="store_true", help="batch-size dimension with a batch-invariant arm")
     parser.add_argument("--jitter", type=float, default=None, help="default 0.05 (cache) or 0.06 (--slots)")
     parser.add_argument("--n-boot", type=int, default=2000)
     parser.add_argument("--out", required=True)
@@ -200,7 +252,16 @@ def main() -> int:
         return 2
     started = datetime.now(timezone.utc)
     t0 = time.monotonic()
-    if args.template:
+    if args.batch:
+        jitter = 0.06 if args.jitter is None else args.jitter
+        result = run_batch(args.seed, args.draws, jitter, args.n_boot)
+        label = "MOCK flip-floor batch-size estimator check"
+        rates = {
+            "batch_8_vs_1": result["batch"]["paired_flip"],
+            "batch_8_invariant_vs_1": result["batch"]["invariant_flip"],
+            "batch_1_vs_1": result["batch"]["repeat_floor"],
+        }
+    elif args.template:
         jitter = 0.07 if args.jitter is None else args.jitter
         result = run_template(args.seed, args.draws, jitter, args.n_boot)
         label = "MOCK flip-floor chat-template variant estimator check"

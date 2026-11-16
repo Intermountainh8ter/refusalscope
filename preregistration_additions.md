@@ -31,3 +31,11 @@ Hypothesis: on the MOCK server with a seeded logistic refusal-suppression curve 
 Metric: /dose_response/min_dose_above_floor (expected 0.4, within one grid step, range 0.3 to 0.5).
 
 Falsifier: min_dose_above_floor outside 0.3 to 0.5, or the dose 0.0 repeat flip rate is nonzero, or no dose clears the floor.
+
+## 2026-11-16T11:14:31Z flip-floor-batch-mock proposal:4bf3d69562dd1583d99d1dd26290a8e784994ea98e1bd8c7d5903cd0d45c0a7a
+
+Hypothesis: on the MOCK server with a seeded 0.06 per-draw label jitter applied only when batch size is 8 and batch-invariant kernels are off, the paired refusal-label flip rate between batch 1 and batch 8 over the 40-case borderline set at 400 draws exceeds the batch-1 repeat flip rate (exactly 0) with a bootstrap lower bound above 0, while the batch-invariant arm at batch 8 flips at exactly 0.
+
+Metric: /batch/paired_flip_over_floor (expected between 0.02 and 0.10; the batch-1 repeat floor and the batch-invariant arm flip rate both equal 0).
+
+Falsifier: paired_flip_over_floor outside 0.02 to 0.10, or the batch-invariant arm flip rate nonzero, or the batch-1 repeat floor nonzero.

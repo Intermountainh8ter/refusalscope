@@ -86,3 +86,11 @@ def test_template_run_is_seeded_and_a_repeat_is_exact():
 
 def test_template_zero_jitter_gives_zero_flip_rate():
     assert flip_floor.run_template(3, 40, 0.0, 50)["template_b_vs_a"]["flip_rate"] == 0
+
+
+def test_batch_run_is_seeded_floor_and_invariant_arm_are_exact():
+    first = flip_floor.run_batch(3, 80, 0.3, 100)
+    assert first == flip_floor.run_batch(3, 80, 0.3, 100)
+    assert first["batch"]["repeat_floor"] == 0
+    assert first["batch"]["invariant_flip"] == 0
+    assert first["batch"]["paired_flip_over_floor"] > 0

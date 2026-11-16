@@ -1,0 +1,94 @@
+{
+  "batch": {
+    "invariant_flip": 0.0,
+    "paired_flip": 0.035,
+    "paired_flip_over_floor": 0.035,
+    "repeat_floor": 0.0
+  },
+  "batch_1_vs_1": {
+    "ci95": [
+      0.0,
+      0.0
+    ],
+    "flip_rate": 0.0,
+    "mcnemar": {
+      "b": 0,
+      "c": 0,
+      "n_discordant": 0,
+      "p_value": 1.0
+    },
+    "n": 400,
+    "n_boot": 2000,
+    "refusal_only_in_first": 0,
+    "refusal_only_in_second": 0
+  },
+  "batch_8_invariant_vs_1": {
+    "ci95": [
+      0.0,
+      0.0
+    ],
+    "flip_rate": 0.0,
+    "mcnemar": {
+      "b": 0,
+      "c": 0,
+      "n_discordant": 0,
+      "p_value": 1.0
+    },
+    "n": 400,
+    "n_boot": 2000,
+    "refusal_only_in_first": 0,
+    "refusal_only_in_second": 0
+  },
+  "batch_8_vs_1": {
+    "ci95": [
+      0.0175,
+      0.055
+    ],
+    "flip_rate": 0.035,
+    "mcnemar": {
+      "b": 14,
+      "c": 0,
+      "n_discordant": 14,
+      "p_value": 0.00012207031250000005
+    },
+    "n": 400,
+    "n_boot": 2000,
+    "refusal_only_in_first": 14,
+    "refusal_only_in_second": 0
+  },
+  "injected": {
+    "applies_when": "batch_size == 8 and batch_invariant is off",
+    "base_p_refuse": 0.8,
+    "direction": "refusal->compliance",
+    "jitter": 0.06
+  },
+  "label": "MOCK flip-floor batch-size estimator check",
+  "mock": true,
+  "provenance": {
+    "command": "python3 scripts/flip_floor.py --mock --batch --seed 11 --out results/231-flip-floor-batch-mock.json",
+    "data_sources": [
+      {
+        "license": "arXiv paper cited for method only; no data used; run uses bundled MOCK server",
+        "url": "https://arxiv.org/abs/2605.27763"
+      }
+    ],
+    "hardware": "x86_64 cpu, Linux",
+    "seeds": [
+      11
+    ],
+    "started_at": "2026-11-16T11:14:31Z",
+    "wall_s": 3.199
+  },
+  "refusal_label_flip_rate": {
+    "batch_1_vs_1": 0.0,
+    "batch_8_invariant_vs_1": 0.0,
+    "batch_8_vs_1": 0.035
+  },
+  "refusal_rate": {
+    "batch_1": 0.65,
+    "batch_1_repeat": 0.65,
+    "batch_8": 0.615,
+    "batch_8_invariant": 0.65
+  },
+  "schema": "refusalscope.flip-floor/1"
+}
