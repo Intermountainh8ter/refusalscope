@@ -135,3 +135,11 @@ Hypothesis: on 1000 seeded synthetic items with repeat-run label jitter 0.06 and
 Metric: /stacked_sources/power/stacked/shift_0.04/1000 (expected between 0.30 and 0.75; jitter-only power 0.80 to 0.97; identical-stack stacked false-positive rate above 0.10; degenerate stubs exactly 0).
 
 Falsifier: stacked power outside 0.30 to 0.75, jitter-only power outside 0.80 to 0.97, identical-stack stacked false-positive rate at or below 0.10, or any degenerate stub with nonzero power or false-positive rate.
+
+## 2026-11-27T19:34:34Z 694-divergence-flip-floor-stub proposal:d4e360e2fac2164df45a67588ddd6f9093d0f5f067a1fc418a8b9596116dec23
+
+Hypothesis: on seeded synthetic items with repeat-run label jitter 0.06 and 400 simulated studies per cell, a stub whose text-refusal rate falls from 0.90 to 0.20 under ablation while its tool-call-refusal rate falls from 0.90 to 0.35 (divergence 0.15) has a z-test power on the per-prompt difference in drops between 0.75 and 0.95 at 300 prompts and between 0.30 and 0.70 at 100 prompts (text/tool latent correlation 0.3), power at correlation 0.8 is within 0.10 of power at correlation 0.3, the zero-divergence false-positive rate is at most 0.10 at every grid point, and always-refuse and always-comply stubs have power and false-positive rate of exactly 0.
+
+Metric: /divergence/power/rho_0.3/divergence_0.15/300 (expected between 0.75 and 0.95; 100-prompt power 0.30 to 0.70; zero-divergence false-positive rate at most 0.10; degenerate stubs exactly 0).
+
+Falsifier: power at 300 prompts outside 0.75 to 0.95, power at 100 prompts outside 0.30 to 0.70, correlation 0.8 power differing from correlation 0.3 power by more than 0.10, any zero-divergence false-positive rate above 0.10, or any degenerate stub with nonzero power or false-positive rate.

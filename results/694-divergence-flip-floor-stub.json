@@ -1,0 +1,112 @@
+{
+  "divergence": {
+    "degenerate_rate": {
+      "always_comply": {
+        "rho_0.3": {
+          "divergence_0.0": {
+            "100": 0.0,
+            "300": 0.0
+          },
+          "divergence_0.15": {
+            "100": 0.0,
+            "300": 0.0
+          }
+        },
+        "rho_0.8": {
+          "divergence_0.0": {
+            "100": 0.0,
+            "300": 0.0
+          },
+          "divergence_0.15": {
+            "100": 0.0,
+            "300": 0.0
+          }
+        }
+      },
+      "always_refuse": {
+        "rho_0.3": {
+          "divergence_0.0": {
+            "100": 0.0,
+            "300": 0.0
+          },
+          "divergence_0.15": {
+            "100": 0.0,
+            "300": 0.0
+          }
+        },
+        "rho_0.8": {
+          "divergence_0.0": {
+            "100": 0.0,
+            "300": 0.0
+          },
+          "divergence_0.15": {
+            "100": 0.0,
+            "300": 0.0
+          }
+        }
+      }
+    },
+    "false_positive_rate": {
+      "rho_0.3": {
+        "100": 0.0475,
+        "300": 0.0425
+      },
+      "rho_0.8": {
+        "100": 0.0375,
+        "300": 0.085
+      }
+    },
+    "power": {
+      "rho_0.3": {
+        "divergence_0.15": {
+          "100": 0.44,
+          "300": 0.8275
+        }
+      },
+      "rho_0.8": {
+        "divergence_0.15": {
+          "100": 0.5,
+          "300": 0.9425
+        }
+      }
+    }
+  },
+  "injected": {
+    "alpha": 0.05,
+    "divergences": [
+      0.0,
+      0.15
+    ],
+    "grid": [
+      100,
+      300
+    ],
+    "jitter": 0.06,
+    "n_draws": 400,
+    "rhos": [
+      0.3,
+      0.8
+    ],
+    "stock_refusal": 0.9,
+    "text_ablated_refusal": 0.2,
+    "tool_ablated_refusal_zero_divergence": 0.2
+  },
+  "label": "MOCK text-vs-tool divergence power check (stub responders)",
+  "mock": true,
+  "provenance": {
+    "command": "python3 -m refusalscope divergence --seed 7 --draws 400 --out results/694-divergence-flip-floor-stub.json",
+    "data_sources": [
+      {
+        "license": "MIT (repository)",
+        "url": "synthetic: seeded in-process stub responders, no external data"
+      }
+    ],
+    "hardware": "x86_64 cpu, Linux",
+    "seeds": [
+      7
+    ],
+    "started_at": "2026-11-27T19:34:36Z",
+    "wall_s": 1.108
+  },
+  "schema": "refusalscope.divergence/1"
+}

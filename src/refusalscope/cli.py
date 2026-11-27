@@ -326,6 +326,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         from . import clusterdrift
 
         return clusterdrift.main(args_list[1:])
+    if args_list[:1] == ["divergence"]:
+        from . import divergence
+
+        return divergence.main(args_list[1:])
     if args_list[:1] == ["stacksources"]:
         from . import stacksources
 
