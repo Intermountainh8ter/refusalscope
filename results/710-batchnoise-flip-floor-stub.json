@@ -1,0 +1,113 @@
+{
+  "batch_noise": {
+    "mean_batch_only_diff": 5.833333333333475e-05,
+    "mean_batch_only_flips_per_study": 5.9275,
+    "min_detectable_step": 0.03,
+    "power_by_step": {
+      "0.01": 0.0925,
+      "0.02": 0.4275,
+      "0.03": 0.8325,
+      "0.04": 0.9675,
+      "0.05": 0.9975,
+      "0.06": 0.9975,
+      "0.07": 1.0,
+      "0.08": 1.0,
+      "0.09": 1.0,
+      "0.10": 1.0,
+      "0.11": 1.0,
+      "0.12": 1.0,
+      "0.13": 1.0,
+      "0.14": 1.0,
+      "0.15": 1.0
+    },
+    "stubs": {
+      "always_comply": {
+        "mean_batch_only_diff": 0.0,
+        "mean_batch_only_flips_per_study": 0.0,
+        "min_detectable_step": null,
+        "power_by_step": {
+          "0.01": 0.0,
+          "0.02": 0.0,
+          "0.03": 0.0,
+          "0.04": 0.0,
+          "0.05": 0.0,
+          "0.06": 0.0,
+          "0.07": 0.0,
+          "0.08": 0.0,
+          "0.09": 0.0,
+          "0.10": 0.0,
+          "0.11": 0.0,
+          "0.12": 0.0,
+          "0.13": 0.0,
+          "0.14": 0.0,
+          "0.15": 0.0
+        }
+      },
+      "always_refuse": {
+        "mean_batch_only_diff": 0.0,
+        "mean_batch_only_flips_per_study": 0.0,
+        "min_detectable_step": null,
+        "power_by_step": {
+          "0.01": 0.0,
+          "0.02": 0.0,
+          "0.03": 0.0,
+          "0.04": 0.0,
+          "0.05": 0.0,
+          "0.06": 0.0,
+          "0.07": 0.0,
+          "0.08": 0.0,
+          "0.09": 0.0,
+          "0.10": 0.0,
+          "0.11": 0.0,
+          "0.12": 0.0,
+          "0.13": 0.0,
+          "0.14": 0.0,
+          "0.15": 0.0
+        }
+      }
+    }
+  },
+  "injected": {
+    "alpha": 0.05,
+    "base_rate": 0.3,
+    "grid": [
+      0.01,
+      0.02,
+      0.03,
+      0.04,
+      0.05,
+      0.06,
+      0.07,
+      0.08,
+      0.09,
+      0.1,
+      0.11,
+      0.12,
+      0.13,
+      0.14,
+      0.15
+    ],
+    "noise_sd": 0.05,
+    "prompts": 300,
+    "studies": 400,
+    "target_power": 0.8
+  },
+  "label": "MOCK batch-noise floor and detectable dose step (stub responders)",
+  "mock": true,
+  "provenance": {
+    "command": "python3 -m refusalscope batch-noise --seed 7 --prompts 300 --studies 400 --noise-sd 0.05 --out results/710-batchnoise-flip-floor-stub.json",
+    "data_sources": [
+      {
+        "license": "MIT (repository)",
+        "url": "synthetic: seeded in-process stub responders, no external data"
+      }
+    ],
+    "hardware": "x86_64 cpu, Linux",
+    "seeds": [
+      7
+    ],
+    "started_at": "2026-11-27T21:10:07Z",
+    "wall_s": 0.541
+  },
+  "schema": "refusalscope.batchnoise/1"
+}

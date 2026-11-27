@@ -191,3 +191,11 @@ Hypothesis: with the dosetool setup (grid 0 to 1 step 0.05, baseline tool succes
 Metric: /dose_response/min_strength_wording_floor (expected between 0.40 and 0.70 and at least 0.05 above the wording-free value).
 
 Falsifier: min strength below 0.40 or above 0.70, or less than 0.05 above the wording-free value, or any degenerate stub with a detected strength.
+
+## 2026-11-27T21:09:49Z 710-batchnoise-flip-floor-stub proposal:db37a9b0fc8c764ab5feded8d7584b28dbbd746116ca810416bb4bb1f53bf360
+
+Hypothesis: on 300 seeded synthetic prompts with margins drawn from N(-0.5244, 1) (base refusal rate about 0.30, refused when margin plus noise exceeds 0), two batch compositions that add independent Gaussian noise of standard deviation 0.05 to each margin, 400 simulated studies per grid point, and a dose step modelled as a uniform margin shift, the smallest tested refusal-rate step (grid 0.01 to 0.15 in 0.01 steps) detected by two-sided exact McNemar at alpha 0.05 with power at least 0.80 lies between 0.03 and 0.10, and the mean batch-only refusal-rate difference stays below 0.01 in absolute value; always-refuse and always-comply stubs show zero flips and no detected step.
+
+Metric: /batch_noise/min_detectable_step (expected between 0.03 and 0.10 at noise sd 0.05).
+
+Falsifier: min detectable step below 0.03 or above 0.10 (or null) at noise sd 0.05, mean batch-only rate difference of 0.01 or more in absolute value, or any degenerate stub reporting a flip or a detected step.

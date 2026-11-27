@@ -252,3 +252,7 @@ license (Ammon Jackson).
 ### MOCK adjudication power (`adjpower`)
 
 Stub-only simulation, not a model result. At refusal probability 0.30 vs 0.33 and repeat-run jitter 0.06, exact-McNemar power 0.80 first appears at 1550 prompts on raw single-run labels and 350 prompts on 5-rerun majority labels (ratio 4.429); always-refuse and always-comply stubs peak at power 0.03. Source: `results/699-adjpower-flip-floor-stub.json`. Reproduce: `python3 -m refusalscope adjpower --seed 7 --draws 400 --out results/699-adjpower-flip-floor-stub.json`.
+
+## Batch-composition noise floor (MOCK, stub responders)
+
+`refusalscope batch-noise` perturbs a per-prompt refusal margin with Gaussian noise (standard deviation 0.05) from two batch compositions and reports the smallest simulated refusal-rate step that exact McNemar detects at power 0.80. In `results/710-batchnoise-flip-floor-stub.json` that step is 0.03 (at the lower edge of the pre-registered range 0.03 to 0.10) and the mean batch-only refusal-rate difference is 5.8e-05 across 400 studies of 300 prompts. This is an estimator check on stubs, not evidence about any model.
