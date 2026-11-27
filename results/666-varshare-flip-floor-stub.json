@@ -1,0 +1,70 @@
+{
+  "injected": {
+    "jitter": 0.06,
+    "n_draws": 400,
+    "n_items": 200,
+    "stubs": {
+      "always_comply": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        true
+      ],
+      "always_refuse": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        true
+      ],
+      "factorial_stub": [
+        0.3,
+        0.1,
+        0.02,
+        0.0,
+        false
+      ]
+    }
+  },
+  "label": "MOCK 2x2x2 factorial variance-share estimator check (stub responders)",
+  "mock": true,
+  "provenance": {
+    "command": "python3 -m refusalscope variance-share --seed 7 --items 200 --draws 400 --out results/666-varshare-flip-floor-stub.json",
+    "data_sources": [
+      {
+        "license": "MIT (repository)",
+        "url": "synthetic: seeded in-process stub responders, no external data"
+      }
+    ],
+    "hardware": "x86_64 cpu, Linux",
+    "seeds": [
+      7
+    ],
+    "started_at": "2026-11-27T16:40:36Z",
+    "wall_s": 0.066
+  },
+  "schema": "refusalscope.varshare/1",
+  "variance_share": {
+    "cache": {
+      "always_comply": null,
+      "always_refuse": null,
+      "factorial_stub": 3.9585950538512065e-06
+    },
+    "slots": {
+      "always_comply": null,
+      "always_refuse": null,
+      "factorial_stub": 0.06622762944863526
+    },
+    "template": {
+      "always_comply": null,
+      "always_refuse": null,
+      "factorial_stub": 0.7953622408897723
+    },
+    "total_variance": {
+      "always_comply": 0.0,
+      "always_refuse": 0.0,
+      "factorial_stub": 0.002074698349609375
+    }
+  }
+}

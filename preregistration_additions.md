@@ -71,3 +71,11 @@ Hypothesis: on 200 seeded synthetic items and 400 bootstrap draws, a stub with r
 Metric: /noise_floor/explained_fraction/template_shift (expected between 0.05 and 0.35; identical-stack 1.0; always-refuse and always-comply gaps exactly 0).
 
 Falsifier: template-shift explained fraction outside 0.05 to 0.35, identical-stack explained fraction below 1.0, or any always-refuse/always-comply stub showing a nonzero gap.
+
+## 2026-11-27T16:40:34Z 666-varshare-flip-floor-stub proposal:8af3d4a1d30f8cea196db68c70abae33c46c7c36d14248f86abffa1b6ddbd83c
+
+Hypothesis: on 200 seeded synthetic items and 400 draws per cell, a stub with refusal probability 0.30 under template A and 0.40 under template B, 0.30 vs 0.32 under slots 1 vs 4, no cache effect, and 0.06 per-item repeat-run label jitter has a template main-effect variance share between 0.70 and 0.95 and a cache share below 0.05, while always-refuse and always-comply stubs have total variance exactly 0 and all shares reported as null.
+
+Metric: /variance_share/template/factorial_stub (expected between 0.70 and 0.95; cache share below 0.05; degenerate stubs total variance exactly 0 with null shares).
+
+Falsifier: template share outside 0.70 to 0.95, cache share at or above 0.05, or a degenerate stub with nonzero total variance or non-null shares.
