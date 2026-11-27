@@ -1,0 +1,70 @@
+{
+  "floor_ci": {
+    "coverage": {
+      "identical_stack": {
+        "100": 0.9275,
+        "30": 0.9425,
+        "300": 0.9625
+      }
+    },
+    "degenerate_max_floor": {
+      "always_comply": {
+        "100": 0.0,
+        "30": 0.0,
+        "300": 0.0
+      },
+      "always_refuse": {
+        "100": 0.0,
+        "30": 0.0,
+        "300": 0.0
+      }
+    },
+    "mean_floor": {
+      "identical_stack": {
+        "100": 0.11157500000000002,
+        "30": 0.11425,
+        "300": 0.11305833333333334
+      }
+    },
+    "mean_width": {
+      "identical_stack": {
+        "100": 0.12299948019173854,
+        "30": 0.22488125279603224,
+        "300": 0.07161705391806207
+      }
+    }
+  },
+  "injected": {
+    "grid": [
+      30,
+      100,
+      300
+    ],
+    "jitter": 0.06,
+    "n_draws": 400,
+    "stubs": {
+      "always_comply": 0.0,
+      "always_refuse": 1.0,
+      "identical_stack": 0.3
+    },
+    "true_floor": 0.11279999999999998
+  },
+  "label": "MOCK flip-floor Wilson pilot-size check (stub responders)",
+  "mock": true,
+  "provenance": {
+    "command": "python3 -m refusalscope floorci --seed 7 --draws 400 --out results/691-floorci-flip-floor-stub.json",
+    "data_sources": [
+      {
+        "license": "MIT (repository)",
+        "url": "synthetic: seeded in-process stub responders, no external data"
+      }
+    ],
+    "hardware": "x86_64 cpu, Linux",
+    "seeds": [
+      7
+    ],
+    "started_at": "2026-11-27T18:48:28Z",
+    "wall_s": 0.043
+  },
+  "schema": "refusalscope.floorci/1"
+}

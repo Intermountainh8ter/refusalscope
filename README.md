@@ -236,3 +236,7 @@ make mock-demo # MOCK-labelled end-to-end run
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) and [CHANGELOG.md](CHANGELOG.md). Licensed under the MIT
 license (Ammon Jackson).
+
+### floorci (MOCK, model-free)
+
+`python3 -m refusalscope floorci --seed 7 --draws 400 --out results/691-floorci-flip-floor-stub.json` checks Wilson-interval coverage of the identical-stack flip floor by pilot size. In `results/691-floorci-flip-floor-stub.json`, coverage at 100 prompts is 0.9275 (`/floor_ci/coverage/identical_stack/100`), mean interval width is 0.12299948019173854, and degenerate stubs have floor 0. Stub simulation only; not evidence about any model.

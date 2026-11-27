@@ -119,3 +119,11 @@ Hypothesis: on 1000 seeded synthetic items with repeat-run label jitter 0.06, 40
 Metric: /cluster_drift/false_positive_rate/cluster_20/1000 (expected between 0.12 and 0.45; cluster size 1 at most 0.12; degenerate stubs exactly 0).
 
 Falsifier: cluster-20 false-positive rate outside 0.12 to 0.45, cluster-1 false-positive rate above 0.12, or any degenerate stub with a nonzero false-positive rate.
+
+## 2026-11-27T18:48:21Z 691-floorci-flip-floor-stub proposal:cde978ad446cb2ebc3417ad49b05bf8715f98c4acef4f905eeb06508b9bcfefd
+
+Hypothesis: on seeded synthetic items with repeat-run label jitter 0.06 (true identical-stack disagreement 2*0.06*0.94 = 0.1128), 400 simulated pilots per grid point and pilot sizes 30, 100 and 300 prompts, a two-run identical-stack stub (refusal probability 0.30) has Wilson 95% interval coverage of the true floor between 0.90 and 0.99 at 100 prompts, a mean Wilson interval width between 0.10 and 0.15 at 100 prompts, and a mean estimated floor between 0.10 and 0.125; always-refuse and always-comply stubs have estimated floor exactly 0 at every pilot size.
+
+Metric: /floor_ci/coverage/identical_stack/100 (expected between 0.90 and 0.99; mean width at 100 prompts 0.10 to 0.15; degenerate stubs floor exactly 0).
+
+Falsifier: coverage at 100 prompts outside 0.90 to 0.99, mean interval width at 100 prompts outside 0.10 to 0.15, mean estimated floor outside 0.10 to 0.125, or any degenerate stub with a nonzero estimated floor.
