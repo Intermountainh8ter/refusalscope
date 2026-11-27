@@ -1,0 +1,69 @@
+{
+  "injected": {
+    "alpha": 0.05,
+    "drift": 0.02,
+    "grid": [
+      300,
+      1000
+    ],
+    "jitter": 0.06,
+    "n_draws": 400,
+    "stubs": {
+      "always_comply": 0.0,
+      "always_refuse": 1.0,
+      "identical_stack": 0.3
+    }
+  },
+  "label": "MOCK run-order drift false-positive check (stub responders)",
+  "mock": true,
+  "order_drift": {
+    "degenerate_false_positive_rate": {
+      "counterbalanced": {
+        "always_comply": {
+          "1000": 0.0,
+          "300": 0.0
+        },
+        "always_refuse": {
+          "1000": 0.0,
+          "300": 0.0
+        }
+      },
+      "fixed_order": {
+        "always_comply": {
+          "1000": 0.0,
+          "300": 0.0
+        },
+        "always_refuse": {
+          "1000": 0.0,
+          "300": 0.0
+        }
+      }
+    },
+    "false_positive_rate": {
+      "counterbalanced": {
+        "1000": 0.045,
+        "300": 0.035
+      },
+      "fixed_order": {
+        "1000": 0.3,
+        "300": 0.12
+      }
+    }
+  },
+  "provenance": {
+    "command": "python3 -m refusalscope orderdrift --seed 7 --draws 400 --out results/685-orderdrift-flip-floor-stub.json",
+    "data_sources": [
+      {
+        "license": "MIT (repository)",
+        "url": "synthetic: seeded in-process stub responders, no external data"
+      }
+    ],
+    "hardware": "x86_64 cpu, Linux",
+    "seeds": [
+      7
+    ],
+    "started_at": "2026-11-27T18:22:53Z",
+    "wall_s": 0.142
+  },
+  "schema": "refusalscope.orderdrift/1"
+}

@@ -318,6 +318,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         from . import rareflip
 
         return rareflip.main(args_list[1:])
+    if args_list[:1] == ["orderdrift"]:
+        from . import orderdrift
+
+        return orderdrift.main(args_list[1:])
     if args_list[:1] == ["adjudicate"]:
         from . import adjudicate
 

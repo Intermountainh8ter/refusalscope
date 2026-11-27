@@ -103,3 +103,11 @@ Hypothesis: on 1000 seeded synthetic items with repeat-run label jitter 0.06, 40
 Metric: /adjudication/raw_to_genuine_ratio/rare_batch (expected between 9 and 18; template shift 1.7 to 2.8; identical-stack mean genuine flips below 1.5; degenerate stubs zero flips and null ratio).
 
 Falsifier: rare-batch ratio outside 9 to 18, template-shift ratio outside 1.7 to 2.8, identical-stack mean genuine flips at or above 1.5, or any degenerate stub with a nonzero flip count or non-null ratio.
+
+## 2026-11-27T18:22:53Z 685-orderdrift-flip-floor-stub proposal:d5cfe440d83d661fdfca9cc09ce362d4efffacaba58f0a7f3a5c537cd37c9039
+
+Hypothesis: on seeded synthetic items with repeat-run label jitter 0.06, 400 simulated studies and 1000 prompts, an identical-stack stub (refusal probability 0.30 on both stacks) with a +0.02 refusal-rate drift on whichever run comes second has an exact-McNemar (alpha 0.05, two-sided) false-positive rate between 0.25 and 0.80 under a fixed A-then-B order, and at or below 0.10 under an AB/BA split with half the items in each order, while always-refuse and always-comply stubs have a false-positive rate of exactly 0 under both designs.
+
+Metric: /order_drift/false_positive_rate/fixed_order/1000 (expected between 0.25 and 0.80; counterbalanced at most 0.10; degenerate stubs exactly 0).
+
+Falsifier: fixed-order false-positive rate outside 0.25 to 0.80 at 1000 prompts, counterbalanced false-positive rate above 0.10, or any degenerate stub with a nonzero false-positive rate.
