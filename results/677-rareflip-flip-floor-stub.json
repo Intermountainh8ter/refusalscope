@@ -1,0 +1,91 @@
+{
+  "injected": {
+    "alpha": 0.05,
+    "grid": [
+      100,
+      300,
+      1000,
+      3000,
+      10000
+    ],
+    "jitter": 0.06,
+    "n_draws": 400,
+    "stubs": {
+      "always_comply": [
+        0.0,
+        0.0
+      ],
+      "always_refuse": [
+        1.0,
+        1.0
+      ],
+      "identical_stack": [
+        0.3,
+        0.3
+      ],
+      "rare_batch": [
+        0.3,
+        0.31
+      ]
+    }
+  },
+  "label": "MOCK rare-batch-flip exact-McNemar power check (stub responders)",
+  "mock": true,
+  "provenance": {
+    "command": "python3 -m refusalscope rareflip --seed 7 --draws 400 --out results/677-rareflip-flip-floor-stub.json",
+    "data_sources": [
+      {
+        "license": "MIT (repository)",
+        "url": "synthetic: seeded in-process stub responders, no external data"
+      }
+    ],
+    "hardware": "x86_64 cpu, Linux",
+    "seeds": [
+      7
+    ],
+    "started_at": "2026-11-27T17:39:52Z",
+    "wall_s": 11.369
+  },
+  "rare_flip": {
+    "false_positive_rate": {
+      "identical_stack": {
+        "100": 0.025,
+        "1000": 0.045,
+        "10000": 0.0425,
+        "300": 0.0225,
+        "3000": 0.0375
+      }
+    },
+    "power": {
+      "always_comply": {
+        "100": 0.0,
+        "1000": 0.0,
+        "10000": 0.0,
+        "300": 0.0,
+        "3000": 0.0
+      },
+      "always_refuse": {
+        "100": 0.0,
+        "1000": 0.0,
+        "10000": 0.0,
+        "300": 0.0,
+        "3000": 0.0
+      },
+      "identical_stack": {
+        "100": 0.025,
+        "1000": 0.045,
+        "10000": 0.0425,
+        "300": 0.0225,
+        "3000": 0.0375
+      },
+      "rare_batch": {
+        "100": 0.0225,
+        "1000": 0.1175,
+        "10000": 0.705,
+        "300": 0.0475,
+        "3000": 0.27
+      }
+    }
+  },
+  "schema": "refusalscope.rareflip/1"
+}

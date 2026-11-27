@@ -87,3 +87,11 @@ Hypothesis: on seeded synthetic items with repeat-run label jitter 0.06 and a pr
 Metric: /mdd/required_prompts/template_shift (expected between 150 and 300; identical-stack null with false-positive rate at most 0.10; degenerate stubs null with power 0).
 
 Falsifier: template-shift required prompts outside 150 to 300 (or null), the identical-stack stub reaching power 0.80 or showing a false-positive rate above 0.10 at any grid point, or a degenerate stub reporting a non-null required prompt count or nonzero power.
+
+## 2026-11-27T17:37:33Z 677-rareflip-flip-floor-stub proposal:29e4d4f79830bbf3fafa16bb3fbd5b9ce5863e31c981ed9a96b6592d0e2c1582
+
+Hypothesis: on seeded synthetic items with repeat-run label jitter 0.06 and 400 simulated studies per grid point, a stub with refusal probability 0.30 on stack A and 0.31 on stack B (rare batch shift) has exact-McNemar power (alpha 0.05, two-sided) between 0.03 and 0.20 at 300 prompts and below 0.80 at 1000 prompts, while an identical-stack stub (0.30 on both) has false-positive rate at or below 0.10 at every grid point, and always-refuse and always-comply stubs have power exactly 0 at every grid point.
+
+Metric: /rare_flip/power/rare_batch/300 (expected between 0.03 and 0.20; power below 0.80 at 1000 prompts; identical-stack false-positive rate at most 0.10; degenerate stubs power exactly 0).
+
+Falsifier: rare-batch power at 300 prompts outside 0.03 to 0.20, power at or above 0.80 at 1000 prompts, identical-stack false-positive rate above 0.10 at any grid point, or any degenerate stub with nonzero power.
