@@ -199,3 +199,11 @@ Hypothesis: on 300 seeded synthetic prompts with margins drawn from N(-0.5244, 1
 Metric: /batch_noise/min_detectable_step (expected between 0.03 and 0.10 at noise sd 0.05).
 
 Falsifier: min detectable step below 0.03 or above 0.10 (or null) at noise sd 0.05, mean batch-only rate difference of 0.01 or more in absolute value, or any degenerate stub reporting a flip or a detected step.
+
+## 2026-11-27T21:22:38Z 713-singleshot-flip-floor-stub proposal:65b0548c65351af5d0f9e8f8446aeb7391e127cc04367dd1156c2264127c8acc
+
+Hypothesis: on 500 seeded synthetic prompts with per-prompt refusal probability drawn from Beta(0.2, 0.2), 31 samples per prompt and 200 repeated studies, the mean agreement between one sampled refusal label and the 31-sample majority label lies between 0.85 and 0.93, and always-refuse and always-comply stubs agree exactly 1.0.
+
+Metric: /sampling/single_shot_majority_agreement (expected between 0.85 and 0.93).
+
+Falsifier: mean agreement below 0.85 or above 0.93, or either degenerate stub reporting agreement other than 1.0.

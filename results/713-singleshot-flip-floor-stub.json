@@ -1,0 +1,43 @@
+{
+  "injected": {
+    "beta": [
+      0.2,
+      0.2
+    ],
+    "prompts": 500,
+    "samples": 31,
+    "studies": 200
+  },
+  "label": "MOCK single-shot vs majority refusal label agreement (stub responders)",
+  "mock": true,
+  "provenance": {
+    "command": "python3 -m refusalscope singleshot --seed 7 --prompts 500 --samples 31 --studies 200 --out results/713-singleshot-flip-floor-stub.json",
+    "data_sources": [
+      {
+        "license": "MIT (repository)",
+        "url": "synthetic: seeded in-process stub responders, no external data"
+      }
+    ],
+    "hardware": "x86_64 cpu, Linux",
+    "seeds": [
+      7
+    ],
+    "started_at": "2026-11-27T21:24:46Z",
+    "wall_s": 0.052
+  },
+  "sampling": {
+    "agreement_sd_across_studies": 0.013877679921370156,
+    "single_shot_majority_agreement": 0.8965000000000001,
+    "stubs": {
+      "always_comply": {
+        "agreement_sd_across_studies": 0.0,
+        "single_shot_majority_agreement": 1.0
+      },
+      "always_refuse": {
+        "agreement_sd_across_studies": 0.0,
+        "single_shot_majority_agreement": 1.0
+      }
+    }
+  },
+  "schema": "refusalscope.singleshot/1"
+}

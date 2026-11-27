@@ -318,6 +318,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         from . import batchnoise
 
         return batchnoise.main(args_list[1:])
+    if args_list[:1] == ["singleshot"]:
+        from . import singleshot
+
+        return singleshot.main(args_list[1:])
     if args_list[:1] == ["mdd"]:
         from . import mdd
 
