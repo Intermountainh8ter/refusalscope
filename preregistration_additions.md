@@ -175,3 +175,11 @@ Hypothesis: with the dosetool setup (grid 0 to 1 step 0.05, baseline tool succes
 Metric: /template/min_strength_mismatch (expected between 0.15 and 0.35 and at least 0.10 below the matched-template strength).
 
 Falsifier: mismatch min strength below 0.15 or above 0.35, or less than 0.10 below the matched value, or fewer than 50 percent significant studies at strength 0, or any degenerate stub with a detected strength.
+
+## 2026-11-27T20:40:20Z 705-wordshare-flip-floor-stub proposal:9ba4a76d30e3d229353f06870b849d7808794b149e5d792b2119ba9febb8256d
+
+Hypothesis: on 200 seeded synthetic items with 400 draws per cell, a stub with base refusal probability 0.30, a wording shift of +0.08, a batch-slots shift of +0.02, no cache shift and 0.06 per-run label jitter has a wording variance share minus serving (slots plus cache) variance share between 0.60 and 0.90, with the wording share above 0.70; always-refuse and always-comply stubs have total variance exactly 0 and null shares.
+
+Metric: /variance_share/wording_minus_serving/factorial_stub (expected between 0.60 and 0.90).
+
+Falsifier: the difference falls outside 0.60 to 0.90, the wording share is at or below 0.70, or a degenerate stub reports a nonzero total variance or a non-null share.

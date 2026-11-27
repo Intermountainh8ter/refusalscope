@@ -310,6 +310,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         from . import varshare
 
         return varshare.main(args_list[1:])
+    if args_list[:1] == ["word-share"]:
+        from . import wordshare
+
+        return wordshare.main(args_list[1:])
     if args_list[:1] == ["mdd"]:
         from . import mdd
 

@@ -1,0 +1,75 @@
+{
+  "injected": {
+    "jitter": 0.06,
+    "n_draws": 400,
+    "n_items": 200,
+    "stubs": {
+      "always_comply": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        true
+      ],
+      "always_refuse": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        true
+      ],
+      "factorial_stub": [
+        0.3,
+        0.08,
+        0.02,
+        0.0,
+        false
+      ]
+    }
+  },
+  "label": "MOCK wording-vs-serving variance-share estimator check (stub responders)",
+  "mock": true,
+  "provenance": {
+    "command": "python3 -m refusalscope word-share --seed 7 --items 200 --draws 400 --out results/705-wordshare-flip-floor-stub.json",
+    "data_sources": [
+      {
+        "license": "MIT (repository)",
+        "url": "synthetic: seeded in-process stub responders, no external data"
+      }
+    ],
+    "hardware": "x86_64 cpu, Linux",
+    "seeds": [
+      7
+    ],
+    "started_at": "2026-11-27T20:40:37Z",
+    "wall_s": 0.074
+  },
+  "schema": "refusalscope.wordshare/1",
+  "variance_share": {
+    "cache": {
+      "always_comply": null,
+      "always_refuse": null,
+      "factorial_stub": 1.2499937890936403e-05
+    },
+    "slots": {
+      "always_comply": null,
+      "always_refuse": null,
+      "factorial_stub": 0.07363166539266193
+    },
+    "total_variance": {
+      "always_comply": 0.0,
+      "always_refuse": 0.0,
+      "factorial_stub": 0.0012500062109374998
+    },
+    "wording": {
+      "always_comply": null,
+      "always_refuse": null,
+      "factorial_stub": 0.7012205470604068
+    },
+    "wording_minus_serving": {
+      "always_comply": null,
+      "always_refuse": null,
+      "factorial_stub": 0.6275763817298539
+    }
+  }
+}
