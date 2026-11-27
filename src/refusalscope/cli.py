@@ -338,6 +338,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         from . import dosetool
 
         return dosetool.main(args_list[1:])
+    if args_list[:1] == ["adjpower"]:
+        from . import adjpower
+
+        return adjpower.main(args_list[1:])
     if args_list[:1] == ["asrpower"]:
         from . import asrpower
 

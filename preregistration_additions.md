@@ -159,3 +159,11 @@ Hypothesis: with a simulated knob s on the grid 0 to 1 (step 0.05), baseline ben
 Metric: /dose_response/benign_tool_loss_min_strength (expected between 0.30 and 0.55 and at least 0.05 above the true-loss-only crossing strength).
 
 Falsifier: min strength below 0.30 or above 0.55, or within 0.05 of the true-loss-only crossing, or text refusal on harmful prompts not yet down by half at that strength, or any degenerate stub with a detected strength.
+
+## 2026-11-27T20:09:54Z 699-adjpower-flip-floor-stub proposal:e4c1ec39c718e5f8a9540c5de0afa0aaf05dcea7102edf548738584cc5f5f80a
+
+Hypothesis: with stub refusal probability 0.30 vs 0.33 on two stacks, repeat-run label jitter 0.06, a 5-rerun majority adjudication, 400 simulated studies per grid point, prompt grid 100 to 2000 in steps of 50 and exact two-sided McNemar at alpha 0.05, the smallest prompt count reaching power 0.80 is between 300 and 550 when tested on adjudicated labels and between 1000 and 1600 on raw single-run labels (ratio at least 2.5); always-refuse and always-comply stubs never reach power at any grid point.
+
+Metric: /power/min_prompts_adjudicated (expected between 300 and 550, at least 2.5 times lower than on raw labels).
+
+Falsifier: adjudicated min prompts below 300 or above 550, or raw/adjudicated ratio below 2.5, or any degenerate stub reaching power 0.80.
