@@ -55,3 +55,11 @@ Hypothesis: on 200 seeded synthetic items with item-paired draws and 400 bootstr
 Metric: /framing/paired_flip_rate/wording_keyed (expected between 0.08 and 0.25; the three control stubs equal 0).
 
 Falsifier: wording-keyed flip rate outside 0.08 to 0.25, its bootstrap lower bound at or below 0, or any control stub flip rate nonzero.
+
+## 2026-11-27T05:41:13Z 624-dose-validity-flip-floor-mock proposal:d0be612b3c4f5d38fbba508887ba23f78b6ae1c1d7d6c7579baf97df3a4c73a3
+
+Hypothesis: on a seeded MOCK simulation with true tool-call validity falling linearly from 0.90 at dose 0.0 by 0.30 per unit dose over an 11-point grid and 400 draws per dose, the least-squares slope of validity on dose lies between -0.36 and -0.24 with a bootstrap 95% interval excluding 0, while always-refuse and never-call scripted responders have validity exactly 0 at every dose and slope exactly 0.
+
+Metric: /dose_response/tool_call_validity_slope (expected between -0.36 and -0.24; both scripted floors have slope exactly 0).
+
+Falsifier: fitted slope outside -0.36 to -0.24, its bootstrap 95% interval including 0, or either scripted floor responder showing nonzero validity or slope.

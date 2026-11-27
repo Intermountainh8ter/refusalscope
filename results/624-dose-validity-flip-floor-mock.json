@@ -1,0 +1,91 @@
+{
+  "dose_response": {
+    "doses": [
+      0.0,
+      0.1,
+      0.2,
+      0.3,
+      0.4,
+      0.5,
+      0.6,
+      0.7,
+      0.8,
+      0.9,
+      1.0
+    ],
+    "floor_slopes": {
+      "always_refuse": 0.0,
+      "never_call": 0.0
+    },
+    "slope_bootstrap_95": [
+      -0.3177727272727269,
+      -0.24453977272727223
+    ],
+    "tool_call_validity_slope": -0.28590909090909095,
+    "validity_by_dose": {
+      "always_refuse": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "linear_decay": [
+        0.8925,
+        0.875,
+        0.8375,
+        0.8,
+        0.75,
+        0.73,
+        0.6775,
+        0.6325,
+        0.665,
+        0.645,
+        0.6325
+      ],
+      "never_call": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "injected": {
+    "intercept": 0.9,
+    "n_boot": 400,
+    "n_draws": 400,
+    "true_slope": -0.3
+  },
+  "label": "MOCK tool-call validity dose-response estimator check (stub responders)",
+  "mock": true,
+  "provenance": {
+    "command": "PYTHONPATH=src python3 -m refusalscope.dose_validity --seed 7 --out results/624-dose-validity-flip-floor-mock.json",
+    "data_sources": [
+      {
+        "license": "MIT (repository licence)",
+        "url": "synthetic: seeded stub responders, no external data"
+      }
+    ],
+    "hardware": "x86_64 cpu, Linux",
+    "seeds": [
+      7
+    ],
+    "started_at": "2026-11-27T05:41:13Z",
+    "wall_s": 0.424
+  },
+  "schema": "refusalscope.dose_validity/1"
+}
