@@ -1,0 +1,109 @@
+{
+  "label": "MOCK dose-response with chat-template mismatch (stub responders)",
+  "mock": true,
+  "provenance": {
+    "command": "python3 -m refusalscope dosetemplate --seed 7 --draws 400 --out results/703-dosetemplate-flip-floor-stub.json",
+    "data_sources": [
+      {
+        "license": "MIT (repository)",
+        "url": "synthetic: seeded in-process stub responders, no external data"
+      }
+    ],
+    "hardware": "x86_64 cpu, Linux",
+    "seeds": [
+      7
+    ],
+    "started_at": "2026-11-27T20:30:33Z",
+    "wall_s": 0.665
+  },
+  "schema": "refusalscope.dosetemplate/1",
+  "setup": {
+    "alpha": 0.05,
+    "base_tool_success": 0.95,
+    "batch_flip_floor": 0.03,
+    "grid": [
+      0.0,
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.25,
+      0.3,
+      0.35,
+      0.4,
+      0.45,
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      1.0
+    ],
+    "n_draws": 400,
+    "n_prompts": 300,
+    "smallest_effect_of_interest": 0.05,
+    "target_power": 0.8,
+    "template_mismatch_tool_success_drop": 0.04
+  },
+  "template": {
+    "degenerate_stub_detected_strength": {
+      "always_comply": null,
+      "always_refuse": null
+    },
+    "gap_matched_minus_mismatch": 0.15,
+    "min_strength_matched": 0.4,
+    "min_strength_mismatch": 0.25,
+    "power_matched": {
+      "0.0": 0.025,
+      "0.05": 0.0275,
+      "0.1": 0.0325,
+      "0.15": 0.06,
+      "0.2": 0.13,
+      "0.25": 0.3,
+      "0.3": 0.5425,
+      "0.35": 0.785,
+      "0.4": 0.925,
+      "0.45": 0.99,
+      "0.5": 0.995,
+      "0.55": 1.0,
+      "0.6": 1.0,
+      "0.65": 1.0,
+      "0.7": 1.0,
+      "0.75": 1.0,
+      "0.8": 1.0,
+      "0.85": 1.0,
+      "0.9": 1.0,
+      "0.95": 1.0,
+      "1.0": 1.0
+    },
+    "power_mismatch": {
+      "0.0": 0.485,
+      "0.05": 0.5225,
+      "0.1": 0.595,
+      "0.15": 0.6725,
+      "0.2": 0.785,
+      "0.25": 0.9175,
+      "0.3": 0.9625,
+      "0.35": 0.9925,
+      "0.4": 0.9975,
+      "0.45": 1.0,
+      "0.5": 1.0,
+      "0.55": 1.0,
+      "0.6": 1.0,
+      "0.65": 1.0,
+      "0.7": 1.0,
+      "0.75": 1.0,
+      "0.8": 1.0,
+      "0.85": 1.0,
+      "0.9": 1.0,
+      "0.95": 1.0,
+      "1.0": 1.0
+    },
+    "significant_fraction_at_strength_0_mismatch": 0.505
+  }
+}

@@ -167,3 +167,11 @@ Hypothesis: with stub refusal probability 0.30 vs 0.33 on two stacks, repeat-run
 Metric: /power/min_prompts_adjudicated (expected between 300 and 550, at least 2.5 times lower than on raw labels).
 
 Falsifier: adjudicated min prompts below 300 or above 550, or raw/adjudicated ratio below 2.5, or any degenerate stub reaching power 0.80.
+
+## 2026-11-27T20:30:16Z 703-dosetemplate-flip-floor-stub proposal:dd3a8166bc10118a1c7c97dc518609c7e42bbbcc62bf57d6e55d42b3cd4d8e43
+
+Hypothesis: with the dosetool setup (grid 0 to 1 step 0.05, baseline tool success 0.95 falling by factor 1-0.5*s^2, 3 percent per-run flip floor, 300 benign prompts, 400 simulated studies per grid point, exact two-sided McNemar at alpha 0.05, SESOI 0.05, power 0.80) plus a template mismatch that lowers ablated-arm tool success by an additional 0.04 at every strength, the smallest strength with detected benign tool-use loss falls to between 0.15 and 0.35, at least 0.10 below the matched-template value, and at strength 0 the mismatch alone is flagged as significant in at least 50 percent of simulated studies; always-refuse and always-comply stubs yield no detected strength.
+
+Metric: /template/min_strength_mismatch (expected between 0.15 and 0.35 and at least 0.10 below the matched-template strength).
+
+Falsifier: mismatch min strength below 0.15 or above 0.35, or less than 0.10 below the matched value, or fewer than 50 percent significant studies at strength 0, or any degenerate stub with a detected strength.

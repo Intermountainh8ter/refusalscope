@@ -334,6 +334,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         from . import stacksources
 
         return stacksources.main(args_list[1:])
+    if args_list[:1] == ["dosetemplate"]:
+        from . import dosetemplate
+
+        return dosetemplate.main(args_list[1:])
     if args_list[:1] == ["dosetool"]:
         from . import dosetool
 
