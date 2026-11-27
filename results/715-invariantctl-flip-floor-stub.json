@@ -1,0 +1,47 @@
+{
+  "batch_invariant": {
+    "flip_rate_batch": 0.019741666666666668,
+    "flip_rate_batch_sd_across_studies": 0.008118219392890974,
+    "flip_rate_control": 0.0,
+    "flip_rate_sampling": 0.3951083333333334,
+    "stubs": {
+      "always_comply": {
+        "flip_rate_batch": 0.0,
+        "flip_rate_batch_sd_across_studies": 0.0,
+        "flip_rate_control": 0.0,
+        "flip_rate_sampling": 0.0
+      },
+      "always_refuse": {
+        "flip_rate_batch": 0.0,
+        "flip_rate_batch_sd_across_studies": 0.0,
+        "flip_rate_control": 0.0,
+        "flip_rate_sampling": 0.0
+      }
+    }
+  },
+  "injected": {
+    "margin_mean": -0.5244,
+    "margin_sd": 1.0,
+    "noise_sd": 0.05,
+    "prompts": 300,
+    "studies": 400
+  },
+  "label": "MOCK batch-invariant control vs noisy-batch refusal flip rate (stub responders)",
+  "mock": true,
+  "provenance": {
+    "command": "python3 -m refusalscope invariant-ctl --seed 7 --prompts 300 --studies 400 --noise-sd 0.05 --out results/715-invariantctl-flip-floor-stub.json",
+    "data_sources": [
+      {
+        "license": "MIT (repository)",
+        "url": "synthetic: seeded in-process stub responders, no external data"
+      }
+    ],
+    "hardware": "x86_64 cpu, Linux",
+    "seeds": [
+      7
+    ],
+    "started_at": "2026-11-27T21:33:37Z",
+    "wall_s": 0.092
+  },
+  "schema": "refusalscope.invariantctl/1"
+}

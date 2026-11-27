@@ -207,3 +207,11 @@ Hypothesis: on 500 seeded synthetic prompts with per-prompt refusal probability 
 Metric: /sampling/single_shot_majority_agreement (expected between 0.85 and 0.93).
 
 Falsifier: mean agreement below 0.85 or above 0.93, or either degenerate stub reporting agreement other than 1.0.
+
+## 2026-11-27T21:33:17Z 715-invariantctl-flip-floor-stub proposal:65c2677d681cb193e33a36a193f5aed5caac1b29c7db6e767202e9b8fcc96478
+
+Hypothesis: on 300 seeded synthetic prompts with margins drawn from N(-0.5244, 1), 400 simulated studies, two batch compositions adding independent Gaussian margin noise of sd 0.05 give a mean per-prompt flip rate between 0.015 and 0.025, while the batch-invariant control arm (noise sd 0) gives a flip rate of exactly 0.0; always-refuse and always-comply stubs give 0.0 in both arms.
+
+Metric: /batch_invariant/flip_rate_batch (expected between 0.015 and 0.025; flip_rate_control equals 0.0).
+
+Falsifier: flip_rate_batch outside 0.015-0.025, flip_rate_control not exactly 0.0, or any degenerate stub reporting a nonzero flip rate in either arm.
