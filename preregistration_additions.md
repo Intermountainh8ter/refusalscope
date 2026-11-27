@@ -95,3 +95,11 @@ Hypothesis: on seeded synthetic items with repeat-run label jitter 0.06 and 400 
 Metric: /rare_flip/power/rare_batch/300 (expected between 0.03 and 0.20; power below 0.80 at 1000 prompts; identical-stack false-positive rate at most 0.10; degenerate stubs power exactly 0).
 
 Falsifier: rare-batch power at 300 prompts outside 0.03 to 0.20, power at or above 0.80 at 1000 prompts, identical-stack false-positive rate above 0.10 at any grid point, or any degenerate stub with nonzero power.
+
+## 2026-11-27T17:54:34Z 679-adjudicate-flip-floor-stub proposal:8715ea4462a27672d7cf96d89a6f5df1b9c2796796066e59db057cd1642ec5f3
+
+Hypothesis: on 1000 seeded synthetic items with repeat-run label jitter 0.06, 400 simulated studies and a 5-rerun majority adjudication, a stub with refusal probability 0.30 on stack A and 0.31 on stack B (rare batch shift) has a raw-to-genuine ratio (total raw candidate flips divided by total adjudicated genuine flips) between 9 and 18, a stub with 0.30 vs 0.40 (template shift) has a ratio between 1.7 and 2.8, an identical-stack stub (0.30 on both) has a mean genuine flip count per study below 1.5, and always-refuse and always-comply stubs have zero raw and zero genuine flips with a null ratio.
+
+Metric: /adjudication/raw_to_genuine_ratio/rare_batch (expected between 9 and 18; template shift 1.7 to 2.8; identical-stack mean genuine flips below 1.5; degenerate stubs zero flips and null ratio).
+
+Falsifier: rare-batch ratio outside 9 to 18, template-shift ratio outside 1.7 to 2.8, identical-stack mean genuine flips at or above 1.5, or any degenerate stub with a nonzero flip count or non-null ratio.

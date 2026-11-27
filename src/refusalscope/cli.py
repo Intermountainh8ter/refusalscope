@@ -318,6 +318,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         from . import rareflip
 
         return rareflip.main(args_list[1:])
+    if args_list[:1] == ["adjudicate"]:
+        from . import adjudicate
+
+        return adjudicate.main(args_list[1:])
     parser = build_parser()
     args = parser.parse_args(list(argv) if argv is not None else None)
     func = getattr(args, "func", None)

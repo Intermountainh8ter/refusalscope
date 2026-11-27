@@ -1,0 +1,89 @@
+{
+  "adjudication": {
+    "flips": {
+      "always_comply": {
+        "mean_genuine_per_study": 0.0,
+        "mean_raw_per_study": 0.0,
+        "total_genuine": 0,
+        "total_raw": 0
+      },
+      "always_refuse": {
+        "mean_genuine_per_study": 0.0,
+        "mean_raw_per_study": 0.0,
+        "total_genuine": 0,
+        "total_raw": 0
+      },
+      "identical_stack": {
+        "mean_genuine_per_study": 0.4975,
+        "mean_raw_per_study": 112.875,
+        "total_genuine": 199,
+        "total_raw": 45150
+      },
+      "rare_batch": {
+        "mean_genuine_per_study": 9.54,
+        "mean_raw_per_study": 120.3475,
+        "total_genuine": 3816,
+        "total_raw": 48139
+      },
+      "template_shift": {
+        "mean_genuine_per_study": 89.13,
+        "mean_raw_per_study": 190.325,
+        "total_genuine": 35652,
+        "total_raw": 76130
+      }
+    },
+    "raw_to_genuine_ratio": {
+      "always_comply": null,
+      "always_refuse": null,
+      "identical_stack": 226.88442211055278,
+      "rare_batch": 12.615041928721174,
+      "template_shift": 2.135364074946707
+    }
+  },
+  "injected": {
+    "jitter": 0.06,
+    "n_draws": 400,
+    "n_items": 1000,
+    "reruns": 5,
+    "stubs": {
+      "always_comply": [
+        0.0,
+        0.0
+      ],
+      "always_refuse": [
+        1.0,
+        1.0
+      ],
+      "identical_stack": [
+        0.3,
+        0.3
+      ],
+      "rare_batch": [
+        0.3,
+        0.31
+      ],
+      "template_shift": [
+        0.3,
+        0.4
+      ]
+    }
+  },
+  "label": "MOCK raw-to-genuine flip adjudication check (stub responders)",
+  "mock": true,
+  "provenance": {
+    "command": "python3 -m refusalscope adjudicate --seed 7 --draws 400 --out results/679-adjudicate-flip-floor-stub.json",
+    "data_sources": [
+      {
+        "license": "MIT (repository)",
+        "url": "synthetic: seeded in-process stub responders, no external data"
+      }
+    ],
+    "hardware": "x86_64 cpu, Linux",
+    "seeds": [
+      7
+    ],
+    "started_at": "2026-11-27T17:54:37Z",
+    "wall_s": 0.227
+  },
+  "schema": "refusalscope.adjudicate/1"
+}
