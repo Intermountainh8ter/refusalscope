@@ -231,3 +231,11 @@ Hypothesis: with seed 7, 6 wordings, 8 environments, 100 draws per cell, 200 rep
 Metric: /wordenv/wording_share (expected between 0.55 and 0.80 at wording sd 0.5 and environment sd 0.25).
 
 Falsifier: wording share outside 0.55-0.80, wording share above environment share in fewer than 0.90 of replicates, or any constant responder reporting nonzero total variance or a non-null share.
+
+## 2026-11-27T22:46:10Z 732-sandbag-flip-floor-stub proposal:394e576b2401b1d739b87bac1ae3a74210cbcc75f153a26e3f2ec9af7e0d489b
+
+Hypothesis: with seed 7, 200 items with per-item logit accuracy drawn N(0,1), 4 paraphrases per framing with paraphrase effects N(0,0.2), 50 draws per cell, 200 replicates, an evaluation-framed logit shift of -0.3 and a cue-removed shift of 0, the mean accuracy gap (neutral minus evaluation-framed) lies between 0.05 and 0.07, the cue-removed gap lies within 0.01 of zero in absolute value, and always-correct and always-wrong stubs give a gap of exactly 0.0.
+
+Metric: /sandbag/accuracy_gap_evaluation_framed (expected between 0.05 and 0.07).
+
+Falsifier: evaluation-framed gap outside 0.05-0.07, cue-removed gap beyond 0.01 in absolute value, or any constant stub reporting a nonzero gap.
