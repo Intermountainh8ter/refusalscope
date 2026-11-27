@@ -1,0 +1,71 @@
+{
+  "injected": {
+    "n_boot": 400,
+    "n_items": 200,
+    "stubs": {
+      "always_wrong": {
+        "system": 0.0,
+        "user": 0.0
+      },
+      "coin_flip": {
+        "system": 0.5,
+        "user": 0.5
+      },
+      "positional_bias": {
+        "system": 0.7,
+        "user": 0.55
+      }
+    }
+  },
+  "label": "MOCK instruction-placement spread estimator check (stub responders)",
+  "mock": true,
+  "placement": {
+    "per_stub": {
+      "always_wrong": {
+        "interval_half_width": 0.0,
+        "score": {
+          "system": 0.0,
+          "user": 0.0
+        },
+        "spread": 0.0
+      },
+      "coin_flip": {
+        "interval_half_width": 0.06749999999999998,
+        "score": {
+          "system": 0.515,
+          "user": 0.515
+        },
+        "spread": 0.0
+      },
+      "positional_bias": {
+        "interval_half_width": 0.0625,
+        "score": {
+          "system": 0.725,
+          "user": 0.575
+        },
+        "spread": 0.15000000000000002
+      }
+    },
+    "spread_over_interval": {
+      "always_wrong": 0.0,
+      "coin_flip": 0.0,
+      "positional_bias": 2.4000000000000004
+    }
+  },
+  "provenance": {
+    "command": "PYTHONPATH=src python3 -m refusalscope.placement --seed 7 --out results/611-placement-flip-floor-stub.json",
+    "data_sources": [
+      {
+        "license": "MIT (repository licence)",
+        "url": "synthetic: seeded stub responders, no external data"
+      }
+    ],
+    "hardware": "x86_64 cpu, Linux",
+    "seeds": [
+      7
+    ],
+    "started_at": "2026-11-27T04:45:22Z",
+    "wall_s": 0.034
+  },
+  "schema": "refusalscope.placement/1"
+}

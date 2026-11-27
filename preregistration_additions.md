@@ -39,3 +39,11 @@ Hypothesis: on the MOCK server with a seeded 0.06 per-draw label jitter applied 
 Metric: /batch/paired_flip_over_floor (expected between 0.02 and 0.10; the batch-1 repeat floor and the batch-invariant arm flip rate both equal 0).
 
 Falsifier: paired_flip_over_floor outside 0.02 to 0.10, or the batch-invariant arm flip rate nonzero, or the batch-1 repeat floor nonzero.
+
+## 2026-11-27T04:45:21Z 611-placement-flip-floor-stub proposal:55125476f8f00e5d273929fd1c1558641e2d9b9ae791f5ade72c623d90b3ae6c
+
+Hypothesis: on 200 seeded synthetic items and 400 bootstrap draws, a stub responder whose compliance probability is 0.70 with the instruction in the system prompt and 0.55 in the user prompt shows a placement score spread at least 1.5 times the half-width of the 95% bootstrap interval of a single placement, while an always-wrong stub and a placement-blind coin-flip stub show a spread-over-interval ratio below 1.0.
+
+Metric: /placement/spread_over_interval/positional_bias (expected at least 1.5, range 1.5 to 6.0; always_wrong and coin_flip below 1.0).
+
+Falsifier: the placement-sensitive stub ratio is below 1.5, or either control stub ratio is 1.0 or higher.
