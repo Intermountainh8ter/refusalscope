@@ -151,3 +151,11 @@ Hypothesis: with 20 percent baseline attack success, a true 10-point ASR increas
 Metric: /asr_power/min_cases_per_arm (expected at least 200; range 200 to 600).
 
 Falsifier: min_cases_per_arm below 200 on the grid, or no grid point reaching 0.80 power.
+
+## 2026-11-27T19:59:07Z 698-dosetool-flip-floor-stub proposal:92f4995c9fa7014499c837126e20d0d8bf15cf68ba5462c4c3dcd1c8da45c2ca
+
+Hypothesis: with a simulated knob s on the grid 0 to 1 (step 0.05), baseline benign tool-use success 0.95 falling by a factor (1 - 0.5*s^2), text refusal on harmful prompts falling from 0.90 toward 0.10 linearly along the same knob, a 3 percent per-run batch-flip floor, 300 benign prompts and 400 simulated studies per grid point, the smallest strength at which benign tool-use loss exceeds 0.05 and exact-McNemar (alpha 0.05, two-sided) power reaches 0.80 lies between 0.30 and 0.55, and it is at least 0.05 higher than the smallest strength at which the true loss alone exceeds 0.05; text refusal on harmful prompts has already fallen by at least half at that strength; always-refuse and always-comply stubs yield no detected strength.
+
+Metric: /dose_response/benign_tool_loss_min_strength (expected between 0.30 and 0.55 and at least 0.05 above the true-loss-only crossing strength).
+
+Falsifier: min strength below 0.30 or above 0.55, or within 0.05 of the true-loss-only crossing, or text refusal on harmful prompts not yet down by half at that strength, or any degenerate stub with a detected strength.
