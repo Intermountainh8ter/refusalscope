@@ -239,3 +239,11 @@ Hypothesis: with seed 7, 200 items with per-item logit accuracy drawn N(0,1), 4 
 Metric: /sandbag/accuracy_gap_evaluation_framed (expected between 0.05 and 0.07).
 
 Falsifier: evaluation-framed gap outside 0.05-0.07, cue-removed gap beyond 0.01 in absolute value, or any constant stub reporting a nonzero gap.
+
+## 2026-11-27T23:03:30Z 736-controlfloor-flip-floor-stub proposal:8be2c143687a9d75a41dcdc9b35e26b7921b99d356d31de6a9cd7c05e601b590
+
+Hypothesis: with seed 7, 64 random control directions per study, 400 simulated studies, designed-direction true effect 1.0, random-direction true effects drawn N(0.2, 0.3) in designed-effect units and independent measurement noise sd 0.15 per estimate, the mean fraction of random directions whose measured effect is at least the designed direction's measured effect is between 0.005 and 0.03, and a degenerate zero-effect stub reports exactly 0.0 for both designed and random effects.
+
+Metric: /control_floor/random_reaches_designed_fraction (expected between 0.005 and 0.03; analytic value about 0.015).
+
+Falsifier: fraction outside 0.005-0.03, or the zero-effect stub reporting a nonzero effect or a non-null fraction.

@@ -1,0 +1,40 @@
+{
+  "control_floor": {
+    "designed_effect_measured": 0.9990354671116899,
+    "random_effect_measured": 0.19795224973128034,
+    "random_reaches_designed_fraction": 0.0136328125,
+    "stubs": {
+      "zero_effect": {
+        "designed_effect": 0.0,
+        "random_effect": 0.0,
+        "random_reaches_designed_fraction": null
+      }
+    }
+  },
+  "injected": {
+    "designed_effect": 1.0,
+    "directions": 64,
+    "noise_sd": 0.15,
+    "random_mean": 0.2,
+    "random_sd": 0.3,
+    "replicates": 400
+  },
+  "label": "MOCK random-direction control floor (stub responders)",
+  "mock": true,
+  "provenance": {
+    "command": "python3 -m refusalscope controlfloor --seed 7 --directions 64 --replicates 400 --out results/736-controlfloor-flip-floor-stub.json",
+    "data_sources": [
+      {
+        "license": "MIT (repository)",
+        "url": "synthetic: seeded in-process stub responders, no external data"
+      }
+    ],
+    "hardware": "x86_64 cpu, Linux",
+    "seeds": [
+      7
+    ],
+    "started_at": "2026-11-27T23:03:32Z",
+    "wall_s": 0.023
+  },
+  "schema": "refusalscope.controlfloor/1"
+}

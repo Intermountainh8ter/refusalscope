@@ -326,6 +326,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         from . import templateflip
 
         return templateflip.main(args_list[1:])
+    if args_list[:1] == ["controlfloor"]:
+        from . import controlfloor
+
+        return controlfloor.main(args_list[1:])
     if args_list[:1] == ["sandbag"]:
         from . import sandbag
 
