@@ -1,0 +1,44 @@
+{
+  "injected": {
+    "margin_mean": -0.5244,
+    "margin_sd": 1.0,
+    "prompts": 300,
+    "shift": 0.2,
+    "studies": 400
+  },
+  "label": "MOCK chat-template-omission vs sampling-alone refusal flip rate (stub responders)",
+  "mock": true,
+  "provenance": {
+    "command": "python3 -m refusalscope templateflip --seed 7 --prompts 300 --studies 400 --shift 0.2 --out results/716-templateflip-flip-floor-stub.json",
+    "data_sources": [
+      {
+        "license": "MIT (repository)",
+        "url": "synthetic: seeded in-process stub responders, no external data"
+      }
+    ],
+    "hardware": "x86_64 cpu, Linux",
+    "seeds": [
+      7
+    ],
+    "started_at": "2026-11-27T21:42:33Z",
+    "wall_s": 0.05
+  },
+  "schema": "refusalscope.templateflip/1",
+  "template": {
+    "flip_rate_sampling": 0.39670833333333333,
+    "flip_rate_template": 0.072625,
+    "flip_rate_vs_sampling_ratio": 0.1830690053565802,
+    "stubs": {
+      "always_comply": {
+        "flip_rate_sampling": 0.0,
+        "flip_rate_template": 0.0,
+        "flip_rate_vs_sampling_ratio": null
+      },
+      "always_refuse": {
+        "flip_rate_sampling": 0.0,
+        "flip_rate_template": 0.0,
+        "flip_rate_vs_sampling_ratio": null
+      }
+    }
+  }
+}

@@ -322,6 +322,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         from . import invariantctl
 
         return invariantctl.main(args_list[1:])
+    if args_list[:1] == ["templateflip"]:
+        from . import templateflip
+
+        return templateflip.main(args_list[1:])
     if args_list[:1] == ["singleshot"]:
         from . import singleshot
 

@@ -215,3 +215,11 @@ Hypothesis: on 300 seeded synthetic prompts with margins drawn from N(-0.5244, 1
 Metric: /batch_invariant/flip_rate_batch (expected between 0.015 and 0.025; flip_rate_control equals 0.0).
 
 Falsifier: flip_rate_batch outside 0.015-0.025, flip_rate_control not exactly 0.0, or any degenerate stub reporting a nonzero flip rate in either arm.
+
+## 2026-11-27T21:40:38Z 716-templateflip-flip-floor-stub proposal:c8849719c297607e515d64224c95b91eff020ab80aeb5ed0a2f50bfc3b1b4db8
+
+Hypothesis: on 300 seeded synthetic prompts with margins drawn from N(-0.5244, 1), 400 simulated studies, a template-omission arm that shifts every margin by +0.2 gives a deterministic label flip rate between the template-present and template-absent arms whose ratio to the sampling-alone flip rate (two independent Bernoulli draws with logistic probability of the margin) lies between 0.15 and 0.22; always-refuse and always-comply stubs give 0.0 in both flip rates and a null ratio.
+
+Metric: /template/flip_rate_vs_sampling_ratio (expected between 0.15 and 0.22 at a template margin shift of 0.2).
+
+Falsifier: ratio outside 0.15-0.22, or any degenerate stub reporting a nonzero flip rate or a non-null ratio.
