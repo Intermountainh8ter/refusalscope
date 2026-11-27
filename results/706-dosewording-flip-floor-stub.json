@@ -1,0 +1,87 @@
+{
+  "dose_response": {
+    "degenerate_stub_detected_strength": {
+      "always_comply": null,
+      "always_refuse": null
+    },
+    "gap_floor_minus_free": 0.05,
+    "measured_wording_floor": 0.04,
+    "min_strength_wording_floor": 0.45,
+    "min_strength_wordingfree": 0.4,
+    "power": {
+      "0.0": 0.025,
+      "0.05": 0.0275,
+      "0.1": 0.0325,
+      "0.15": 0.06,
+      "0.2": 0.13,
+      "0.25": 0.3,
+      "0.3": 0.5425,
+      "0.35": 0.785,
+      "0.4": 0.925,
+      "0.45": 0.99,
+      "0.5": 0.995,
+      "0.55": 1.0,
+      "0.6": 1.0,
+      "0.65": 1.0,
+      "0.7": 1.0,
+      "0.75": 1.0,
+      "0.8": 1.0,
+      "0.85": 1.0,
+      "0.9": 1.0,
+      "0.95": 1.0,
+      "1.0": 1.0
+    }
+  },
+  "label": "MOCK dose-response with wording floor (stub responders)",
+  "mock": true,
+  "provenance": {
+    "command": "python3 -m refusalscope dose-wording --seed 7 --prompts 300 --studies 400 --paraphrases 5 --out results/706-dosewording-flip-floor-stub.json",
+    "data_sources": [
+      {
+        "license": "MIT (repository)",
+        "url": "synthetic: seeded in-process stub responders, no external data"
+      }
+    ],
+    "hardware": "x86_64 cpu, Linux",
+    "seeds": [
+      7
+    ],
+    "started_at": "2026-11-27T20:48:11Z",
+    "wall_s": 0.51
+  },
+  "schema": "refusalscope.dosewording/1",
+  "setup": {
+    "alpha": 0.05,
+    "base_tool_success": 0.95,
+    "batch_flip_floor": 0.03,
+    "grid": [
+      0.0,
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.25,
+      0.3,
+      0.35,
+      0.4,
+      0.45,
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      1.0
+    ],
+    "n_draws": 400,
+    "n_prompts": 300,
+    "paraphrases": 5,
+    "smallest_effect_of_interest": 0.05,
+    "target_power": 0.8,
+    "wording_floor_param": 0.04
+  }
+}

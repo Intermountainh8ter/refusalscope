@@ -342,6 +342,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         from . import dosetemplate
 
         return dosetemplate.main(args_list[1:])
+    if args_list[:1] == ["dose-wording"]:
+        from . import dosewording
+
+        return dosewording.main(args_list[1:])
     if args_list[:1] == ["dosetool"]:
         from . import dosetool
 

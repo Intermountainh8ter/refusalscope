@@ -183,3 +183,11 @@ Hypothesis: on 200 seeded synthetic items with 400 draws per cell, a stub with b
 Metric: /variance_share/wording_minus_serving/factorial_stub (expected between 0.60 and 0.90).
 
 Falsifier: the difference falls outside 0.60 to 0.90, the wording share is at or below 0.70, or a degenerate stub reports a nonzero total variance or a non-null share.
+
+## 2026-11-27T20:48:08Z 706-dosewording-flip-floor-stub proposal:f320a3bd715e4a21e8558478debd30ca5dd4fd3539892258c277bceb40784971
+
+Hypothesis: with the dosetool setup (grid 0 to 1 step 0.05, baseline tool success 0.95 falling by factor 1-0.5*s^2, 3 percent per-run flip floor, 300 benign prompts, 400 simulated studies per grid point, exact two-sided McNemar at alpha 0.05, SESOI 0.05, power 0.80) plus a wording-perturbation floor of 0.04 on unablated tool success across 5 paraphrases, the smallest strength with a detected tool-use loss that also exceeds the wording floor (true loss above SESOI plus the floor, and McNemar power at least 0.80) lies between 0.40 and 0.70 and is at least 0.05 above the wording-free dosetool value; always-refuse and always-comply stubs yield no detected strength.
+
+Metric: /dose_response/min_strength_wording_floor (expected between 0.40 and 0.70 and at least 0.05 above the wording-free value).
+
+Falsifier: min strength below 0.40 or above 0.70, or less than 0.05 above the wording-free value, or any degenerate stub with a detected strength.
