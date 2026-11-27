@@ -127,3 +127,11 @@ Hypothesis: on seeded synthetic items with repeat-run label jitter 0.06 (true id
 Metric: /floor_ci/coverage/identical_stack/100 (expected between 0.90 and 0.99; mean width at 100 prompts 0.10 to 0.15; degenerate stubs floor exactly 0).
 
 Falsifier: coverage at 100 prompts outside 0.90 to 0.99, mean interval width at 100 prompts outside 0.10 to 0.15, mean estimated floor outside 0.10 to 0.125, or any degenerate stub with a nonzero estimated floor.
+
+## 2026-11-27T18:59:38Z 693-stacksources-flip-floor-stub proposal:4c32c94b31c68f276267410830b7859c57b313b6083c6ea1d704869dc7b9420e
+
+Hypothesis: on 1000 seeded synthetic items with repeat-run label jitter 0.06 and 400 simulated studies per cell, a stub with refusal probability 0.30 on stack A and 0.34 on stack B has exact-McNemar (alpha 0.05, two-sided) power between 0.80 and 0.97 with jitter alone, and between 0.30 and 0.75 when two independent zero-mean cluster shocks (normal sd 0.05, cluster sizes 20 and 100) are added to run B; identical-stack false-positive rate under the stacked shocks stays above 0.10; always-refuse and always-comply stubs have power and false-positive rate of exactly 0.
+
+Metric: /stacked_sources/power/stacked/shift_0.04/1000 (expected between 0.30 and 0.75; jitter-only power 0.80 to 0.97; identical-stack stacked false-positive rate above 0.10; degenerate stubs exactly 0).
+
+Falsifier: stacked power outside 0.30 to 0.75, jitter-only power outside 0.80 to 0.97, identical-stack stacked false-positive rate at or below 0.10, or any degenerate stub with nonzero power or false-positive rate.

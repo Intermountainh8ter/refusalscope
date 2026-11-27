@@ -240,3 +240,7 @@ license (Ammon Jackson).
 ### floorci (MOCK, model-free)
 
 `python3 -m refusalscope floorci --seed 7 --draws 400 --out results/691-floorci-flip-floor-stub.json` checks Wilson-interval coverage of the identical-stack flip floor by pilot size. In `results/691-floorci-flip-floor-stub.json`, coverage at 100 prompts is 0.9275 (`/floor_ci/coverage/identical_stack/100`), mean interval width is 0.12299948019173854, and degenerate stubs have floor 0. Stub simulation only; not evidence about any model.
+
+### Stacked serving-noise sources (MOCK, stub responders)
+
+`refusalscope stacksources` adds two independent zero-mean cluster shocks (cluster sizes 20 and 100) to one run of a stub pair. In `results/693-stacksources-flip-floor-stub.json`, exact-McNemar power to detect a +0.04 refusal-rate shift at 1000 prompts is 0.825 with label jitter alone and 0.6625 with the stacked shocks. The identical-stack false-positive rate is 0.0475 with jitter alone and 0.205 with the shocks. Degenerate stubs have rate 0. Simulation only; not evidence about any model.

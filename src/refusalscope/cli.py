@@ -326,6 +326,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         from . import clusterdrift
 
         return clusterdrift.main(args_list[1:])
+    if args_list[:1] == ["stacksources"]:
+        from . import stacksources
+
+        return stacksources.main(args_list[1:])
     if args_list[:1] == ["floorci"]:
         from . import floorci
 
