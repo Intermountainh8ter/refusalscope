@@ -326,6 +326,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         from . import templateflip
 
         return templateflip.main(args_list[1:])
+    if args_list[:1] == ["wordenv"]:
+        from . import wordenv
+
+        return wordenv.main(args_list[1:])
     if args_list[:1] == ["singleshot"]:
         from . import singleshot
 

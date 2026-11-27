@@ -1,0 +1,49 @@
+{
+  "injected": {
+    "base_p": 0.3,
+    "draws": 100,
+    "env_sd": 0.25,
+    "envs": 8,
+    "replicates": 200,
+    "wording_sd": 0.5,
+    "wordings": 6
+  },
+  "label": "MOCK wording vs environment variance share of refusal rates (stub responders)",
+  "mock": true,
+  "provenance": {
+    "command": "python3 -m refusalscope wordenv --seed 7 --wordings 6 --envs 8 --draws 100 --replicates 200 --out results/717-wordenv-flip-floor-stub.json",
+    "data_sources": [
+      {
+        "license": "MIT (repository)",
+        "url": "synthetic: seeded in-process stub responders, no external data"
+      }
+    ],
+    "hardware": "x86_64 cpu, Linux",
+    "seeds": [
+      7
+    ],
+    "started_at": "2026-11-27T21:47:45Z",
+    "wall_s": 0.033
+  },
+  "schema": "refusalscope.wordenv/1",
+  "wordenv": {
+    "environment_share": 0.24302956254381375,
+    "stubs": {
+      "always_comply": {
+        "environment_share": null,
+        "total_ss": 0.0,
+        "wording_exceeds_env_fraction": null,
+        "wording_share": null
+      },
+      "always_refuse": {
+        "environment_share": null,
+        "total_ss": 0.0,
+        "wording_exceeds_env_fraction": null,
+        "wording_share": null
+      }
+    },
+    "total_ss": 0.5953494791666667,
+    "wording_exceeds_env_fraction": 0.885,
+    "wording_share": 0.6139868728135184
+  }
+}

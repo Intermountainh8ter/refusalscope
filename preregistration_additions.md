@@ -223,3 +223,11 @@ Hypothesis: on 300 seeded synthetic prompts with margins drawn from N(-0.5244, 1
 Metric: /template/flip_rate_vs_sampling_ratio (expected between 0.15 and 0.22 at a template margin shift of 0.2).
 
 Falsifier: ratio outside 0.15-0.22, or any degenerate stub reporting a nonzero flip rate or a non-null ratio.
+
+## 2026-11-27T21:47:43Z 717-wordenv-flip-floor-stub proposal:9ba4e4ba116f78a399aab1e8e3db82d92d8540616358d4d691084474d7b48623
+
+Hypothesis: with seed 7, 6 wordings, 8 environments, 100 draws per cell, 200 replicates, base refusal probability 0.30, wording effects drawn N(0, 0.5) and environment effects drawn N(0, 0.25) on the logit scale and no interaction, the mean wording share of the total sum of squares of cell refusal rates (centred on the grand mean) lies between 0.55 and 0.80 and exceeds the mean environment share in at least 0.90 of replicates; always-refuse and always-comply responders have total sum of squares exactly 0 and null shares.
+
+Metric: /wordenv/wording_share (expected between 0.55 and 0.80 at wording sd 0.5 and environment sd 0.25).
+
+Falsifier: wording share outside 0.55-0.80, wording share above environment share in fewer than 0.90 of replicates, or any constant responder reporting nonzero total variance or a non-null share.
