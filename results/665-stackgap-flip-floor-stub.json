@@ -1,0 +1,67 @@
+{
+  "injected": {
+    "jitter": 0.06,
+    "n_draws": 400,
+    "n_items": 200,
+    "stubs": {
+      "always_comply": [
+        0.0,
+        0.0,
+        false
+      ],
+      "always_refuse": [
+        1.0,
+        1.0,
+        false
+      ],
+      "identical_stack": [
+        0.3,
+        0.3,
+        true
+      ],
+      "template_shift": [
+        0.3,
+        0.4,
+        false
+      ]
+    }
+  },
+  "label": "MOCK between-stack gap vs repeat-run noise estimator check (stub responders)",
+  "mock": true,
+  "noise_floor": {
+    "explained_fraction": {
+      "always_comply": null,
+      "always_refuse": null,
+      "identical_stack": 1.0,
+      "template_shift": 0.24632729757430805
+    },
+    "noise_gap": {
+      "always_comply": 0.0,
+      "always_refuse": 0.0,
+      "identical_stack": 0.018699999999999998,
+      "template_shift": 0.018024999999999992
+    },
+    "observed_gap": {
+      "always_comply": 0.0,
+      "always_refuse": 0.0,
+      "identical_stack": 0.018699999999999998,
+      "template_shift": 0.073175
+    }
+  },
+  "provenance": {
+    "command": "python3 -m refusalscope noise-floor --seed 7 --items 200 --draws 400 --out results/665-stackgap-flip-floor-stub.json",
+    "data_sources": [
+      {
+        "license": "MIT (repository)",
+        "url": "synthetic: seeded in-process stub responders, no external data"
+      }
+    ],
+    "hardware": "x86_64 cpu, Linux",
+    "seeds": [
+      7
+    ],
+    "started_at": "2026-11-27T16:33:05Z",
+    "wall_s": 0.034
+  },
+  "schema": "refusalscope.stackgap/1"
+}

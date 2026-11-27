@@ -63,3 +63,11 @@ Hypothesis: on a seeded MOCK simulation with true tool-call validity falling lin
 Metric: /dose_response/tool_call_validity_slope (expected between -0.36 and -0.24; both scripted floors have slope exactly 0).
 
 Falsifier: fitted slope outside -0.36 to -0.24, its bootstrap 95% interval including 0, or either scripted floor responder showing nonzero validity or slope.
+
+## 2026-11-27T16:30:56Z 665-stackgap-flip-floor-stub proposal:ca0773934e1244e767491a610234dbf7423df381ce8124b12f84b78bab3a87e5
+
+Hypothesis: on 200 seeded synthetic items and 400 bootstrap draws, a stub with refusal probability 0.30 on stack A and 0.40 on stack B (template shift) plus a 0.06 per-item repeat-run label jitter has a fraction of the observed gap explained by repeat-run noise (mean absolute A-versus-A repeat gap divided by the mean absolute A-versus-B gap) between 0.05 and 0.35, while an identical-stack stub (0.30 on both; the second stack is the repeat run) has an explained fraction of 1.0 and always-refuse and always-comply stubs have an observed gap and noise gap of exactly 0.
+
+Metric: /noise_floor/explained_fraction/template_shift (expected between 0.05 and 0.35; identical-stack 1.0; always-refuse and always-comply gaps exactly 0).
+
+Falsifier: template-shift explained fraction outside 0.05 to 0.35, identical-stack explained fraction below 1.0, or any always-refuse/always-comply stub showing a nonzero gap.
