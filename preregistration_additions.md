@@ -79,3 +79,11 @@ Hypothesis: on 200 seeded synthetic items and 400 draws per cell, a stub with re
 Metric: /variance_share/template/factorial_stub (expected between 0.70 and 0.95; cache share below 0.05; degenerate stubs total variance exactly 0 with null shares).
 
 Falsifier: template share outside 0.70 to 0.95, cache share at or above 0.05, or a degenerate stub with nonzero total variance or non-null shares.
+
+## 2026-11-27T17:04:28Z 670-mdd-flip-floor-stub proposal:84b2c3845fb858754d95f448b030f773e981eeea0009fe3b2bc752caa15a0be1
+
+Hypothesis: on seeded synthetic items with repeat-run label jitter 0.06 and a prompt-count grid of 50, 100, 150, 200, 300, 400 and 600 with 400 simulated studies per grid point, a stub with refusal probability 0.30 on stack A and 0.40 on stack B needs between 150 and 300 paired prompts for exact-McNemar power (alpha 0.05, two-sided) of at least 0.80, while an identical-stack stub (0.30 on both) never reaches power 0.80 at any grid point and has false-positive rate at or below 0.10 at every grid point, and always-refuse and always-comply stubs report required prompts as null with power exactly 0.
+
+Metric: /mdd/required_prompts/template_shift (expected between 150 and 300; identical-stack null with false-positive rate at most 0.10; degenerate stubs null with power 0).
+
+Falsifier: template-shift required prompts outside 150 to 300 (or null), the identical-stack stub reaching power 0.80 or showing a false-positive rate above 0.10 at any grid point, or a degenerate stub reporting a non-null required prompt count or nonzero power.

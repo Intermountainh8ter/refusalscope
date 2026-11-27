@@ -1,0 +1,110 @@
+{
+  "injected": {
+    "alpha": 0.05,
+    "grid": [
+      50,
+      100,
+      150,
+      200,
+      300,
+      400,
+      600
+    ],
+    "jitter": 0.06,
+    "n_draws": 400,
+    "stubs": {
+      "always_comply": [
+        0.0,
+        0.0
+      ],
+      "always_refuse": [
+        1.0,
+        1.0
+      ],
+      "identical_stack": [
+        0.3,
+        0.3
+      ],
+      "template_shift": [
+        0.3,
+        0.4
+      ]
+    },
+    "target_power": 0.8
+  },
+  "label": "MOCK exact-McNemar minimum-prompts estimator check (stub responders)",
+  "mdd": {
+    "false_positive_rate": {
+      "identical_stack": {
+        "100": 0.025,
+        "150": 0.0375,
+        "200": 0.035,
+        "300": 0.0225,
+        "400": 0.0275,
+        "50": 0.0075,
+        "600": 0.045
+      }
+    },
+    "power": {
+      "always_comply": {
+        "100": 0.0,
+        "150": 0.0,
+        "200": 0.0,
+        "300": 0.0,
+        "400": 0.0,
+        "50": 0.0,
+        "600": 0.0
+      },
+      "always_refuse": {
+        "100": 0.0,
+        "150": 0.0,
+        "200": 0.0,
+        "300": 0.0,
+        "400": 0.0,
+        "50": 0.0,
+        "600": 0.0
+      },
+      "identical_stack": {
+        "100": 0.025,
+        "150": 0.0375,
+        "200": 0.035,
+        "300": 0.0225,
+        "400": 0.0275,
+        "50": 0.0075,
+        "600": 0.045
+      },
+      "template_shift": {
+        "100": 0.4625,
+        "150": 0.6325,
+        "200": 0.7925,
+        "300": 0.9575,
+        "400": 0.9925,
+        "50": 0.1975,
+        "600": 1.0
+      }
+    },
+    "required_prompts": {
+      "always_comply": null,
+      "always_refuse": null,
+      "identical_stack": null,
+      "template_shift": 300
+    }
+  },
+  "mock": true,
+  "provenance": {
+    "command": "python3 -m refusalscope mdd --seed 7 --draws 400 --out results/670-mdd-flip-floor-stub.json",
+    "data_sources": [
+      {
+        "license": "MIT (repository)",
+        "url": "synthetic: seeded in-process stub responders, no external data"
+      }
+    ],
+    "hardware": "x86_64 cpu, Linux",
+    "seeds": [
+      7
+    ],
+    "started_at": "2026-11-27T17:04:31Z",
+    "wall_s": 0.209
+  },
+  "schema": "refusalscope.mdd/1"
+}

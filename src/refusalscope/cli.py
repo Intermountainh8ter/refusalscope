@@ -310,6 +310,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         from . import varshare
 
         return varshare.main(args_list[1:])
+    if args_list[:1] == ["mdd"]:
+        from . import mdd
+
+        return mdd.main(args_list[1:])
     parser = build_parser()
     args = parser.parse_args(list(argv) if argv is not None else None)
     func = getattr(args, "func", None)
