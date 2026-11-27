@@ -322,6 +322,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         from . import orderdrift
 
         return orderdrift.main(args_list[1:])
+    if args_list[:1] == ["clusterdrift"]:
+        from . import clusterdrift
+
+        return clusterdrift.main(args_list[1:])
     if args_list[:1] == ["adjudicate"]:
         from . import adjudicate
 

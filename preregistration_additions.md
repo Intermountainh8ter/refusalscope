@@ -111,3 +111,11 @@ Hypothesis: on seeded synthetic items with repeat-run label jitter 0.06, 400 sim
 Metric: /order_drift/false_positive_rate/fixed_order/1000 (expected between 0.25 and 0.80; counterbalanced at most 0.10; degenerate stubs exactly 0).
 
 Falsifier: fixed-order false-positive rate outside 0.25 to 0.80 at 1000 prompts, counterbalanced false-positive rate above 0.10, or any degenerate stub with a nonzero false-positive rate.
+
+## 2026-11-27T18:39:28Z 689-clusterdrift-flip-floor-stub proposal:92df630737121a46424808f6f5c750b84149a5eaa662620ddc4ee9b5d87b5d50
+
+Hypothesis: on 1000 seeded synthetic items with repeat-run label jitter 0.06, 400 simulated studies and a zero-mean per-cluster shift of the refusal threshold on run B (normal, sd 0.10, items grouped into consecutive clusters), an identical-stack stub (refusal probability 0.30 on both runs) has an exact-McNemar (alpha 0.05, two-sided) false-positive rate between 0.12 and 0.45 at cluster size 20 and at or below 0.12 at cluster size 1, while always-refuse and always-comply stubs have a false-positive rate of exactly 0 at every cluster size.
+
+Metric: /cluster_drift/false_positive_rate/cluster_20/1000 (expected between 0.12 and 0.45; cluster size 1 at most 0.12; degenerate stubs exactly 0).
+
+Falsifier: cluster-20 false-positive rate outside 0.12 to 0.45, cluster-1 false-positive rate above 0.12, or any degenerate stub with a nonzero false-positive rate.

@@ -1,0 +1,66 @@
+{
+  "cluster_drift": {
+    "degenerate_false_positive_rate": {
+      "cluster_1": {
+        "always_comply": {
+          "1000": 0.0
+        },
+        "always_refuse": {
+          "1000": 0.0
+        }
+      },
+      "cluster_20": {
+        "always_comply": {
+          "1000": 0.0
+        },
+        "always_refuse": {
+          "1000": 0.0
+        }
+      }
+    },
+    "false_positive_rate": {
+      "cluster_1": {
+        "1000": 0.035
+      },
+      "cluster_20": {
+        "1000": 0.13
+      }
+    }
+  },
+  "injected": {
+    "alpha": 0.05,
+    "clusters": [
+      1,
+      20
+    ],
+    "grid": [
+      1000
+    ],
+    "jitter": 0.06,
+    "n_draws": 400,
+    "shift_sd": 0.1,
+    "stubs": {
+      "always_comply": 0.0,
+      "always_refuse": 1.0,
+      "identical_stack": 0.3
+    }
+  },
+  "label": "MOCK clustered-shock false-positive check (stub responders)",
+  "mock": true,
+  "provenance": {
+    "command": "python3 -m refusalscope clusterdrift --seed 7 --draws 400 --out results/689-clusterdrift-flip-floor-stub.json",
+    "data_sources": [
+      {
+        "license": "MIT (repository)",
+        "url": "synthetic: seeded in-process stub responders, no external data"
+      }
+    ],
+    "hardware": "x86_64 cpu, Linux",
+    "seeds": [
+      7
+    ],
+    "started_at": "2026-11-27T18:39:32Z",
+    "wall_s": 0.2
+  },
+  "schema": "refusalscope.clusterdrift/1"
+}
