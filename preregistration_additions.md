@@ -47,3 +47,11 @@ Hypothesis: on 200 seeded synthetic items and 400 bootstrap draws, a stub respon
 Metric: /placement/spread_over_interval/positional_bias (expected at least 1.5, range 1.5 to 6.0; always_wrong and coin_flip below 1.0).
 
 Falsifier: the placement-sensitive stub ratio is below 1.5, or either control stub ratio is 1.0 or higher.
+
+## 2026-11-27T05:09:43Z 615-framing-flip-floor-stub proposal:a2a1edd43d6c36f829c2eac1e5fc6ad1737a0925e28bda75c53e51c6567e217e
+
+Hypothesis: on 200 seeded synthetic items with item-paired draws and 400 bootstrap draws, a wording-keyed stub with refusal probability 0.30 under neutral wording and 0.45 under evaluation-framed wording has a paired flip rate between 0.08 and 0.25 whose bootstrap 95% lower bound is above 0, while always-comply and always-refuse stubs flip at exactly 0 and a wording-blind coin-flip stub (same draw under both wordings) flips at exactly 0.
+
+Metric: /framing/paired_flip_rate/wording_keyed (expected between 0.08 and 0.25; the three control stubs equal 0).
+
+Falsifier: wording-keyed flip rate outside 0.08 to 0.25, its bootstrap lower bound at or below 0, or any control stub flip rate nonzero.

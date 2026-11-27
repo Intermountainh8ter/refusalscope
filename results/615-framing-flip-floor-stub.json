@@ -1,0 +1,68 @@
+{
+  "framing": {
+    "bootstrap_95": {
+      "always_comply": [
+        0.0,
+        0.0
+      ],
+      "always_refuse": [
+        0.0,
+        0.0
+      ],
+      "coin_flip": [
+        0.0,
+        0.0
+      ],
+      "wording_keyed": [
+        0.14,
+        0.245
+      ]
+    },
+    "paired_flip_rate": {
+      "always_comply": 0.0,
+      "always_refuse": 0.0,
+      "coin_flip": 0.0,
+      "wording_keyed": 0.19
+    }
+  },
+  "injected": {
+    "n_boot": 400,
+    "n_items": 200,
+    "stubs": {
+      "always_comply": {
+        "framed": 0.0,
+        "neutral": 0.0
+      },
+      "always_refuse": {
+        "framed": 1.0,
+        "neutral": 1.0
+      },
+      "coin_flip": {
+        "framed": 0.5,
+        "neutral": 0.5
+      },
+      "wording_keyed": {
+        "framed": 0.45,
+        "neutral": 0.3
+      }
+    }
+  },
+  "label": "MOCK evaluation-framing paired flip estimator check (stub responders)",
+  "mock": true,
+  "provenance": {
+    "command": "PYTHONPATH=src python3 -m refusalscope.framing --seed 7 --out results/615-framing-flip-floor-stub.json",
+    "data_sources": [
+      {
+        "license": "MIT (repository licence)",
+        "url": "synthetic: seeded stub responders, no external data"
+      }
+    ],
+    "hardware": "x86_64 cpu, Linux",
+    "seeds": [
+      7
+    ],
+    "started_at": "2026-11-27T05:09:43Z",
+    "wall_s": 0.036
+  },
+  "schema": "refusalscope.framing/1"
+}
