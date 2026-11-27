@@ -143,3 +143,11 @@ Hypothesis: on seeded synthetic items with repeat-run label jitter 0.06 and 400 
 Metric: /divergence/power/rho_0.3/divergence_0.15/300 (expected between 0.75 and 0.95; 100-prompt power 0.30 to 0.70; zero-divergence false-positive rate at most 0.10; degenerate stubs exactly 0).
 
 Falsifier: power at 300 prompts outside 0.75 to 0.95, power at 100 prompts outside 0.30 to 0.70, correlation 0.8 power differing from correlation 0.3 power by more than 0.10, any zero-divergence false-positive rate above 0.10, or any degenerate stub with nonzero power or false-positive rate.
+
+## 2026-11-27T19:42:00Z 695-asrpower-flip-floor-stub proposal:67deeb7fbb7275a0bdc480c094a24ebd796580f08c9957bca02dedb777fcb190
+
+Hypothesis: with 20 percent baseline attack success, a true 10-point ASR increase from ablation, a 3 percent per-run batch-flip floor and a 2 percent no-injection control rate, the smallest case count on the grid 50 to 1000 (step 50) at which seeded exact-McNemar (alpha 0.05, two-sided) power reaches 0.80 is at least 200 (400 simulated studies per grid point).
+
+Metric: /asr_power/min_cases_per_arm (expected at least 200; range 200 to 600).
+
+Falsifier: min_cases_per_arm below 200 on the grid, or no grid point reaching 0.80 power.

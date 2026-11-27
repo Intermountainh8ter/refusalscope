@@ -334,6 +334,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         from . import stacksources
 
         return stacksources.main(args_list[1:])
+    if args_list[:1] == ["asrpower"]:
+        from . import asrpower
+
+        return asrpower.main(args_list[1:])
     if args_list[:1] == ["floorci"]:
         from . import floorci
 

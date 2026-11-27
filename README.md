@@ -244,3 +244,5 @@ license (Ammon Jackson).
 ### Stacked serving-noise sources (MOCK, stub responders)
 
 `refusalscope stacksources` adds two independent zero-mean cluster shocks (cluster sizes 20 and 100) to one run of a stub pair. In `results/693-stacksources-flip-floor-stub.json`, exact-McNemar power to detect a +0.04 refusal-rate shift at 1000 prompts is 0.825 with label jitter alone and 0.6625 with the stacked shocks. The identical-stack false-positive rate is 0.0475 with jitter alone and 0.205 with the shocks. Degenerate stubs have rate 0. Simulation only; not evidence about any model.
+
+`refusalscope asrpower` simulates paired stock/ablated attack-success outcomes (baseline ASR 0.2, true increase 0.1, batch-flip floor 0.03 per run). In `results/695-asrpower-flip-floor-stub.json`, the smallest grid point (50 to 1000 cases per arm) with exact-McNemar power of at least 0.80 is 150, where power is 0.8225. The pre-registered hypothesis of at least 200 is refuted. Power at 100 cases is 0.695. Simulation only; not evidence about any model.
